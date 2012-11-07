@@ -35,35 +35,25 @@ set expand-tild on
 
 stty -ixon
 
+export MYNICKNAME="karlzheng"
 export MYUSERNAME=$(whoami)
-export HISTCONTROL="erasedups:ignoreboth"
-export JAVA_HOME=/usr/lib/jvm/java-6-sun/ 
+
 export ANDROID_JAVA_HOME=$JAVA_HOME
-export imgout=out/target/product/
-export PATH=~/person_tools/:~/software/bin:${PATH}:/bin/:/usr/local/arm/arm-2010q1/bin/:~/mytools/:/media/cdriver/work/software/android-sdk-linux_86/platform-tools:/media/cdriver/work/source/android-ndk-r5:/media/cdriver/work/software/android-sdk-linux_86/tools:
-#export PATH=~/software/bin:${PATH}:/bin/:/usr/local/arm/arm-2012.03/bin/:~/mytools/:/media/cdriver/work/software/android-sdk-linux_86/platform-tools:/media/cdriver/work/source/android-ndk-r5:/media/cdriver/work/software/android-sdk-linux_86/tools:
-export EDITOR=vim
-export SVN_EDITOR=/usr/bin/vim 
-export D=~/桌面/
-export desktop=~/桌面/
-export d=~/桌面/
-export PS4='+[$LINENO]'
-export dl=~/下载/
-export LANG="zh_CN.UTF-8"
-export CROSS_COMPILE=arm-none-linux-gnueabi-
-export ARCH=arm
 export ANDROID_SRC_ROOT=/media/cdriver/work/hal/trunk/
-export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
-#PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
+export ARCH=arm
+#http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
+export BROWSER="$PAGER"
+export CROSS_COMPILE=arm-none-linux-gnueabi-
+export D=~/桌面/
+export EDITOR=vim
 #命令文件最大行数
 export HISTSIZE=50000      
 #最大命令历史记录数
 export HISTFILESIZE=50000  
 #export LANG="en.UTF-8"
-
-#http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
-export PAGER="`which less` -s"
-export BROWSER="$PAGER"
+export HISTCONTROL="erasedups:ignoreboth"
+export LANG="zh_CN.UTF-8"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd):
 export LESS_TERMCAP_mb=$'\E[01;34m'
 export LESS_TERMCAP_md=$'\E[01;34m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -71,6 +61,28 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;33m'
+export JAVA_HOME=/usr/lib/jvm/java-6-sun/ 
+export PATH=~/person_tools/:~/software/bin:${PATH}:/bin/:/usr/local/arm/arm-2010q1/bin/:~/mytools/:/media/cdriver/work/software/android-sdk-linux_86/platform-tools:/media/cdriver/work/source/android-ndk-r5:/media/cdriver/work/software/android-sdk-linux_86/tools:
+#export PATH=~/software/bin:${PATH}:/bin/:/usr/local/arm/arm-2012.03/bin/:~/mytools/:/media/cdriver/work/software/android-sdk-linux_86/platform-tools:/media/cdriver/work/source/android-ndk-r5:/media/cdriver/work/software/android-sdk-linux_86/tools:
+export PAGER="`which less` -s"
+export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+#export PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
+export PS4='+[$LINENO]'
+export SVN_EDITOR=/usr/bin/vim 
+
+export d=~/桌面/
+export desktop=~/桌面/
+export dl=~/下载/
+export imgout=out/target/product/
+
+if [ $MYUSERNAME == $MYNICKNAME ];then
+	export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
+	export USE_CACHE=1
+	if [ -d $HOME/ramdisk/ccache ];then
+		mkdir -p $HOME/ramdisk/ccache
+		CCACHE_DIR=$HOME/ramdisk/ccache
+	fi
+fi
 
 #add other info here just for android
 #export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
@@ -105,6 +117,8 @@ bind -m emacs '"\C-g\C-a": "mgrep.sh "'
 bind -m emacs '"\C-g\C-b": "grep \"\" * --color -rHnIC2f"'
 bind -m emacs '"\C-g\C-f": "bcompare $(f) . &"'
 bind -m emacs '"\C-g\C-n": "find -name "'
+#bind -m emacs '"\C-]": character-search-backward'
+#bind -m emacs '"\e\C-]": character-search'
 
 unalias ls
 alias adb_="sudo adb kill-server && sudo adb start-server"
@@ -120,9 +134,10 @@ alias cp='cp -i '
 alias cw="cd /media/work/"
 alias cz="cd ~/mytools/m032/tz_release_key/"
 alias diff='diff -x .svn'
-alias gitdiff="git diff --no-ext-diff -w |vim -R -"
+alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
 alias h='history|tail -n 30'
+alias hi='history'
 alias ht='history |tail -n 10 '
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
 alias LA='ls -A'
@@ -144,10 +159,10 @@ alias mj='make -j8 '
 #alias mtnfs=' mount -t nfs '
 #alias mto='mount -o loop '
 alias mv='mv -i '
-alias mz='make zImage -j16 '
+alias mz='make zImage -j32 '
 alias MZ='mz'
 alias po='popd'
-alias pp="cat -n /dev/shm/${MYUSERNAME}path"
+alias ppp="cat -n /dev/shm/${MYUSERNAME}path"
 alias pu1='pushd +1'
 alias pu='pushd .'
 alias sb='source ~/mybashrc.sh'
@@ -253,6 +268,10 @@ function c()
 
 function ca()
 {
+	if [ ! -f ~/pwd.txt ];then
+		echo "no ~/pwd.txt file"
+		return 1;
+	fi
 	if [ ! -f /dev/shm/pwd_pos ]; then
 		echo "1" > /dev/shm/pwd_pos;  
 		local  pwd_pos=1;
@@ -276,6 +295,11 @@ function pa()
 	grep -q "^$(pwd)$" ~/pwd.txt
 	if [ $? != 0 ]; then
 		pwd >> ~/pwd.txt
+		awk '!a[$0]++' ~/pwd.txt > $$.pwd.txt
+		cat $$.pwd.txt | sort > ~/pwd.txt 
+		rm $$.pwd.txt
+	else
+		echo "$(pwd) has already in ~/pwd.txt"
 	fi
 }
 
@@ -295,6 +319,38 @@ function cdc() {
 	fi  
 }
 
+function cdi() {
+	if [ -d "$imgout" ];then
+		cd $imgout
+		local recent_product_dir=$(ls -latr | tail -n 1 |awk '{print $NF}');
+		cd "${recent_product_dir}"
+		echo $imgout/"${recent_product_dir}"
+	fi
+}
+
+function cdt() {
+    local TOPFILE=build/core/envsetup.mk;
+    if [ -n "$TOP" -a -f "$TOP/$TOPFILE" ]; then
+        cd $TOP;
+    else
+        if [ -f $TOPFILE ]; then
+            PWD= /bin/pwd;
+            cd ${PWD}
+        else
+            local HERE=$PWD;
+            T=;
+            while [ \( ! \( -f $TOPFILE \) \) -a \( $PWD != "/" \) ]; do
+                cd .. > /dev/null;
+                T=`PWD= /bin/pwd`;
+            done;
+            cd $HERE > /dev/null;
+            if [ -f "$T/$TOPFILE" ]; then
+                echo $T;
+                cd $T;
+            fi;
+        fi;
+    fi
+}
 
 function cv()
 {
@@ -376,6 +432,9 @@ function gitsvncl()
 function gitsvnup()
 {
 	git svn fetch
+	while [ $? != 0 ]; do
+		git svn fetch
+	done
 	git rebase --onto git-svn --root
 }
 
@@ -496,6 +555,19 @@ function myvimpath()
     export PATH=~/software/bin/bin:${PATH}:
 }
 
+function pp()
+{
+	if [ $# -eq 0 ];then
+		cat -n ~/pwd.txt
+	else
+		cat -n ~/pwd.txt | grep "$*"
+	fi
+	local cnt=$(cat ~/pwd.txt | grep "$*" | wc -l)
+	if [ $cnt == 1 ];then
+		cd $(cat ~/pwd.txt | grep "$*")
+	fi
+}
+
 function n()
 {
 	if [ $# -eq 0 ];then
@@ -570,6 +642,14 @@ function swap()
 function tfind()
 {
 	find . -exec grep -Hn "$@" {} +
+}
+
+function unap()
+{
+	if [ -d /dev/shm/${MYUSERNAME} -a \
+		-f /dev/shm/${MYUSERNAME}/apwdpath ];then
+		rm /dev/shm/${MYUSERNAME}/apwdpath 
+	fi
 }
 
 function vmdis()
@@ -761,7 +841,9 @@ complete -F  _ksvn_complete ksvn
 complete -F  _sdnw_complete sdnw
 complete -W 'arch/arm/configs' lac
 complete -W 'xconfig' make
-complete -o default -F _longopt vi
+if [ $MYUSERNAME != "cefanty" ];then
+	complete -o default -F _longopt vi
+fi
 
 function my_bash_login_auto_exec_func()
 {
@@ -781,6 +863,10 @@ function my_bash_login_auto_exec_func()
 			echo "" >> ~/.bashrc
 		fi
 	fi
+	# auto jump to the wanted dir
+	if [ $(pwd) == ${HOME} ];then
+		ac
+	fi
 }
 
 #bash command:
@@ -791,3 +877,5 @@ function my_bash_login_auto_exec_func()
 if [ -f ~/my_private_bashrc.sh ];then
 	source ~/my_private_bashrc.sh
 fi
+
+my_bash_login_auto_exec_func
