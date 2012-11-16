@@ -270,57 +270,6 @@ function append_daily_path()
 	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
 }
 
-function c()
-{
-	if [ $# -eq 0 ];then
-		cat -n ~/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
-	else
-		cat -n ~/pwd.mk | sed -e 's#^\s*[1-9]*\s*\#.*##g' | grep -i "$*"
-	fi
-	local cnt=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | wc -l)
-	if [ $cnt == 1 ];then
-		cd $(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*")
-	else
-		local  cur_pos=1;
-		echo ""
-		trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
-		while true;do
-			local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}"|tr -d '\r\n')
-			printf '%-100s\r' "Enter: ${enter_dir} ?"
-			local key=$(bash_get_keycode.sh | tr -d '\r' | tr -d '\n')
-			case "$key" in
-				"UP")
-					((cur_pos --));
-					if [ $cur_pos -lt 1 ];then
-						let cur_pos=$cur_pos+$cnt
-					fi
-					local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}")
-					;;
-				"DOWN"|"SPACE")
-					((cur_pos ++));
-					if [ $cur_pos -gt $cnt ];then
-						let cur_pos=1
-					fi
-					local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}")
-					;;
-				"CR")
-					if [ -d "${enter_dir}" ];then
-						cd "${enter_dir}"
-						break;
-					else
-						printf "No dir:%-120s\n" "${enter_dir}"
-					fi
-					;;
-				"q"|"Q")
-					printf "%-100s\r" " "
-					break;
-					;;
-			esac
-		done
-		trap - SIGINT SIGHUP SIGTERM
-	fi
-}
-
 function ca()
 {
 	if [ ! -f ~/pwd.mk ];then
@@ -343,20 +292,6 @@ function ca()
 	fi
 	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/pwd.mk)
 	builtin cd "$enter_dir"
-}
-
-function pa()
-{
-	touch ~/pwd.mk
-	grep -q "^$(pwd)$" ~/pwd.mk
-	if [ $? != 0 ]; then
-		pwd >> ~/pwd.mk
-		awk '!a[$0]++' ~/pwd.mk > $$.pwd.mk
-		cat $$.pwd.mk | sort > ~/pwd.mk 
-		rm $$.pwd.mk
-	else
-		echo "$(pwd) has already in ~/pwd.mk"
-	fi
 }
 
 function cdb() {
@@ -956,6 +891,10 @@ function my_bash_login_auto_exec_func()
 #bash command:
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do  sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars 
+
+if [ -f ~/my_path_functions.sh ];then
+	source ~/my_path_functions.sh 
+fi
 
 if [ -f ~/my_private_bashrc.sh ];then
 	source ~/my_private_bashrc.sh
