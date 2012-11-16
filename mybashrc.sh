@@ -47,9 +47,9 @@ export CROSS_COMPILE=arm-none-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
 #命令文件最大行数
-export HISTSIZE=50000      
+export HISTSIZE=100000      
 #最大命令历史记录数
-export HISTFILESIZE=50000  
+export HISTFILESIZE=100000  
 #export LANG="en.UTF-8"
 export HISTCONTROL="erasedups:ignoreboth"
 export LANG="zh_CN.UTF-8"
@@ -109,13 +109,14 @@ bind -m emacs '"\C-o": menu-complete'
 
 bind -m emacs '"\C-ga": "grep \"\" * --color -rHniI|grep -v ^tags|grep -v ^cscopef"'
 bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
+bind -m emacs '"\C-gf": "$(fp)"'
 bind -m emacs '"\C-gh": " --help"'
 bind -m emacs '"\C-gm": "grep mei Makefile"'
 bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
 
 bind -m emacs '"\C-g\C-a": "mgrep.sh "'
 bind -m emacs '"\C-g\C-b": "grep \"\" * --color -rHnIC2f"'
-bind -m emacs '"\C-g\C-f": "bcompare $(f) . &"'
+bind -m emacs '"\C-g\C-f": "bcompare $(fp) . &"'
 bind -m emacs '"\C-g\C-n": "find -name "'
 #bind -m emacs '"\C-]": character-search-backward'
 #bind -m emacs '"\e\C-]": character-search'
@@ -125,22 +126,28 @@ alias adb_="sudo adb kill-server && sudo adb start-server"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias brm='/bin/rm'
 alias CD='cd'
+alias c.='cd ../..'
 alias cd.='cd ../..'
+alias c..='cd ../../..'
 alias cd..='cd ../../..'
 alias cdg='cd /media/work/kernel/meizu/git/mx/linux-2.6.35-mx-rtm'
 alias ck="cd /media/cdriver/work/kernel/meizu/"
+alias co="cd -"
 alias copy_to_m8="rsync -av /media/x/english/voa/ /media/Meizu\ M8/Music/voa/"
 alias cp='cp -i '
 alias cw="cd /media/work/"
 alias cz="cd ~/mytools/m032/tz_release_key/"
 alias diff='diff -x .svn'
+alias f='find'
+alias g='grep'
+#http://blog.longwin.com.tw/2009/11/vimdiff-vs-git-diff-2009/
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
 alias h='history|tail -n 30'
 alias hi='history'
 alias ht='history |tail -n 10 '
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
-alias LA='ls -A'
+alias LA='ls -latr'
 alias la='ls -latr'
 alias ll='ls -l '
 alias l='ls -CF '
@@ -162,7 +169,7 @@ alias mv='mv -i '
 alias mz='make zImage -j32 '
 alias MZ='mz'
 alias po='popd'
-alias ppp="cat -n /dev/shm/${MYUSERNAME}path"
+alias pp="cat -n /dev/shm/${MYUSERNAME}/daily_path"
 alias pu1='pushd +1'
 alias pu='pushd .'
 alias sb='source ~/mybashrc.sh'
@@ -173,22 +180,37 @@ alias svnaw="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END
 alias svnaw_touch="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}' |xargs touch"
 alias t="touch"
 alias vb='vi ~/mybashrc.sh'
+alias vp='vi ~/pwd.mk'
 alias VI='vi'
+alias wg="wget"
 
 #alias mydate="echo $(date +%Y%m%d_%T)"
 #alias svnawtar="date_str=$(date +%Y%m%d_%T) && tmp_file_name=svn_diff_$date_str && svnaw |xargs \
 #tar --force-local -rvf \$tmp_file_name.tar && echo \$tmp_file_name && unset \
 #tmp_file_namei && unset date_str"
 #tac ~/.bash_history |awk '!a[$0]++' |tac > /tmp/.bash_history &&  mv /tmp/.bash_history ~/.bash_history -f
-#alias pwd='builtin pwd; builtin pwd >> /dev/shm/${MYUSERNAME}path;'
-#alias sdnw='sudo dnw '
+
+function .()
+{
+	if [ $# -eq 0 ];then
+		cd ".."
+	fi
+}
+
+function ..()
+{
+	if [ $# -eq 0 ];then
+		cd "../.."
+	fi
+}
 
 function ac()
 {
-	[ -f /dev/shm/${MYUSERNAME}/apwdpath ] && tmp_dir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)" && builtin cd "$tmp_dir" && unset "tmp_dir"
+	[ -f /dev/shm/${MYUSERNAME}/apwdpath ] && \
+		tmp_dir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)" && \
+		builtin cd "$tmp_dir" && unset "tmp_dir"
 }
 
-#alias apwd='builtin pwd >> /dev/shm/${MYUSERNAME}path'
 function ap()
 {
 	builtin pwd;
@@ -200,11 +222,11 @@ function apwd_abc()
 {
 	builtin pwd;
 	local p=$(builtin pwd);
-	grep -q "^$p$"  /dev/shm/${MYUSERNAME}path
+	grep -q "^$p$"  /dev/shm/${MYUSERNAME}/daily_path
 	if [ $? != 0 ]; then
-		builtin pwd >> /dev/shm/${MYUSERNAME}path;
+		builtin pwd >> /dev/shm/${MYUSERNAME}/daily_path;
 	fi  
-	wc -l /dev/shm/${MYUSERNAME}path |awk '{print $1}' > /dev/shm/total_count
+	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
 }
 
 function atar() 
@@ -234,42 +256,75 @@ function append_daily_path()
 {
 	local path_list=(
 		#'/media/work/4212/meizu/linux-3.0.15-beta'
-		#'/home/${MYUSERNAME}/svn/compiled/uboot-1.3.4-m9'
-		'/home/karlzheng/to_del1/uboot-mxse'
+		#'/home/karlzheng/to_del1/uboot-mxse'
+		'/media/cdriver/work/kernel/meizu/meizu_m040/linux-3.0.39-rtm-mp-dev'
 		'/media/cdriver/work/kernel/meizu/m032/linux-3.0.15-rtm-dev'
 	);
-	[ -f /dev/shm/${MYUSERNAME}path ] || touch /dev/shm/${MYUSERNAME}path
+	[ -f /dev/shm/${MYUSERNAME}/daily_path ] || touch /dev/shm/${MYUSERNAME}/daily_path
 	for p in ${path_list[@]}; do
-		grep -q "^$p$"  /dev/shm/${MYUSERNAME}path
+		grep -q "^$p$"  /dev/shm/${MYUSERNAME}/daily_path
 		if [ $? != 0 ]; then
-			echo "$p" >> /dev/shm/${MYUSERNAME}path;
+			echo "$p" >> /dev/shm/${MYUSERNAME}/daily_path;
 		fi
 	done
-	wc -l /dev/shm/${MYUSERNAME}path |awk '{print $1}' > /dev/shm/total_count
+	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
 }
 
 function c()
 {
-	if [ ! -f /dev/shm/cur_pos ]; 
-	then echo "1" > /dev/shm/cur_pos;  
-		local  cur_pos=1;
-	else local cur_pos=$(cat /dev/shm/cur_pos);
-		local total_count=$(cat /dev/shm/total_count);
-		((cur_pos ++));
-		if [ $cur_pos -gt $total_count ]; 
-		then cur_pos=$(expr $cur_pos - $total_count);
-		fi
-		echo $cur_pos > /dev/shm/cur_pos;  
+	if [ $# -eq 0 ];then
+		cat -n ~/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
+	else
+		cat -n ~/pwd.mk | sed -e 's#^\s*[1-9]*\s*\#.*##g' | grep -i "$*"
 	fi
-	local enter_dir=$(sed -n "$cur_pos{p;q;}"  /dev/shm/${MYUSERNAME}path)
-	builtin cd "$enter_dir"
-	ap
+	local cnt=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | wc -l)
+	if [ $cnt == 1 ];then
+		cd $(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*")
+	else
+		local  cur_pos=1;
+		echo ""
+		trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
+		while true;do
+			local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}"|tr -d '\r\n')
+			printf '%-100s\r' "Enter: ${enter_dir} ?"
+			local key=$(bash_get_keycode.sh | tr -d '\r' | tr -d '\n')
+			case "$key" in
+				"UP")
+					((cur_pos --));
+					if [ $cur_pos -lt 1 ];then
+						let cur_pos=$cur_pos+$cnt
+					fi
+					local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}")
+					;;
+				"DOWN"|"SPACE")
+					((cur_pos ++));
+					if [ $cur_pos -gt $cnt ];then
+						let cur_pos=1
+					fi
+					local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}")
+					;;
+				"CR")
+					if [ -d "${enter_dir}" ];then
+						cd "${enter_dir}"
+						break;
+					else
+						printf "No dir:%-120s\n" "${enter_dir}"
+					fi
+					;;
+				"q"|"Q")
+					printf "%-100s\r" " "
+					break;
+					;;
+			esac
+		done
+		trap - SIGINT SIGHUP SIGTERM
+	fi
 }
 
 function ca()
 {
-	if [ ! -f ~/pwd.txt ];then
-		echo "no ~/pwd.txt file"
+	if [ ! -f ~/pwd.mk ];then
+		echo "no ~/pwd.mk file"
 		return 1;
 	fi
 	if [ ! -f /dev/shm/pwd_pos ]; then
@@ -277,7 +332,7 @@ function ca()
 		local  pwd_pos=1;
 	else local pwd_pos=$(cat /dev/shm/pwd_pos);
 		#if [ ! -f /dev/shm/pwd_total_count ];then
-			wc -l ~/pwd.txt |awk '{print $1}' > /dev/shm/pwd_total_count
+			wc -l ~/pwd.mk |awk '{print $1}' > /dev/shm/pwd_total_count
 		#fi
 		local total_count=$(cat /dev/shm/pwd_total_count);
 		((pwd_pos ++));
@@ -286,23 +341,23 @@ function ca()
 		fi
 		echo $pwd_pos > /dev/shm/pwd_pos;  
 	fi
-	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/pwd.txt)
+	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/pwd.mk)
 	builtin cd "$enter_dir"
 }
 
 function pa()
 {
-	grep -q "^$(pwd)$" ~/pwd.txt
+	touch ~/pwd.mk
+	grep -q "^$(pwd)$" ~/pwd.mk
 	if [ $? != 0 ]; then
-		pwd >> ~/pwd.txt
-		awk '!a[$0]++' ~/pwd.txt > $$.pwd.txt
-		cat $$.pwd.txt | sort > ~/pwd.txt 
-		rm $$.pwd.txt
+		pwd >> ~/pwd.mk
+		awk '!a[$0]++' ~/pwd.mk > $$.pwd.mk
+		cat $$.pwd.mk | sort > ~/pwd.mk 
+		rm $$.pwd.mk
 	else
-		echo "$(pwd) has already in ~/pwd.txt"
+		echo "$(pwd) has already in ~/pwd.mk"
 	fi
 }
-
 
 function cdb() {
 	if [ $# -eq 0 ];then
@@ -319,7 +374,7 @@ function cdc() {
 	fi  
 }
 
-function cdi() {
+function ci() {
 	if [ -d "$imgout" ];then
 		cd $imgout
 		local recent_product_dir=$(ls -latr | tail -n 1 |awk '{print $NF}');
@@ -328,23 +383,27 @@ function cdi() {
 	fi
 }
 
-function cdt() {
-    local TOPFILE=build/core/envsetup.mk;
-    if [ -n "$TOP" -a -f "$TOP/$TOPFILE" ]; then
+function cr() {
+    local ANDROIDTOPFILE=build/core/envsetup.mk;
+	local KERNELCONFIGDIR=arch/arm/configs;
+
+    if [ -n "$TOP" -a -f "$TOP/$ANDROIDTOPFILE" ]; then
         cd $TOP;
     else
-        if [ -f $TOPFILE ]; then
-            PWD= /bin/pwd;
+        if [ -f $ANDROIDTOPFILE ]; then
+            PWD=/bin/pwd;
             cd ${PWD}
         else
             local HERE=$PWD;
             T=;
-            while [ \( ! \( -f $TOPFILE \) \) -a \( $PWD != "/" \) ]; do
+
+            while [ ! -f "$ANDROIDTOPFILE" -a ! -d "$KERNELCONFIGDIR" -a "$PWD" != "/" ]; do
                 cd .. > /dev/null;
                 T=`PWD= /bin/pwd`;
             done;
-            cd $HERE > /dev/null;
-            if [ -f "$T/$TOPFILE" ]; then
+
+            cd "$HERE" > /dev/null;
+            if [ -f "$T/$ANDROIDTOPFILE" -o "$T/$KERNELCONFIGDIR" ]; then
                 echo $T;
                 cd $T;
             fi;
@@ -379,9 +438,9 @@ function gitdir()
 	cat .git/config
 }
 
-function lrm()
+function lstrash()
 { 
-	ls ~/.trash/ ;
+	ls -l ~/.trash/ ;
 }
 
 function rm () 
@@ -398,7 +457,7 @@ function undel()
 	mv ~/.trash/$* . ;
 }
 
-function f()
+function fp()
 {
     if [ -f /dev/shm/filename ]; 
         then cat /dev/shm/filename 
@@ -408,6 +467,38 @@ function f()
 function fa()
 {
 	pwd > /dev/shm/filename 
+}
+
+function gitcobranch()
+{
+	if [ $# -eq 1 ];then
+		git checkout -b "$1" origin/"$1"
+	fi
+}
+
+function gitloghead()
+{
+	local tmpfile="gitloghead.log"
+	if [ $# -ge 1 ];then
+		if [ -f $tmpfile ];then
+			mv $tmpfile $tmpfile.old -f
+		fi
+		startaddress=$(echo ${1##git.log:})
+		startaddress=$(echo ${startaddress%%:})
+
+		local startaddress=$(($startaddress-200))
+		if [ $startaddress -lt 0 ];then
+			startaddress=0
+		fi;
+		if [ $# -ge 2 ];then
+			local stopaddress=$2
+		else
+			local stopaddress=$(($startaddress+400))
+		fi
+		echo "$startaddress,${stopaddress}p"
+		sed -n "$startaddress,${stopaddress}p" git.log > $tmpfile
+		vi $tmpfile
+	fi
 }
 
 function gitsvnco()
@@ -431,10 +522,14 @@ function gitsvncl()
 
 function gitsvnup()
 {
+	echo "git svn fetch"
 	git svn fetch
 	while [ $? != 0 ]; do
+		echo "git svn fetch result:$?"
+		sleep 0.5
 		git svn fetch
 	done
+	echo "git svn fetch okay. result:$?"
 	git rebase --onto git-svn --root
 }
 
@@ -547,25 +642,12 @@ function mypath()
 		eval "p$i=$line"
 		#echo "${m[$i]}"
 		((i++))
-	done < /dev/shm/${MYUSERNAME}path
+	done < /dev/shm/${MYUSERNAME}/daily_path
 }
 
 function myvimpath()
 {
     export PATH=~/software/bin/bin:${PATH}:
-}
-
-function pp()
-{
-	if [ $# -eq 0 ];then
-		cat -n ~/pwd.txt
-	else
-		cat -n ~/pwd.txt | grep "$*"
-	fi
-	local cnt=$(cat ~/pwd.txt | grep "$*" | wc -l)
-	if [ $cnt == 1 ];then
-		cd $(cat ~/pwd.txt | grep "$*")
-	fi
 }
 
 function n()
@@ -578,6 +660,24 @@ function n()
 	return 0
 }
 
+function p()
+{
+	if [ ! -f /dev/shm/cur_pos ]; 
+	then echo "1" > /dev/shm/cur_pos;  
+		local  cur_pos=1;
+	else local cur_pos=$(cat /dev/shm/cur_pos);
+		local total_count=$(cat /dev/shm/total_count);
+		((cur_pos ++));
+		if [ $cur_pos -gt $total_count ]; 
+		then cur_pos=$(expr $cur_pos - $total_count);
+		fi
+		echo $cur_pos > /dev/shm/cur_pos;  
+	fi
+	local enter_dir=$(sed -n "$cur_pos{p;q;}"  /dev/shm/${MYUSERNAME}/daily_path)
+	builtin cd "$enter_dir"
+	ap
+}
+
 function sdnw() {
   if [ $# -ge 1 ];then
     local filename="$(echo ${1/11111/})"
@@ -585,31 +685,6 @@ function sdnw() {
     dnw "$filename"
   fi
   return 0
-}
-
-function gitloghead()
-{
-	local tmpfile="/tmp/gitloghead.log"
-	if [ $# -ge 1 ];then
-		if [ -f $tmpfile ];then
-			mv $tmpfile $tmpfile.old -f
-		fi
-		startaddress=$(echo ${1##git.log:})
-		startaddress=$(echo ${startaddress%%:})
-
-		local startaddress=$(($startaddress-200))
-		if [ $startaddress -lt 0 ];then
-			startaddress=0
-		fi;
-		if [ $# -ge 2 ];then
-			local stopaddress=$2
-		else
-			local stopaddress=$(($startaddress+400))
-		fi
-		echo "$startaddress,${stopaddress}p"
-		sed -n "$startaddress,${stopaddress}p" git.log > $tmpfile
-		vi $tmpfile
-	fi
 }
 
 function sdu () {
@@ -637,6 +712,15 @@ function swap()
   mv $1 tmp.$$
   mv $2 $1
   mv tmp.$$ $2
+}
+
+sfile ()
+{
+	#https://github.com/Mon-Ouie/dotfiles/blob/master/zshrc.sh
+    from="$1"
+    to="$2"
+    rsync -avuP "$from" "$to" || return 1
+    rsync -avuP "$to"   "$from" || return 1
 }
 
 function tfind()
@@ -675,18 +759,18 @@ function vmdis()
 	fi
 }
 
-#alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 /dev/shm/${MYUSERNAME}path); cd $${MYUSERNAME}path'
+#alias mcd='pu; ${MYUSERNAME}/daily_path=$(tail -n 1 /dev/shm/${MYUSERNAME}/daily_path); cd $${MYUSERNAME}/daily_path'
 function _mcd_complete() {
      COMPREPLY=()
      local cur=${COMP_WORDS[COMP_CWORD]};
      local com=${COMP_WORDS[COMP_CWORD-1]};
      case $com in
      'mcd')
-         local my_complete_word=($(cat /dev/shm/${MYUSERNAME}path))
+         local my_complete_word=($(cat /dev/shm/${MYUSERNAME}/daily_path))
          COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
          ;;
      'c')
-         local my_complete_word=($(cat /dev/shm/${MYUSERNAME}path))
+         local my_complete_word=($(cat /dev/shm/${MYUSERNAME}/daily_path))
          COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
          ;;
      *)
@@ -841,16 +925,16 @@ complete -F  _ksvn_complete ksvn
 complete -F  _sdnw_complete sdnw
 complete -W 'arch/arm/configs' lac
 complete -W 'xconfig' make
-if [ $MYUSERNAME != "cefanty" ];then
+if [ $MYUSERNAME == $MYNICKNAME ];then
 	complete -o default -F _longopt vi
 fi
 
 function my_bash_login_auto_exec_func()
 {
 	[ -d ~/.trash ] || mkdir ~/.trash
-	
+	[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
 	append_daily_path
-	#unset append_daily_path
+	unset append_daily_path
 
 	echo $SHELL |grep -q 'bash'
 	if [ $? == 0 ];then
@@ -864,7 +948,7 @@ function my_bash_login_auto_exec_func()
 		fi
 	fi
 	# auto jump to the wanted dir
-	if [ $(pwd) == ${HOME} ];then
+	if [ "$(pwd)" == "${HOME}" ];then
 		ac
 	fi
 }
@@ -873,7 +957,6 @@ function my_bash_login_auto_exec_func()
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do  sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars 
 
-#http://blog.longwin.com.tw/2009/11/vimdiff-vs-git-diff-2009/
 if [ -f ~/my_private_bashrc.sh ];then
 	source ~/my_private_bashrc.sh
 fi
