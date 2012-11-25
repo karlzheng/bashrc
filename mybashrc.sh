@@ -53,7 +53,7 @@ export HISTFILESIZE=100000
 #export LANG="en.UTF-8"
 export HISTCONTROL="erasedups:ignoreboth"
 export LANG="zh_CN.UTF-8"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd):
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:
 export LESS_TERMCAP_mb=$'\E[01;34m'
 export LESS_TERMCAP_md=$'\E[01;34m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -62,8 +62,6 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;33m'
 export JAVA_HOME=/usr/lib/jvm/java-6-sun/ 
-export PATH=~/person_tools/:~/software/bin:${PATH}:/bin/:/usr/local/arm/arm-2010q1/bin/:~/mytools/:/media/cdriver/work/software/android-sdk-linux_86/platform-tools:/media/cdriver/work/source/android-ndk-r5:/media/cdriver/work/software/android-sdk-linux_86/tools:
-#export PATH=~/software/bin:${PATH}:/bin/:/usr/local/arm/arm-2012.03/bin/:~/mytools/:/media/cdriver/work/software/android-sdk-linux_86/platform-tools:/media/cdriver/work/source/android-ndk-r5:/media/cdriver/work/software/android-sdk-linux_86/tools:
 export PAGER="`which less` -s"
 export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 #export PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
@@ -75,7 +73,7 @@ export desktop=~/桌面/
 export dl=~/下载/
 export imgout=out/target/product/
 
-if [ $MYUSERNAME == $MYNICKNAME ];then
+if [ $MYUSERNAME != $MYNICKNAME ];then
 	export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
 	export USE_CACHE=1
 	if [ -d $HOME/ramdisk/ccache ];then
@@ -90,9 +88,6 @@ fi
 #export ANDROID_PRODUCT_OUT=out/target/product/
 #export ANDROID_SWT=/home/${MYUSERNAME}/svn/app_group_android/Eclair/out/host/linux-x86/framework
 #export ANDROID_SWT=/media/cdriver/work/software/android-sdk-linux_86/tools/lib/x86/
-#export PATH=~/software/bin:${PATH}:~/svn/android_eclair_smdk/out/host/linux-x86/bin/:~/mytools/:~/mytools/depot_tools/:/home/karlzheng/software/android-sdk-linux_86/tools:/media/cdriver/work/source/android-ndk-r5:
-#export PATH=~/software/bin:${PATH}:~/svn/android_eclair_smdk/out/host/linux-x86/bin/:/usr/local/arm/arm-2010q1/bin/:/usr/local/arm/4.3.1-eabi-armv6/usr/bin:~/mytools/:~/mytools/depot_tools/:/media/cdriver/work/software/android-sdk-linux_86/tools:/media/cdriver/work/source/android-ndk-r5:
-#export PATH=~/software/bin/bin:${PATH}:
 #export VIM=/usr/share/vim
 
 # for android compiling
@@ -143,7 +138,7 @@ alias g='grep'
 #http://blog.longwin.com.tw/2009/11/vimdiff-vs-git-diff-2009/
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
-alias h='history|tail -n 30'
+alias h='history|tail -n 35'
 alias hi='history'
 alias ht='history |tail -n 10 '
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
@@ -866,6 +861,22 @@ fi
 
 function my_bash_login_auto_exec_func()
 {
+	local path_list=(
+		~/person_tools/
+		~/mytools/
+		~/software/bin
+		/usr/local/arm/arm-2010q1/bin/
+		/media/cdriver/work/software/android-sdk-linux_86/platform-tools
+		/media/cdriver/work/software/android-sdk-linux_86/tools
+		/media/cdriver/work/source/android-ndk-r5
+	);
+	local mypath=""
+	for p in ${path_list[@]};
+	do
+		mypath=$mypath"$p:"
+	done
+	export PATH="$mypath"$PATH
+		
 	[ -d ~/.trash ] || mkdir ~/.trash
 	[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
 	append_daily_path
@@ -892,8 +903,8 @@ function my_bash_login_auto_exec_func()
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do  sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars 
 
-if [ -f ~/my_path_functions.sh ];then
-	source ~/my_path_functions.sh 
+if [ -f ~/mypathfunctions.sh ];then
+	source ~/mypathfunctions.sh 
 fi
 
 if [ -f ~/my_private_bashrc.sh ];then

@@ -192,55 +192,107 @@ function bash_get_keycode()
 	echo $keycode 
 }
 
-function c()
+function cd_dir_in_file()
 {
 	if [ $# -eq 0 ];then
-		cat -n ~/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
+		local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
 	else
-		cat -n ~/pwd.mk | sed -e 's#^\s*[1-9]*\s*\#.*##g' | grep -i "$*"
+		local enter_dir_file="$1"
 	fi
-	local cnt=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | wc -l)
-	if [ $cnt == 1 ];then
-		cd $(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*")
-	else
-		local  cur_pos=1;
-		echo ""
-		trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
-		while true;do
-			local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}"|tr -d '\r\n')
-			printf '%-100s\r' "Enter: ${enter_dir} ?"
-			local key=$(bash_get_keycode | tr -d '\r' | tr -d '\n')
-			case "$key" in
-				"UP")
-					((cur_pos --));
-					if [ $cur_pos -lt 1 ];then
-						let cur_pos=$cur_pos+$cnt
-					fi
-					local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}")
-					;;
-				"DOWN"|"SPACE")
-					((cur_pos ++));
-					if [ $cur_pos -gt $cnt ];then
-						let cur_pos=1
-					fi
-					local enter_dir=$(cat ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" | sed -n "$cur_pos{p;q;}")
-					;;
-				"CR")
-					if [ -d "${enter_dir}" ];then
-						cd "${enter_dir}"
-						break;
-					else
-						printf "No dir:%-120s\n" "${enter_dir}"
-					fi
-					;;
-				"q"|"Q")
-					printf "%-100s\r" " "
+	local cnt=$(cat "$enter_dir_file" | wc -l)
+	if [ $cnt -eq 1 ];then
+		cd $(cat "$enter_dir_file")
+		return ;
+	fi
+	trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
+	local  cur_pos=0;
+	for file in $(cat $enter_dir_file)
+	do
+		local the_dirs[$cur_pos]="$file"
+		((cur_pos++))
+	done
+	cur_pos=0;
+	while true;do
+		local enter_dir=${the_dirs[cur_pos]}
+		printf '%-100s\r' "Enter: ${enter_dir} ?"
+		local key=$(bash_get_keycode | tr -d '\r' | tr -d '\n')
+		case "$key" in
+			"UP")
+				((cur_pos --));
+				if [ $cur_pos -lt 0 ];then
+					let cur_pos=$cur_pos+$cnt
+				fi
+				;;
+			"DOWN"|"SPACE")
+				((cur_pos ++));
+				if [ $cur_pos -ge $cnt ];then
+					let cur_pos=0
+				fi
+				;;
+			"CR")
+				if [ -d "${enter_dir}" ];then
+					cd "${enter_dir}"
 					break;
-					;;
-			esac
-		done
-		trap - SIGINT SIGHUP SIGTERM
+				else
+					printf "No dir:%-120s\n" "${enter_dir}"
+				fi
+				;;
+			"q"|"Q")
+				printf "%-100s\r" " "
+				break;
+				;;
+		esac
+	done
+	trap - SIGINT SIGHUP SIGTERM
+}
+
+function c()
+{
+	local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
+	mkdir -p /dev/shm/"$(whoami)"
+	: > $enter_dir_file
+	if [ $# -eq 0 ];then
+		cat -n ~/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
+		cat  ~/pwd.mk > "$enter_dir_file"
+	else
+		cat -n ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*"
+		cat  ~/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" > "$enter_dir_file"
 	fi
+
+	cd_dir_in_file
+}
+
+function dlb_dirs()
+{
+	local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
+	root_dirs=(
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM03X/app/IceCreamSandwich/eng'
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM03X/app/IceCreamSandwich/user'
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM03X/app/JellyBean/user'
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM03X/app/JellyBean/eng'
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM040/app/IceCreamSandwich/user'
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM040/app/IceCreamSandwich/eng'
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM040/app/JellyBean/user'
+	'/home/karlzheng/kfb/DailyBuild/DailyBuildM040/app/JellyBean/eng'
+	)
+
+	: > ${enter_dir_file}
+
+	for i in ${root_dirs[*]};
+	do
+		recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $8}'|grep -E -v '^\.' | sed -n '3,4p')" | tac )
+		for j in ${recent_dirs[*]};
+		do
+			echo -e "$i/$j" | tee -a ${enter_dir_file}
+		done
+	done
+	
+	tac ${enter_dir_file} > ${enter_dir_file}.$$.file
+	/bin/mv  ${enter_dir_file}.$$.file ${enter_dir_file}
+
+	echo ""
+
+	cd_dir_in_file
 }
 
 function pa()
