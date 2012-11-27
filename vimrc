@@ -837,7 +837,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <leader>sq :call SaveQuickfixToFile()<cr>
 
 	"http://vim.wikia.com/wiki/Automatically_sort_Quickfix_list
-	autocmd! QuickfixCmdPost * call SortUniqQFList()
+	"autocmd! QuickfixCmdPost * call SortUniqQFList()
 	func! s:CompareQuickfixEntries(i1, i2)
 		if bufname(a:i1.bufnr) == bufname(a:i2.bufnr)
 			return a:i1.lnum == a:i2.lnum ? 0 : (a:i1.lnum < a:i2.lnum ? -1 : 1)
@@ -879,11 +879,31 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 				call setqflist(g:Quickfix_uniqedList)
 			endif
 		endif
-		cclose | vert copen 45
+			cclose | vert copen 45
 	endf
+	
+	function! OpenQuickfixBuf()
+		if ((&ft == 'qf') && (bufname("%") == ""))
+			let l:wn = winnr()
+			wincmd h
+			let l:h_wn = winnr()
+			wincmd l
+			if (l:wn == l:h_wn)
+				let l:linenr = line('.')
+				cclose
+				vert copen 45
+				exec "norm ".l:linenr."gg"
+			else
+				exec "normal! \<C-W>J"
+				exec "normal! 10\<C-W>_"
+			endif
+		else
+			vert copen 45
+		endif
+	endfunction
 	nmap <leader>cn :cn<cr>
 	nmap <leader>cp :cp<cr>
-	nmap <leader>cw :vert copen 45<cr>
+	nmap <leader>cw :call OpenQuickfixBuf()<cr>
 	nmap <leader>cq :cclose<cr>
 	"nmap <leader>cc :botright lw 10<cr>
 	"map <c-u> <c-l><c-j>:q<cr>:botright cw 10<cr>
@@ -1013,12 +1033,12 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	inoremap <silent> <C-e> <End>
 	inoremap <silent> <C-h> <Left>
 	inoremap <silent> <C-l> <Right>
-	inoremap <C-k> <C-c>D
 	inoremap <C-o> <C-c>
 	inoremap <C-Del> <c-g>u<c-c>lC
 	"http://vim.wikia.com/wiki/Recover_from_accidental_Ctrl-U
-	inoremap <c-k> <c-g>u<c-c>lC
 	inoremap <c-j> <c-g>j
+	"inoremap <c-k> <c-g>u<c-c>lC
+	inoremap <c-k> <c-g>k
 	inoremap <c-u> <c-g>u<c-u>
 	inoremap <c-w> <c-g>u<c-w>
 	"inoremap <C-l> <C-o>:set im<cr><C-l>
@@ -1099,7 +1119,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>jj ggVGJ
 	nmap <silent> <leader>mj :!make -j4<cr>
 	nmap <silent> <leader>mz :!make zImage -j4<cr>
-	nmap <silent> <leader>mv :mks! ~/tmp/vimcurrentedit.vim<cr>
+	nmap <leader>mv :mks! ~/tmp/vimcurrentedit.vim<cr>
 	nmap <silent> <leader>nl :nohl<cr>
 	nmap <silent> <leader>nn :set nonu<cr>
 	nmap <silent> <leader>pt :!pr.sh &<cr><cr>

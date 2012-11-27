@@ -360,7 +360,7 @@ function cleantrash()
 
 function del_carried_return()
 { 
-	find -name "*.h" -o -name "*.c" |xargs sed -ie "s#\r\n#\n#gc"
+	find -name "*.h" -o -name "*.c" |xargs sed -i -e "s#\r\n#\n#gc"
 }
 
 function gitdir()
@@ -649,8 +649,8 @@ sfile ()
 	#https://github.com/Mon-Ouie/dotfiles/blob/master/zshrc.sh
     from="$1"
     to="$2"
-    rsync -avuP "$from" "$to" || return 1
-    rsync -avuP "$to"   "$from" || return 1
+    rsync -avurP "$from" "$to" || return 1
+    rsync -avurP "$to"   "$from" || return 1
 }
 
 function tfind()
