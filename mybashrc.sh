@@ -88,13 +88,10 @@ fi
 #export ANDROID_PRODUCT_OUT=out/target/product/
 #export ANDROID_SWT=/home/${MYUSERNAME}/svn/app_group_android/Eclair/out/host/linux-x86/framework
 #export ANDROID_SWT=/media/cdriver/work/software/android-sdk-linux_86/tools/lib/x86/
-#export VIM=/usr/share/vim
 
 # for android compiling
 #export TARGET_BUILD_TYPE=debug
 #export skernel=/root/version_control/samsung/android_kernel_smdkc100_RTM20_camera_isp3/android_kernel_smdkc100_RTM20
-#export eclair=/root/source/android2.0/eclair
-#export ekernel=/root/version_control/samsung/kernel_6410_Eclair 
 
 bind -m emacs '"\en": history-search-forward'
 bind -m emacs '"\ep": history-search-backward'
@@ -135,7 +132,6 @@ alias cz="cd ~/mytools/m032/tz_release_key/"
 alias diff='diff -x .svn'
 alias f='find'
 alias g='grep'
-#http://blog.longwin.com.tw/2009/11/vimdiff-vs-git-diff-2009/
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
 alias h='history|tail -n 35'
@@ -182,9 +178,7 @@ alias wg="wget"
 #alias mydate="echo $(date +%Y%m%d_%T)"
 #alias svnawtar="date_str=$(date +%Y%m%d_%T) && tmp_file_name=svn_diff_$date_str && svnaw |xargs \
 #tar --force-local -rvf \$tmp_file_name.tar && echo \$tmp_file_name && unset \
-#tmp_file_namei && unset date_str"
 #tac ~/.bash_history |awk '!a[$0]++' |tac > /tmp/.bash_history &&  mv /tmp/.bash_history ~/.bash_history -f
-
 function .()
 {
 	if [ $# -eq 0 ];then
@@ -198,7 +192,6 @@ function ..()
 		cd "../.."
 	fi
 }
-
 function ac()
 {
 	[ -f /dev/shm/${MYUSERNAME}/apwdpath ] && \
@@ -206,6 +199,7 @@ function ac()
 		builtin cd "$tmp_dir" && unset "tmp_dir"
 }
 
+#alias apwd='builtin pwd >> /dev/shm/${MYUSERNAME}path'
 function ap()
 {
 	builtin pwd;
@@ -265,6 +259,7 @@ function append_daily_path()
 	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
 }
 
+
 function ca()
 {
 	if [ ! -f ~/pwd.mk ];then
@@ -289,14 +284,18 @@ function ca()
 	builtin cd "$enter_dir"
 }
 
-function cdb() {
+
+
+function cdb()
+{
 	if [ $# -eq 0 ];then
 		echo arch/arm/boot/
 		cd arch/arm/boot/
 	fi  
 }
 
-function cdc() {
+function cdc()
+{
 	if [ $# -eq 0 ];then
 		cd arch/arm/configs
 	else 
@@ -304,7 +303,8 @@ function cdc() {
 	fi  
 }
 
-function ci() {
+function ci()
+{
 	if [ -d "$imgout" ];then
 		cd $imgout
 		local recent_product_dir=$(ls -latr | tail -n 1 |awk '{print $NF}');
@@ -313,31 +313,32 @@ function ci() {
 	fi
 }
 
-function cr() {
+function cr()
+{
     local ANDROIDTOPFILE=build/core/envsetup.mk;
-	local KERNELCONFIGDIR=arch/arm/configs;
+    local KERNELCONFIGDIR=arch/arm/configs;
 
     if [ -n "$TOP" -a -f "$TOP/$ANDROIDTOPFILE" ]; then
-        cd $TOP;
+	cd $TOP;
     else
-        if [ -f $ANDROIDTOPFILE ]; then
-            PWD=/bin/pwd;
-            cd ${PWD}
-        else
-            local HERE=$PWD;
-            T=;
-
-            while [ ! -f "$ANDROIDTOPFILE" -a ! -d "$KERNELCONFIGDIR" -a "$PWD" != "/" ]; do
-                cd .. > /dev/null;
-                T=`PWD= /bin/pwd`;
-            done;
-
-            cd "$HERE" > /dev/null;
-            if [ -f "$T/$ANDROIDTOPFILE" -o "$T/$KERNELCONFIGDIR" ]; then
-                echo $T;
-                cd $T;
-            fi;
-        fi;
+	PWD=$(/bin/pwd);
+	if [ -f $ANDROIDTOPFILE ]; then
+	    cd "${PWD}"
+	elif [ -d $KERNELCONFIGDIR ]; then
+	    cd "${PWD}"
+	else
+	    local HERE="$PWD";
+	    T=;
+	    while [ ! -f "$ANDROIDTOPFILE" -a ! -d "$KERNELCONFIGDIR" -a "$PWD" != "/" ]; do
+		cd .. > /dev/null;
+		T=`PWD= /bin/pwd`;
+	    done;
+	    cd "$HERE" > /dev/null;
+	    if [ -f "$T/$ANDROIDTOPFILE" -o "$T/$KERNELCONFIGDIR" ]; then
+		echo $T;
+		cd $T;
+	    fi;
+	fi;
     fi
 }
 
@@ -398,14 +399,12 @@ function fa()
 {
 	pwd > /dev/shm/filename 
 }
-
 function gitcobranch()
 {
 	if [ $# -eq 1 ];then
 		git checkout -b "$1" origin/"$1"
 	fi
 }
-
 function gitloghead()
 {
 	local tmpfile="gitloghead.log"
@@ -415,7 +414,6 @@ function gitloghead()
 		fi
 		startaddress=$(echo ${1##git.log:})
 		startaddress=$(echo ${startaddress%%:})
-
 		local startaddress=$(($startaddress-200))
 		if [ $startaddress -lt 0 ];then
 			startaddress=0
@@ -607,7 +605,6 @@ function p()
 	builtin cd "$enter_dir"
 	ap
 }
-
 function sdnw() {
   if [ $# -ge 1 ];then
     local filename="$(echo ${1/11111/})"
@@ -615,6 +612,8 @@ function sdnw() {
     dnw "$filename"
   fi
   return 0
+
+
 }
 
 function sdu () {
@@ -646,18 +645,15 @@ function swap()
 
 sfile ()
 {
-	#https://github.com/Mon-Ouie/dotfiles/blob/master/zshrc.sh
     from="$1"
     to="$2"
     rsync -avurP "$from" "$to" || return 1
     rsync -avurP "$to"   "$from" || return 1
 }
-
 function tfind()
 {
 	find . -exec grep -Hn "$@" {} +
 }
-
 function unap()
 {
 	if [ -d /dev/shm/${MYUSERNAME} -a \
@@ -689,7 +685,7 @@ function vmdis()
 	fi
 }
 
-#alias mcd='pu; ${MYUSERNAME}/daily_path=$(tail -n 1 /dev/shm/${MYUSERNAME}/daily_path); cd $${MYUSERNAME}/daily_path'
+#alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 /dev/shm/${MYUSERNAME}path); cd $${MYUSERNAME}path'
 function _mcd_complete() {
      COMPREPLY=()
      local cur=${COMP_WORDS[COMP_CWORD]};
@@ -868,7 +864,7 @@ function my_bash_login_auto_exec_func()
 		/usr/local/arm/arm-2010q1/bin/
 		/media/cdriver/work/software/android-sdk-linux_86/platform-tools
 		/media/cdriver/work/software/android-sdk-linux_86/tools
-		/media/cdriver/work/source/android-ndk-r5
+		/media/cdriver/work/software/android-ndk-r8c
 	);
 	local mypath=""
 	for p in ${path_list[@]};
@@ -876,7 +872,6 @@ function my_bash_login_auto_exec_func()
 		mypath=$mypath"$p:"
 	done
 	export PATH="$mypath"$PATH
-		
 	[ -d ~/.trash ] || mkdir ~/.trash
 	[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
 	append_daily_path
@@ -893,7 +888,6 @@ function my_bash_login_auto_exec_func()
 			echo "" >> ~/.bashrc
 		fi
 	fi
-	# auto jump to the wanted dir
 	if [ "$(pwd)" == "${HOME}" ];then
 		ac
 	fi
@@ -906,9 +900,7 @@ function my_bash_login_auto_exec_func()
 if [ -f ~/mypathfunctions.sh ];then
 	source ~/mypathfunctions.sh 
 fi
-
 if [ -f ~/my_private_bashrc.sh ];then
 	source ~/my_private_bashrc.sh
 fi
-
 my_bash_login_auto_exec_func

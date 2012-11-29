@@ -84,7 +84,7 @@ set statusline=\[%{getcwd()}]\[%f]%m%r%h%w\[HEX=\%02.2B]\[DEC=\%b]\[P=%l,%v]
 "setlocal noswapfile
 "set noswf
 set switchbuf=useopen
-set tabstop=4
+set tabstop=8
 set termencoding=utf-8
 set textwidth=78
 set whichwrap=b,s,h,l
@@ -256,11 +256,9 @@ nmap <silent> <leader>bc :call My_Python4CompareToFileName()<cr><cr>
 		 for str in a:000
 			 let path .= str . ','
 		 endfor
-
 		 if path == ''
 			 let path = &path
 		 endif
-
 		 echo 'finding...'
 		 redraw
 		 call append(line('$'), split(globpath(path, a:pat), '\n'))
@@ -506,6 +504,25 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	endfunction
 	
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+	" svn related functions
+	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+	function! SvnRevertCurrentFile()
+		if isdirectory('.svn')
+			exec "!svn revert %"
+		else
+			exec "!git checkout %"
+		endif
+	endfunc
+	
+	function! SvnDiffCurrentFile()
+		if isdirectory('.svn')
+			exec "!svn diff %"
+		else
+			exec "!git diff %"
+		endif
+	endfunc
+	
+	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	" git related functions
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	function! GitDiffLog1()
@@ -580,17 +597,17 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	endfunction
 	function! BufPos_Initialize()
 		for i in range(1, 9)
-			"exe "nmap " . i . " :b". i ."<CR>"
-			exe "map " . i . " :call BufPos_ActivateBuffer(" . i . ")<CR>"
+			exe "nmap " . i . " :b". i ."<CR>"
+			"exe "map " . i . " :call BufPos_ActivateBuffer(" . i . ")<CR>"
 		endfor
-		"exe "nmap 0" . " :b10<cr>"
-		exe "map <M-0> :call BufPos_ActivateBuffer(10)<CR>"
+		exe "nmap 0" . " :b10<cr>"
+		"exe "map <M-0> :call BufPos_ActivateBuffer(10)<CR>"
 	endfunction
 	autocmd VimEnter * call BufPos_Initialize()
 
-	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-	" buffer autocmd
-	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+	""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+	"buffer autocmd
+	""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	if has("autocmd") && exists("+omnifunc")
 		autocmd Filetype *
 		\	if &omnifunc == "" |
@@ -702,9 +719,9 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 		set tags=/usr/include/tags
 	endif
 	if filereadable("./tags")
-		let mytags="tags+=" . getcwd() . "/tags"
+		let mytags="tags+=" . "./tags"
 		if filereadable("./newtags")
-			let mytags=mytags . "," . getcwd() . "/newtags"
+			let mytags=mytags . ",./newtags"
 		endif
 		exe "set " . mytags
 	endif
@@ -717,19 +734,16 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 		set cscopeprg=gtags-cscope
 		"set cscopequickfix=c-,d-,e-,f-,g0,i-,s-,t-
 		"cs add GTAGS
-		let mycstags="cs add " . getcwd() . "/GTAGS"
-		exe mycstags
-		unlet mycstags
+		let s:mycstags="cs add " . getcwd() . "/GTAGS"
+		exe s:mycstags
 	else
-		if filereadable("./cscope.out")
-			let mycstags="cs add " . getcwd() . "/cscope.out ".getcwd()
-			exe mycstags
-			unlet mycstags
+		if filereadable("cscope.out")
+			let s:mycstags="cs add " . "cscope.out "
+			exe s:mycstags
 		endif
-		if filereadable("./newcscope.out")
-			let mycstags="cs add " . getcwd() . "/newcscope.out"
-			exe mycstags
-			unlet mycstags
+		if filereadable("newcscope.out")
+			let s:mycstags="cs add " . "newcscope.out" 
+			exe s:mycstags
 		endif
 	endif
 	if has("cscope")
@@ -757,12 +771,14 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	autocmd BufWrite *.cpp,*.h,*.c call UPDATE_TAGS()
 
 	function! UPDATE_Cscope()
-		let l:curfile = expand("%:p")
-		let l:command="!cscope -bkq " . l:curfile
-		exe l:command
+		let l:curfile = expand("%")
+		let l:command="!echo " . l:curfile . " >> modify.files"
+		exec l:command
+		let l:command="!cscope -bkq -f newcscope.out -i modify.files"
+		exec l:command
 		:cs reset
 	endfunction
-	autocmd BufWrite *.cpp,*.h,*.c call UPDATE_Cscope()
+	"autocmd BufWrite *.cpp,*.h,*.c call UPDATE_Cscope()
 	nmap <leader>uc :call UPDATE_Cscope()<cr>
 
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -824,10 +840,11 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	function! ReadQuickfixFile()
 		if filereadable("/home/karlzheng/241/quickfix.txt")
-			exe 'cg /home/karlzheng/241/quickfix.txt'
-		else
-			exe 'cg /dev/shm/quickfix.txt'
+			"exe 'cg /home/karlzheng/241/quickfix.txt'
+			let l:_resp = system('rsync -avurP /home/karlzheng/241/quickfix.txt /dev/shm/quickfix.txt')
+			let l:_resp = system('rsync -avurP /dev/shm/quickfix.txt /home/karlzheng/241/quickfix.txt')
 		endif
+		exe 'cg /dev/shm/quickfix.txt'
 	endfunc
 
 	function! SaveQuickfixToFile()
@@ -837,7 +854,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <leader>sq :call SaveQuickfixToFile()<cr>
 
 	"http://vim.wikia.com/wiki/Automatically_sort_Quickfix_list
-	"autocmd! QuickfixCmdPost * call SortUniqQFList()
+	autocmd! QuickfixCmdPost * call SortUniqQFList()
 	func! s:CompareQuickfixEntries(i1, i2)
 		if bufname(a:i1.bufnr) == bufname(a:i2.bufnr)
 			return a:i1.lnum == a:i2.lnum ? 0 : (a:i1.lnum < a:i2.lnum ? -1 : 1)
@@ -879,7 +896,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 				call setqflist(g:Quickfix_uniqedList)
 			endif
 		endif
-			cclose | vert copen 45
+		cclose | vert copen 45
 	endf
 	
 	function! OpenQuickfixBuf()
@@ -1063,7 +1080,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	nnoremap ,, ,
 	nnoremap - "_dd
-
+	
 	nmap <silent> ,32 f vt "xx$"xp
 	nmap <silent> <leader>an :call MarkCurrentEditFileName()<cr>
 	nmap <silent> <leader>ba :call My_Save_CompareFileName()<cr><cr>
@@ -1073,19 +1090,21 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>cf :cgete getmatches()<cr>
 	nmap <silent> <leader>cg :call ReadQuickfixFile()<cr>
 	nmap <silent> <leader>d# :bd#<cr>
-	nmap <silent> <leader>dt :vertical diffsplit ~/tmp/tmp_work_file/%:t<cr>
-	nmap <silent> <leader>do :windo diffoff!<cr>:bufdo diffoff!<cr>
 	nmap <silent> <leader># :e#<cr>
-	nmap <silent> <leader>df :diffthis<cr>
-	nmap <silent> <leader>db :bdelete<cr>
-	nmap <silent> <leader>dl :bdelete #<cr>
 	nmap <silent> <leader>da :%d<cr>
+	nmap <silent> <leader>db :bdelete<cr>
+	nmap <silent> <leader>df :Rename ~/tmp/del_%:t<cr>
+	nmap <silent> <leader>dl :bdelete #<cr>
 	nmap <silent> <leader>dk :%s#.*karlzheng_todel.*\n##<cr>
 	nmap <silent> <leader>dm :%s#.*mzdbg.*\n##<cr>
+	nmap <silent> <leader>do :windo diffoff!<cr>:bufdo diffoff!<cr>
 	nmap <silent> <leader>dr :%s#\r\n#\r#g<cr>
 	nmap <silent> <leader>ds :%s#\s*$##g<cr>
+	nmap <silent> <leader>dt :diffthis<cr>
 
 	nmap <silent> <leader>e. :e .<cr>
+	nmap <silent> <leader>e1 :e ~/tmp/tmp_work_file/1.txt<cr>
+	nmap <silent> <leader>e2 :e ~/tmp/tmp_work_file/2.txt<cr>
 	nmap <silent> <leader>ea :!./a.out<cr>
 	nmap <silent> <leader>ee :e!<cr>
 	nmap <silent> <leader>ef :call Edit_vim_cur_edit_file()<cr>
@@ -1140,12 +1159,12 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>rr :reg<cr>
 	nmap <silent> <leader>rs :20 vs ~/.stardict/iremember/tofel.txt<CR>
 	nmap <silent> <leader>rt :r ~/tmp/tmp_work_file/%:t<cr>
-	nmap <silent> <leader>sd :!svn diff %<cr>
+	nmap <silent> <leader>sd :call SvnDiffCurrentFile()<cr>
 	nmap <silent> <leader>sl :!svn log %<cr>
 	nmap <silent> <leader>sp :set paste<cr>
 	nmap <silent> <leader>sn :set nu<cr>
 	nmap <silent> <leader>ss :source %<cr>
-	nmap <silent> <leader>srv :!svn revert %<cr>
+	nmap <silent> <leader>srv :call SvnRevertCurrentFile()<cr>
 	nmap <leader>sv :source ~/tmp/vimcurrentedit.vim<cr>
 	nmap <silent> <leader>tl :TlistToggle<cr>
 	nmap <silent> <leader>vs :vs<cr>
@@ -1158,8 +1177,8 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>WK <C-W>k
 	nmap <silent> <leader>WH <C-W>h
 	nmap <silent> <leader>WL <C-W>l
-	nmap <leader>w1 :w ~/tmp/tmp_work_file/1.txt<cr>
-	nmap <leader>w2 :w ~/tmp/tmp_work_file/2.txt<cr>
+	nmap <leader>w1 :w! ~/tmp/tmp_work_file/1.txt<cr>
+	nmap <leader>w2 :w! ~/tmp/tmp_work_file/2.txt<cr>
 	nmap <leader>wt :silent! w! ~/tmp/tmp_work_file/%:t<cr>
 	nmap <silent> <leader>wa :wa<cr>
 	nmap <silent> <leader>wf :w!<cr>
@@ -1175,7 +1194,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 
 	nnoremap <silent> <F2> :Grep
 	nnoremap <silent> <F3> :Grep \<<cword>\> %<CR> <CR>
-	"nnoremap <silent> <F4> :Bgrep \<<cword>\> %<CR> <CR>
+	nnoremap <silent> <F4> :Grep \<<cword>\s*= %<CR> <CR>
 	nnoremap <silent> <F6> :cp<CR>
 	nnoremap <silent> <F7> :cn<CR>
 	nnoremap <silent> <F8> :TlistToggle<CR>
@@ -1208,6 +1227,8 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 		nmap <silent> K 1<C-W>-
 		nmap <silent> H 1<C-W><
 		nmap <silent> L 1<C-W>>
+		" Alt+l
+		nmap <silent> l :nohl<cr>
 	endif
 
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
