@@ -72,8 +72,14 @@ set iskeyword-=",/,,
 " for  # * quick lookup
 set iskeyword+=_
 set laststatus=2
+if isdirectory('arch/arm/configs/')
+	set makeprg=make\ zImage\ \-j24
+else
+	set makeprg=make\ \-j24
+en
 set nocp
 set noignorecase
+set noexpandtab
 set nu
 "set ofu=syntaxcomplete#Complete
 set pastetoggle=<F4>
@@ -92,9 +98,6 @@ set winaltkeys=no
 set wrap
 ""http://blog.xuyu.org/?p=1215
 "set nowrapscan
-if &diff
-  set wrap
-endif
 "http://askubuntu.com/questions/67/how-do-i-enable-full-color-support-in-terminal
 if $COLORTERM == 'gnome-terminal'
 	set t_Co=256
@@ -124,7 +127,7 @@ let g:root_work_path = escape(getcwd(), " ")
 		let str = s:Escape(str)
 		execute ":!echo '".str."' > /dev/shm/vim_cur_file_path"
 	endfunction
-	nmap <silent> <leader>cdv :call My_SaveVimFilePath()<cr><cr>
+	nmap <leader>cdv :call My_SaveVimFilePath()<cr><cr>
 
 	"Switch to current dir
 	function! My_FilePath_Switch_Func()
@@ -215,25 +218,43 @@ endfunction
 nmap <silent> <leader>bc :call My_Python4CompareToFileName()<cr><cr>
 
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+	" diff operation relative settings
+	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+	if &diff
+	    set wrap
+	endif
+	" see :h diff
+	command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+			\ | wincmd p | diffthis
+
+
+	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	" file quick open related functions
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-	function! MarkCurrentEditFileName()
-		let l:_f_ = expand("%:p")
-		let l:_cmd_ = 'echo ' . '"' . l:_f_ . '" > /dev/shm/vim_cur_edit_file'
-		let l:_resp = system(l:_cmd_)
-	endfunction
-
 	function! SaveCurrentFileNameRelativePath()
 		let l:_f_ = expand("%")
 		let l:_cmd_ = 'echo ' . '"' . l:_f_ . '" > /dev/shm/vim_cur_edit_file_relative_path'
 		let l:_resp = system(l:_cmd_)
 	endfunction
 
-	function! Edit_vim_cur_edit_file()
+	function! SaveCurrentFileNameAbsolutePath()
+		let l:_f_ = expand("%:p")
+		let l:_cmd_ = 'echo ' . '"' . l:_f_ . '" > /dev/shm/vim_cur_edit_file_absolute_path'
+		let l:_resp = system(l:_cmd_)
+	endfunction
+
+	function! Edit_vim_cur_edit_file_relative_path()
 		let l:_cmd_ = 'cat ' . '/dev/shm/vim_cur_edit_file_relative_path'
 		let l:_resp = system(l:_cmd_)
 		exec "e ".l:_resp
 	endfunction
+	
+	function! Edit_vim_cur_edit_file_absolute_path()
+		let l:_cmd_ = 'cat ' . '/dev/shm/vim_cur_edit_file_absolute_path'
+		let l:_resp = system(l:_cmd_)
+		exec "e ".l:_resp
+	endfunction
+
 
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	" lookupfile functions
@@ -618,6 +639,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	autocmd! bufwritepost .vimrc source ~/.vimrc
 
 	au BufRead,BufNewFile *.txt setlocal ft=txt
+	au BufRead,BufNewFile *.rc setlocal ft=make
 	au FileType help set nu
 	au FileType c,cpp,h,hpp set shiftwidth=8 |set tabstop=8 | set iskeyword-=-,>()
 	au FileType c,cpp,h,hpp set fo-=l | set textwidth=80
@@ -845,23 +867,61 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 			let l:_resp = system('rsync -avurP /dev/shm/quickfix.txt /home/karlzheng/241/quickfix.txt')
 		endif
 		exe 'cg /dev/shm/quickfix.txt'
+		call OpenQuickfixBuf()
 	endfunc
-
+	
+	"http://vim.1045645.n5.nabble.com/Saving-the-Quickfix-List-td1179523.html
 	function! SaveQuickfixToFile()
-		let l:quickfix_list = getqflist()
-		call writefile(l:quickfix_list, "/dev/shm/quickfix.txt")
+	    let l:qflist = getqflist()
+	    let l:qf_data_list = []
+	    for i in range(len(l:qflist))
+		if has_key(l:qflist[i], 'bufnr')
+		    if l:qflist[i].bufnr != 0
+			let l:tmp_str = ""
+			let l:tmp_str = fnamemodify(bufname(l:qflist[i].bufnr), ':p').":"
+			let l:tmp_str = l:tmp_str.string(l:qflist[i].lnum).":"
+			let l:tmp_str = l:tmp_str.l:qflist[i].text
+			call add(l:qf_data_list, l:tmp_str)
+		    endif
+		endif
+	    endfor
+	    call writefile(l:qf_data_list, "/dev/shm/quickfix.txt")
+	    if ! isdirectory('/home/karlzheng/')
+		call writefile(l:qf_data_list, $HOME."/quickfix.txt")
+	    endif
+	    if filereadable($HOME.'/241/quickfix.txt')
+		call writefile(l:qf_data_list, $HOME."/241/quickfix.txt")
+	    endif
 	endfunc
 	nmap <leader>sq :call SaveQuickfixToFile()<cr>
-
+	
+	function! EditQuickfixList()
+	    if filereadable("/home/karlzheng/241/quickfix.txt")
+		exe 'e /home/karlzheng/241/quickfix.txt'
+	    else
+		exe 'e /dev/shm/quickfix.txt'
+	    endif
+	endfunc
+	nmap <leader>eq :call EditQuickfixList()<cr>
+	
 	"http://vim.wikia.com/wiki/Automatically_sort_Quickfix_list
-	autocmd! QuickfixCmdPost * call SortUniqQFList()
 	func! s:CompareQuickfixEntries(i1, i2)
-		if bufname(a:i1.bufnr) == bufname(a:i2.bufnr)
-			return a:i1.lnum == a:i2.lnum ? 0 : (a:i1.lnum < a:i2.lnum ? -1 : 1)
+	    let l:currentBufNum = bufnr('%')
+	    if bufname(a:i1.bufnr) == bufname(a:i2.bufnr)
+		return a:i1.lnum == a:i2.lnum ? 0 : (a:i1.lnum < a:i2.lnum ? -1 : 1)
+	    else
+		if l:currentBufNum == a:i1.bufnr
+		    return -1
 		else
+		    if l:currentBufNum == a:i2.bufnr
+			return 1
+		    else
 			return bufname(a:i1.bufnr) < bufname(a:i2.bufnr) ? -1 : 1
+		    endif
 		endif
+	    endif
 	endf
+
 	func! SortUniqQFList()
 		let sortedList = sort(getqflist(), 's:CompareQuickfixEntries')
 		let uniqedList = []
@@ -925,7 +985,8 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	"nmap <leader>cc :botright lw 10<cr>
 	"map <c-u> <c-l><c-j>:q<cr>:botright cw 10<cr>
 	"au BufReadPost quickfix  cclose | vert copen 45
-	au BufReadPost quickfix  call QuifixBufReadPost_Process()
+	au! QuickfixCmdPost * call SortUniqQFList()
+	au! BufReadPost quickfix  call QuifixBufReadPost_Process()
 
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	" winmanager setting
@@ -1082,7 +1143,6 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nnoremap - "_dd
 	
 	nmap <silent> ,32 f vt "xx$"xp
-	nmap <silent> <leader>an :call MarkCurrentEditFileName()<cr>
 	nmap <silent> <leader>ba :call My_Save_CompareFileName()<cr><cr>
 	nmap <silent> <leader>bb :call My_CompareToFileName()<cr><cr>
 	nmap <silent> <leader>c8 :call SetColorColumnC80()<CR>
@@ -1098,16 +1158,17 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>dk :%s#.*karlzheng_todel.*\n##<cr>
 	nmap <silent> <leader>dm :%s#.*mzdbg.*\n##<cr>
 	nmap <silent> <leader>do :windo diffoff!<cr>:bufdo diffoff!<cr>
+	nmap <silent> <leader>dp :%d<cr>"+P:1,/^\S/-2d<cr>
 	nmap <silent> <leader>dr :%s#\r\n#\r#g<cr>
 	nmap <silent> <leader>ds :%s#\s*$##g<cr>
-	nmap <silent> <leader>dt :diffthis<cr>
+	nmap <silent> <leader>dt :diffthis<cr>:set wrap<cr>
 
 	nmap <silent> <leader>e. :e .<cr>
 	nmap <silent> <leader>e1 :e ~/tmp/tmp_work_file/1.txt<cr>
 	nmap <silent> <leader>e2 :e ~/tmp/tmp_work_file/2.txt<cr>
-	nmap <silent> <leader>ea :!./a.out<cr>
+	nmap <silent> <leader>ea :call Edit_vim_cur_edit_file_absolute_path()<cr>
+	nmap <silent> <leader>eb :call Edit_vim_cur_edit_file_relative_path()<cr>
 	nmap <silent> <leader>ee :e!<cr>
-	nmap <silent> <leader>ef :call Edit_vim_cur_edit_file()<cr>
 	nmap <silent> <leader>eh :e %:h<cr>
 	if MySys() == "linux"
 		nmap <leader>es :e ~/tmp/scratch<cr>
@@ -1115,10 +1176,12 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	else
 		nmap <leader>es :tabnew $TEMP/scratch.txt<cr>
 	endif
+	nmap <silent> <leader>em :e mgrep.mk<cr>
 	nmap <silent> <leader>et :vs ~/tmp/tmp_work_file/%:t<cr>
 	nmap <silent> <leader>ev :e ~/.vimrc<cr>
 	nmap <silent> <leader>vb :vs ~/.bashrc<cr>
-	nmap <leader>fa :call SaveCurrentFileNameRelativePath()<cr>
+	nmap <leader>fa :call SaveCurrentFileNameAbsolutePath()<cr>
+	nmap <leader>fb :call SaveCurrentFileNameRelativePath()<cr>
 	nmap <leader>fc :cs find c
 	nmap <leader>fg :cs find g
 	nmap <leader>fs :cs find s
@@ -1136,9 +1199,11 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <Leader>lc ml:execute 'match Search /\%'.line('.').'l/'<CR>
 	nmap <silent> <leader>ls :ls<cr>
 	nmap <silent> <leader>jj ggVGJ
-	nmap <silent> <leader>mj :!make -j4<cr>
+	nmap <leader>ma :set modifiable<cr>
+	nmap <silent> <leader>mj :make<cr>
 	nmap <silent> <leader>mz :!make zImage -j4<cr>
-	nmap <leader>mv :mks! ~/tmp/vimcurrentedit.vim<cr>
+	nmap <leader>mv1 :mks! ~/tmp/vimcurrentedit.vim<cr>
+	nmap <leader>mv2 :mks! vimcurrentedit.vim<cr>
 	nmap <silent> <leader>nl :nohl<cr>
 	nmap <silent> <leader>nn :set nonu<cr>
 	nmap <silent> <leader>pt :!pr.sh &<cr><cr>
@@ -1151,6 +1216,8 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>qw :wq<cr>
 	nmap <silent> <leader>qf :q!<cr>
 	nmap <silent> <leader>qa :qa<cr>
+	nmap <leader>r1 :r ~/tmp/tmp_work_file/1.txt<cr>
+	nmap <silent> <leader>ra :!./a.out<cr>
 	nmap <silent> <leader>rd :r ~/tmp/delay.c<cr>
 	nmap <silent> <leader>rf oprintf("mzdbg %s %d\n", __func__, __LINE__);<ESC>
 	nmap <silent> <leader>rk opr_info("mzdbg %s %d\n", __func__, __LINE__);<ESC>
@@ -1161,11 +1228,13 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>rt :r ~/tmp/tmp_work_file/%:t<cr>
 	nmap <silent> <leader>sd :call SvnDiffCurrentFile()<cr>
 	nmap <silent> <leader>sl :!svn log %<cr>
-	nmap <silent> <leader>sp :set paste<cr>
 	nmap <silent> <leader>sn :set nu<cr>
+	nmap <silent> <leader>sm :set ft=make<cr>
+	nmap <silent> <leader>sp :set paste<cr>
 	nmap <silent> <leader>ss :source %<cr>
 	nmap <silent> <leader>srv :call SvnRevertCurrentFile()<cr>
-	nmap <leader>sv :source ~/tmp/vimcurrentedit.vim<cr>
+	nmap <leader>sv1 :source ~/tmp/vimcurrentedit.vim<cr>
+	nmap <leader>sv2 :source vimcurrentedit.vim<cr>
 	nmap <silent> <leader>tl :TlistToggle<cr>
 	nmap <silent> <leader>vs :vs<cr>
 	nmap <silent> <leader>vt :vs ~/tmp/tmp_work_file/%:t<cr>
@@ -1185,6 +1254,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	nmap <silent> <leader>wq :wq<cr>
 	nmap <silent> <leader>ww :w<cr>
 	nmap <silent> <leader>WW :w<cr>
+	nmap <silent> <leader>ya ggVGy``
 	nnoremap Y ggY``p
 
 	nnoremap <silent> * :call MySpecialSearch('f', 0)<CR>
@@ -1227,8 +1297,6 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 		nmap <silent> K 1<C-W>-
 		nmap <silent> H 1<C-W><
 		nmap <silent> L 1<C-W>>
-		" Alt+l
-		nmap <silent> l :nohl<cr>
 	endif
 
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1237,6 +1305,7 @@ command! -nargs=* -complete=tag -bang ParseFilenameTag :call ParseFilenameTag("<
 	vmap <silent> j 4j
 	vmap <silent> k 4k
 	vmap <leader>cl :!column -t<CR>
+	vmap <leader>w1 :w! ~/tmp/tmp_work_file/1.txt<cr>
 	"Basically you press * or # to search for the current selection !! Really useful
 	vnoremap <silent> * :call MySpecialSearch('f', 1)<CR>
 	vnoremap <silent> # :call MySpecialSearch('b', 1)<CR>

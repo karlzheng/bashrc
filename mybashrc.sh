@@ -2,11 +2,11 @@
 #===============================================================================
 #
 #          FILE:  mybashrc.sh
-# 
+#
 #         USAGE:  put it to your home directory
-# 
-#   DESCRIPTION:  
-# 
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---
@@ -19,7 +19,7 @@
 #      REVISION:  ---
 #===============================================================================
 
-if [ "$SHELL" != "/bin/bash" ];then 
+if [ "$SHELL" != "/bin/bash" ];then
 	echo "the SHELL is not bash! exit!!"
 fi
 
@@ -39,7 +39,6 @@ export MYNICKNAME="karlzheng"
 export MYUSERNAME=$(whoami)
 
 export ANDROID_JAVA_HOME=$JAVA_HOME
-export ANDROID_SRC_ROOT=/media/cdriver/work/hal/trunk/
 export ARCH=arm
 #http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
 export BROWSER="$PAGER"
@@ -47,9 +46,9 @@ export CROSS_COMPILE=arm-none-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
 #命令文件最大行数
-export HISTSIZE=100000      
+export HISTSIZE=5000000
 #最大命令历史记录数
-export HISTFILESIZE=100000  
+export HISTFILESIZE=5000000
 #export LANG="en.UTF-8"
 export HISTCONTROL="erasedups:ignoreboth"
 export LANG="zh_CN.UTF-8"
@@ -61,12 +60,12 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;33m'
-export JAVA_HOME=/usr/lib/jvm/java-6-sun/ 
+export JAVA_HOME=/usr/lib/jvm/java-6-sun/
 export PAGER="`which less` -s"
 export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 #export PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
 export PS4='+[$LINENO]'
-export SVN_EDITOR=/usr/bin/vim 
+export SVN_EDITOR=/usr/bin/vim
 
 export d=~/桌面/
 export desktop=~/桌面/
@@ -76,15 +75,18 @@ export imgout=out/target/product/
 if [ $MYUSERNAME != $MYNICKNAME ];then
 	export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
 	export USE_CACHE=1
-	if [ -d $HOME/ramdisk/ccache ];then
-		mkdir -p $HOME/ramdisk/ccache
-		CCACHE_DIR=$HOME/ramdisk/ccache
-	fi
+	#if [ -d $HOME/ramdisk/ccache ];then
+		#mkdir -p $HOME/ramdisk/ccache
+		#CCACHE_DIR=$HOME/ramdisk/ccache
+	#fi
+	mkdir -p /disk/dev/ccache
+	CCACHE_DIR=/disk/dev/ccache
+	ccache -M 50G
 fi
 
 #add other info here just for android
 #export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
-#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/ 
+#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
 #export ANDROID_PRODUCT_OUT=out/target/product/
 #export ANDROID_SWT=/home/${MYUSERNAME}/svn/app_group_android/Eclair/out/host/linux-x86/framework
 #export ANDROID_SWT=/media/cdriver/work/software/android-sdk-linux_86/tools/lib/x86/
@@ -102,7 +104,7 @@ bind -m emacs '"\C-o": menu-complete'
 bind -m emacs '"\C-ga": "grep \"\" * --color -rHniI|grep -v ^tags|grep -v ^cscopef"'
 bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
 bind -m emacs '"\C-gf": "$(fp)"'
-bind -m emacs '"\C-gh": " --help"'
+bind -m emacs '"\C-gh": "--help"'
 bind -m emacs '"\C-gm": "grep mei Makefile"'
 bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
 
@@ -114,7 +116,7 @@ bind -m emacs '"\C-g\C-n": "find -name "'
 #bind -m emacs '"\e\C-]": character-search'
 
 unalias ls
-alias adb_="sudo adb kill-server && sudo adb start-server"
+#alias adb_="sudo adb kill-server && sudo adb start-server"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias brm='/bin/rm'
 alias CD='cd'
@@ -129,14 +131,16 @@ alias copy_to_m8="rsync -av /media/x/english/voa/ /media/Meizu\ M8/Music/voa/"
 alias cp='cp -i '
 alias cw="cd /media/work/"
 alias cz="cd ~/mytools/m032/tz_release_key/"
+alias d='cd $d'
 alias diff='diff -x .svn'
-alias f='find'
+alias f='find -iname '
 alias g='grep'
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
 alias h='history|tail -n 35'
 alias hi='history'
 alias ht='history |tail -n 10 '
+alias k='kill -9 %1'
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
 alias LA='ls -latr'
 alias la='ls -latr'
@@ -152,7 +156,9 @@ alias lsr='ls -lasr '
 alias lt='ls -lat '
 alias ltr='ls -latr '
 alias mcd='cd '
-alias mj='make -j8 '
+alias md='mkdir '
+alias mj="make -j$(/bin/grep processor /proc/cpuinfo \
+    | /usr/bin/awk '{field=$NF};END{print(field+1)*2}') "
 #alias mt3='mount -t ext3 '
 #alias mtnfs=' mount -t nfs '
 #alias mto='mount -o loop '
@@ -179,24 +185,21 @@ alias wg="wget"
 #alias svnawtar="date_str=$(date +%Y%m%d_%T) && tmp_file_name=svn_diff_$date_str && svnaw |xargs \
 #tar --force-local -rvf \$tmp_file_name.tar && echo \$tmp_file_name && unset \
 #tac ~/.bash_history |awk '!a[$0]++' |tac > /tmp/.bash_history &&  mv /tmp/.bash_history ~/.bash_history -f
-function .()
-{
-	if [ $# -eq 0 ];then
-		cd ".."
-	fi
-}
-
-function ..()
-{
-	if [ $# -eq 0 ];then
-		cd "../.."
-	fi
-}
 function ac()
 {
-	[ -f /dev/shm/${MYUSERNAME}/apwdpath ] && \
-		tmp_dir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)" && \
-		builtin cd "$tmp_dir" && unset "tmp_dir"
+    if [ -f /dev/shm/${MYUSERNAME}/apwdpath ];then
+	tmp_dir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)"
+	if [ -d "$tmp_dir" ];then
+	    builtin cd "$tmp_dir" && unset "tmp_dir"
+	else
+	    echo "Not exist dir: $tmpfile"
+	fi
+    fi
+}
+
+function androidsetrootpath()
+{
+    export ANDROID_SRC_ROOT="$(pwd)"
 }
 
 #alias apwd='builtin pwd >> /dev/shm/${MYUSERNAME}path'
@@ -214,11 +217,11 @@ function apwd_abc()
 	grep -q "^$p$"  /dev/shm/${MYUSERNAME}/daily_path
 	if [ $? != 0 ]; then
 		builtin pwd >> /dev/shm/${MYUSERNAME}/daily_path;
-	fi  
+	fi
 	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
 }
 
-function atar() 
+function atar()
 {
 	#http://www.ibm.com/developerworks/cn/aix/library/au-spunixpower.html?ca=drs-#history
 	  if [ -f $1 ] ; then
@@ -226,19 +229,19 @@ function atar()
 		  *.tar.bz2)   tar xjf $1     ;;
 		  *.tar.gz)    tar xzf $1     ;;
 		  *.bz2)       bunzip2 $1     ;;
-		  *.rar)       rar x $1       ;;  
-		  *.gz)        gunzip $1      ;;  
-		  *.tar)       tar xf $1      ;;  
-		  *.tbz2)      tar xjf $1     ;;  
-		  *.tgz)       tar xzf $1     ;;  
-		  *.zip)       unzip $1       ;;  
-		  *.Z)         uncompress $1  ;;  
-		  *.7z)        7z x $1        ;;  
+		  *.rar)       rar x $1       ;;
+		  *.gz)        gunzip $1      ;;
+		  *.tar)       tar xf $1      ;;
+		  *.tbz2)      tar xjf $1     ;;
+		  *.tgz)       tar xzf $1     ;;
+		  *.zip)       unzip $1       ;;
+		  *.Z)         uncompress $1  ;;
+		  *.7z)        7z x $1        ;;
 		  *)           echo "'$1' cannot be extracted via extract()" ;;
 		esac
 	  else
 		echo "'$1' is not a valid file"
-	  fi  
+	  fi
 }
 
 function append_daily_path()
@@ -259,123 +262,37 @@ function append_daily_path()
 	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
 }
 
-
-function ca()
-{
-	if [ ! -f ~/pwd.mk ];then
-		echo "no ~/pwd.mk file"
-		return 1;
-	fi
-	if [ ! -f /dev/shm/pwd_pos ]; then
-		echo "1" > /dev/shm/pwd_pos;  
-		local  pwd_pos=1;
-	else local pwd_pos=$(cat /dev/shm/pwd_pos);
-		#if [ ! -f /dev/shm/pwd_total_count ];then
-			wc -l ~/pwd.mk |awk '{print $1}' > /dev/shm/pwd_total_count
-		#fi
-		local total_count=$(cat /dev/shm/pwd_total_count);
-		((pwd_pos ++));
-		if [ $pwd_pos -gt $total_count ]; 
-		then pwd_pos=$(expr $pwd_pos - $total_count);
-		fi
-		echo $pwd_pos > /dev/shm/pwd_pos;  
-	fi
-	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/pwd.mk)
-	builtin cd "$enter_dir"
-}
-
-
-
-function cdb()
-{
-	if [ $# -eq 0 ];then
-		echo arch/arm/boot/
-		cd arch/arm/boot/
-	fi  
-}
-
-function cdc()
-{
-	if [ $# -eq 0 ];then
-		cd arch/arm/configs
-	else 
-		cd $1
-	fi  
-}
-
-function ci()
-{
-	if [ -d "$imgout" ];then
-		cd $imgout
-		local recent_product_dir=$(ls -latr | tail -n 1 |awk '{print $NF}');
-		cd "${recent_product_dir}"
-		echo $imgout/"${recent_product_dir}"
-	fi
-}
-
-function cr()
-{
-    local ANDROIDTOPFILE=build/core/envsetup.mk;
-    local KERNELCONFIGDIR=arch/arm/configs;
-
-    if [ -n "$TOP" -a -f "$TOP/$ANDROIDTOPFILE" ]; then
-	cd $TOP;
-    else
-	PWD=$(/bin/pwd);
-	if [ -f $ANDROIDTOPFILE ]; then
-	    cd "${PWD}"
-	elif [ -d $KERNELCONFIGDIR ]; then
-	    cd "${PWD}"
-	else
-	    local HERE="$PWD";
-	    T=;
-	    while [ ! -f "$ANDROIDTOPFILE" -a ! -d "$KERNELCONFIGDIR" -a "$PWD" != "/" ]; do
-		cd .. > /dev/null;
-		T=`PWD= /bin/pwd`;
-	    done;
-	    cd "$HERE" > /dev/null;
-	    if [ -f "$T/$ANDROIDTOPFILE" -o "$T/$KERNELCONFIGDIR" ]; then
-		echo $T;
-		cd $T;
-	    fi;
-	fi;
-    fi
-}
-
-function cv()
-{
-    if [ ! -f /dev/shm/vim_cur_file_path ]; 
-        then echo "no /dev/shm/vim_cur_file_path file";  
-    else 
-        local enter_dir="$(cat /dev/shm/vim_cur_file_path)";
-        builtin cd "$enter_dir"
-    fi
-}
-
 function cleantrash()
-{ 
+{
 	/bin/rm -rf ~/.trash;
 	mkdir ~/.trash;
 	sync;
 }
 
 function del_carried_return()
-{ 
+{
 	find -name "*.h" -o -name "*.c" |xargs sed -i -e "s#\r\n#\n#gc"
 }
 
+function emulator_env()
+{
+    export PATH=$(pwd)/out/host/linux-x86/bin:$PATH
+    export ANDROID_PRODUCT_OUT=$(pwd)/out/target/product/generic
+    export ANDROID_SWT=$(pwd)/out/host/linux-x86/framework
+}
+
 function gitdir()
-{ 
+{
 	cat .git/config
 }
 
 function lstrash()
-{ 
+{
 	ls -l ~/.trash/ ;
 }
 
-function rm () 
-{ 
+function rm ()
+{
    if [ ! -d ~/.trash ]; then
       mkdir ~/.trash;
    fi;
@@ -390,14 +307,14 @@ function undel()
 
 function fp()
 {
-    if [ -f /dev/shm/filename ]; 
-        then cat /dev/shm/filename 
+    if [ -f /dev/shm/filename ];
+        then cat /dev/shm/filename
     fi
 }
 
 function fa()
 {
-	pwd > /dev/shm/filename 
+	pwd > /dev/shm/filename
 }
 function gitcobranch()
 {
@@ -445,7 +362,7 @@ function gitsvncl()
 		echo "Must deposit which svn dir you want to check out!!"
 		exit 1;
 	fi
-	git svn clone "$1" 
+	git svn clone "$1"
 }
 
 function gitsvnup()
@@ -492,7 +409,7 @@ function ha()
     n=0
     history 10 |sort -r > /dev/shm/hist10.txt
     while read line;
-    do  
+    do
         local cmd_line=$(echo "$line" |sed -e "s/[0-9]*  \(.*\)/\1/")
         local is_ignore_cmd=0
         for cmd in ${ignore_cmd_list[@]};
@@ -502,8 +419,8 @@ function ha()
             fi
         done
         if [ $is_ignore_cmd == 0 ];then
-            echo "$cmd_line" > /dev/shm/hist_cmd.txt 
-            echo "$cmd_line" 
+            echo "$cmd_line" > /dev/shm/hist_cmd.txt
+            echo "$cmd_line"
             return 0
         fi
     done  < /dev/shm/hist10.txt
@@ -511,7 +428,7 @@ function ha()
 
 function hd()
 {
-    cat  /dev/shm/hist_cmd.txt 
+    cat  /dev/shm/hist_cmd.txt
 }
 
 function he()
@@ -541,24 +458,28 @@ function lac() {
      if [ $# -eq 0 ];then
 		 echo "arch/arm/configs"
 		 ls arch/arm/configs
-     else 
+     else
        ls $1
-     fi  
-     return 0
-}
-
-function mkdircd () 
-{ 
-  mkdir -p "$@" && eval cd "\"\$$#\""; 
-}
-
-function mkmm() {
-     if [ $# -eq 0 ];then
-       make menuconfig
-     else 
-       make $1
      fi
      return 0
+}
+
+function mkdircd ()
+{
+  mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+
+function mc()
+{
+    local cpu_nr=$(/bin/grep processor /proc/cpuinfo \
+	| /usr/bin/awk '{field=$NF};END{print(field+1)*2}')
+    
+    if [ $# -eq 0 ];then
+	make menuconfig -j$cpu_nr
+    else
+	make $1 -j$cpu_nr
+    fi
+    return 0
 }
 
 function mypath()
@@ -582,38 +503,45 @@ function n()
 {
 	if [ $# -eq 0 ];then
 		nautilus .
-	else 
+	else
 		nautilus $1
-	fi  
+	fi
 	return 0
 }
 
 function p()
 {
-	if [ ! -f /dev/shm/cur_pos ]; 
-	then echo "1" > /dev/shm/cur_pos;  
+	if [ ! -f /dev/shm/cur_pos ];
+	then echo "1" > /dev/shm/cur_pos;
 		local  cur_pos=1;
 	else local cur_pos=$(cat /dev/shm/cur_pos);
 		local total_count=$(cat /dev/shm/total_count);
 		((cur_pos ++));
-		if [ $cur_pos -gt $total_count ]; 
+		if [ $cur_pos -gt $total_count ];
 		then cur_pos=$(expr $cur_pos - $total_count);
 		fi
-		echo $cur_pos > /dev/shm/cur_pos;  
+		echo $cur_pos > /dev/shm/cur_pos;
 	fi
 	local enter_dir=$(sed -n "$cur_pos{p;q;}"  /dev/shm/${MYUSERNAME}/daily_path)
 	builtin cd "$enter_dir"
 	ap
 }
-function sdnw() {
-  if [ $# -ge 1 ];then
-    local filename="$(echo ${1/11111/})"
-    #sudo dnw $1
-    dnw "$filename"
-  fi
-  return 0
 
-
+function dnw()
+{
+    if [ $# -ge 1 ];then
+	local START_TIME=`date +%s`
+	local filename="$(echo ${1/11111/})"
+	#sudo dnw $1
+	/usr/bin/dnw "$filename"
+	local END_TIME=`date +%s`
+	local ELAPSED_TIME
+	let "ELAPSED_TIME=$END_TIME-$START_TIME"
+	echo
+	echo "Total used time is $ELAPSED_TIME seconds"
+	echo
+    fi
+    return 0
 }
 
 function sdu () {
@@ -645,10 +573,25 @@ function swap()
 
 sfile ()
 {
-    from="$1"
-    to="$2"
-    rsync -avurP "$from" "$to" || return 1
-    rsync -avurP "$to"   "$from" || return 1
+    if [ $# -eq 0 ];then
+	local file_list=(
+	.vimrc
+	mybashrc.sh
+	mypathfunctions.sh
+	#mytools
+	)
+	local DEV_SERVER_MOUNT_DIR=${HOME}/241
+	for f in ${file_list[@]}; do
+	    rsync -avurP "${HOME}/${f}" "$DEV_SERVER_MOUNT_DIR/${f}" || return 1
+	    rsync -avurP "$DEV_SERVER_MOUNT_DIR/${f}" "${HOME}/${f}" || return 1
+	done
+	return 0
+    else
+	local from="$1"
+	local to="$2"
+	rsync -avurP "$from" "$to" || return 1
+	rsync -avurP "$to"   "$from" || return 1
+    fi
 }
 function tfind()
 {
@@ -658,8 +601,13 @@ function unap()
 {
 	if [ -d /dev/shm/${MYUSERNAME} -a \
 		-f /dev/shm/${MYUSERNAME}/apwdpath ];then
-		rm /dev/shm/${MYUSERNAME}/apwdpath 
+		rm /dev/shm/${MYUSERNAME}/apwdpath
 	fi
+}
+
+function v()
+{
+    vim -c ":LUTags $@"
 }
 
 function vmdis()
@@ -705,33 +653,107 @@ function _mcd_complete() {
      return 0
 }
 
-function _dnw_complete() {
+function _dnw_complete()
+{
+    local cur=${COMP_WORDS[COMP_CWORD]};
+    local com=${COMP_WORDS[COMP_CWORD-1]};
+    local j k
+    if [[ $COMP_CWORD==1 && -z "$cur" ]];then
+	local my_complete_word=(
+	"11111arch/arm/boot/zImage"
+	"11111/media/x/compiled/v4.0-dev/arch/arm/boot/zImage"
+	)
+	COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
+	local dir_list=$(compgen -d)
+	k="${#COMPREPLY[@]}"
+	for j in $dir_list;do
+	    COMPREPLY[k++]=$j
+	done
+    else   #dir complete
+	local k
+	COMPREPLY=()
+	local dir_list=$(compgen -d -- $cur)
+	k="${#COMPREPLY[@]}"
+	for j in $dir_list;do
+	    COMPREPLY[k++]=$j
+	done
+	local dir_list=$(compgen -f -- $cur)
+	k="${#COMPREPLY[@]}"
+	for j in $dir_list;
+	do
+	    COMPREPLY[k++]=$j
+	done
+    fi
+    return 0
+}
+
+function _fastboot_completion()
+{
+	local cur
+	COMPREPLY=()
+	cur=${COMP_WORDS[COMP_CWORD]}
+	prev=${COMP_WORDS[COMP_CWORD-1]}
+	if [ $COMP_CWORD -eq 1 ];then
+		COMPREPLY=($( compgen -W 'flash' -- $cur ))
+	else
+		if [ $COMP_CWORD -eq 2 ];then
+			COMPREPLY=($( compgen -W 'kernel bootloader ramdisk system userdata' -- $cur ))
+		else
+			if [ $COMP_CWORD -eq 3 ];then
+				case "$prev" in
+					"system")
+						COMPREPLY=($( compgen -W 'system.img' -- $cur ))
+						;;
+					"userdata")
+						COMPREPLY=($( compgen -W 'userdata.img' -- $cur ))
+						;;
+					"ramdisk")
+						COMPREPLY=($( compgen -W 'ramdisk-uboot.img' -- $cur ))
+						;;
+					"bootloader")
+						COMPREPLY=($( compgen -W 'uboot_fuse.bin' -- $cur ))
+						;;
+					"kernel")
+						COMPREPLY=($( compgen -W 'arch/arm/boot/zImage zImage' -- $cur ))
+						;;
+					*)
+						COMPREPLY=($( compgen -W 'zImage' -- $cur ))
+						;;
+				esac
+			fi
+		fi
+	fi
+
+  return 0
+}
+
+function _mj_complete()
+{
      COMPREPLY=()
      local cur=${COMP_WORDS[COMP_CWORD]};
      local com=${COMP_WORDS[COMP_CWORD-1]};
      case $com in
-     'dnw')
-         local my_complete_word=("/media/x/compiled/uboot-1.3.4-m9/u-boot-fuse.bin"
-                           "/media/x/compiled/uboot-1.3.4-m9_v4/u-boot-fuse.bin"
-                           "/media/x/compiled/meizu_m9_master/linux-2.6.29-meizu/arch/arm/boot/zImage"
-                           "/media/x/compiled/clean_ver/kernel/meizu_m9_master/linux-2.6.29-meizu/arch/arm/boot/zImage"
-                           "/media/x/compiled/meizu_m9_dev/arch/arm/boot/zImage" 
-                          )
-         COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
-         ;;
-     'sdnw')
-         local my_complete_word=(
-                           "11111/media/x/compiled/uboot-1.3.4-m9_v4/u-boot-dev.signed"
-                           "11111/media/x/compiled/clean_ver/v4.0/arch/arm/boot/zImage"
-                           "11111arch/arm/boot/zImage"
-                           "11111/media/x/compiled/uboot-1.3.4-m9_v4/u-boot-release.signed"
-                           "11111/media/x/compiled/v4.0-dev/arch/arm/boot/zImage"
-                           #"/media/x/compiled/uboot-1.3.4-m9_v4/u-boot-fuse.bin"
-                           #"/media/x/compiled/meizu_m9_master/linux-2.6.29-meizu/arch/arm/boot/zImage"
-                           #"/media/x/compiled/clean_ver/kernel/meizu_m9_master/linux-2.6.29-meizu/arch/arm/boot/zImage"
-                           #"/media/x/compiled/meizu_m9_dev/arch/arm/boot/zImage" 
-                          )
-         COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
+     'mj')
+	 local my_complete_word=('zImage' "clean" "distclean" "xconfig")
+	 COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
+	 ;;
+     *)
+	 ;;
+     esac
+     return 0
+}
+
+function _mc_complete()
+{
+     COMPREPLY=()
+     local cur=${COMP_WORDS[COMP_CWORD]};
+     local com=${COMP_WORDS[COMP_CWORD-1]};
+     case $com in
+     'mc')
+		 if [ -d arch/arm/configs ];then
+			 local my_complete_word=$(ls arch/arm/configs/m* -l |awk '{print $8}'|sed "s#.*/##")
+			 COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
+		 fi
          ;;
      *)
          ;;
@@ -739,103 +761,9 @@ function _dnw_complete() {
      return 0
 }
 
-function _sdnw_complete() 
-{
-     local cur=${COMP_WORDS[COMP_CWORD]};
-     local com=${COMP_WORDS[COMP_CWORD-1]};
-     local j k
-     if [[ $COMP_CWORD==1 && -z "$cur" ]];then 
-       local my_complete_word=(
-           "11111arch/arm/boot/zImage"
-           "11111/media/x/compiled/uboot-1.3.4-m9_v4/u-boot-dev.signed"
-           "11111/media/x/compiled/clean_ver/v4.0/arch/arm/boot/zImage"
-           "11111/media/x/compiled/uboot-1.3.4-m9_v4/u-boot-release.signed"
-           "11111/media/x/compiled/v4.0-dev/arch/arm/boot/zImage"
-       )
-       COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
-       local dir_list=$(compgen -d)
-       k="${#COMPREPLY[@]}"
-       for j in $dir_list;do
-         COMPREPLY[k++]=$j
-       done
-     else   #dir complete
-       local k
-       COMPREPLY=()
-       local dir_list=$(compgen -d -- $cur)
-       k="${#COMPREPLY[@]}"
-       for j in $dir_list;do
-         COMPREPLY[k++]=$j
-       done
-       local dir_list=$(compgen -f -- $cur)
-       k="${#COMPREPLY[@]}"
-       for j in $dir_list;do
-         COMPREPLY[k++]=$j
-       done
-     fi
-     return 0
-}
-
-function _fastboot_completion()
-{  
-	local cur  
-	COMPREPLY=()  
-	cur=${COMP_WORDS[COMP_CWORD]} 
-	prev=${COMP_WORDS[COMP_CWORD-1]}
-	if [ $COMP_CWORD -eq 1 ];then
-		COMPREPLY=($( compgen -W 'flash' -- $cur ))  
-	else 
-		if [ $COMP_CWORD -eq 2 ];then
-			COMPREPLY=($( compgen -W 'kernel bootloader ramdisk system userdata' -- $cur ))  
-		else 
-			if [ $COMP_CWORD -eq 3 ];then
-				case "$prev" in
-					"system")
-						COMPREPLY=($( compgen -W 'system.img' -- $cur ))  
-						;;
-					"userdata")
-						COMPREPLY=($( compgen -W 'userdata.img' -- $cur ))  
-						;;
-					"ramdisk")
-						COMPREPLY=($( compgen -W 'ramdisk-uboot.img' -- $cur ))  
-						;;
-					"bootloader")
-						COMPREPLY=($( compgen -W 'uboot_fuse.bin' -- $cur ))  
-						;;
-					"kernel")
-						COMPREPLY=($( compgen -W 'arch/arm/boot/zImage zImage' -- $cur ))  
-						;;
-					*)
-						COMPREPLY=($( compgen -W 'zImage' -- $cur ))  
-						;;
-				esac
-			fi
-		fi
-	fi
-
-  return 0  
-}
-
-function _mkmm_complete() 
-{
-     COMPREPLY=()
-     local cur=${COMP_WORDS[COMP_CWORD]};
-     local com=${COMP_WORDS[COMP_CWORD-1]};
-     case $com in
-     'mkmm')
-		 if [ -d arch/arm/configs ];then
-			 local my_complete_word=$(ls arch/arm/configs/m* -l |awk '{print $8}'|sed "s#.*/##")
-			 COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
-		 fi
-         ;;  
-     *)  
-         ;;  
-     esac
-     return 0
-}
-
 function _ksvn_complete() {
 	local my_complete_word=(
-		'svn://172.16.9.63/svn_src' 
+		'svn://172.16.9.63/svn_src'
 		'https://172.16.1.21/svn/IceCreamSandwich'
 	)
 	COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
@@ -843,12 +771,12 @@ function _ksvn_complete() {
 }
 #complete -W 'svn://172.16.11.122/svn_src' 'https://172.16.1.21/svn/IceCreamSandwich' ksvn
 
-complete -F  _dnw_complete dnw
-complete -F  _fastboot_completion fastboot 
+complete -F  _fastboot_completion fastboot
 complete -F  _mcd_complete mcd
-complete -F  _mkmm_complete mkmm
+complete -F  _mj_complete mj
+complete -F  _mc_complete mc
 complete -F  _ksvn_complete ksvn
-complete -F  _sdnw_complete sdnw
+complete -F  _dnw_complete dnw
 complete -W 'arch/arm/configs' lac
 complete -W 'xconfig' make
 if [ $MYUSERNAME == $MYNICKNAME ];then
@@ -862,9 +790,9 @@ function my_bash_login_auto_exec_func()
 		~/mytools/
 		~/software/bin
 		/usr/local/arm/arm-2010q1/bin/
-		/media/cdriver/work/software/android-sdk-linux_86/platform-tools
-		/media/cdriver/work/software/android-sdk-linux_86/tools
-		/media/cdriver/work/software/android-ndk-r8c
+		~/software/android-sdk-linux_86/platform-tools
+		~/software/android-sdk-linux_86/tools
+		~/software/android-ndk-r8c
 	);
 	local mypath=""
 	for p in ${path_list[@]};
@@ -895,10 +823,14 @@ function my_bash_login_auto_exec_func()
 
 #bash command:
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do  sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
-#1727  git checkout --track origin/mars 
+#1727  git checkout --track origin/mars
+
+if [ -f ~/adb.bash_complete.sh ];then
+	source  ~/adb.bash_complete.sh
+fi
 
 if [ -f ~/mypathfunctions.sh ];then
-	source ~/mypathfunctions.sh 
+	source ~/mypathfunctions.sh
 fi
 if [ -f ~/my_private_bashrc.sh ];then
 	source ~/my_private_bashrc.sh
