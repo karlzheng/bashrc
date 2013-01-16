@@ -37,27 +37,65 @@ function ..()
 	fi
 }
 
+function ac()
+{
+    if [ -f /dev/shm/${MYUSERNAME}/apwdpath ];then
+	tmp_dir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)"
+	if [ -d "${tmp_dir/\~/${HOME}}" ];then
+	    builtin cd "${tmp_dir/\~/${HOME}}" && unset "tmp_dir"
+	else
+	    echo "Not exist dir: $tmpfile"
+	fi
+    fi
+}
+
+function ap()
+{
+    if [ $# -ge 1 ];then
+	if [ $1 == '.' ];then
+	    export PATH="$(pwd):$PATH"
+	    echo $PATH
+	fi
+    else
+	pwd | sed -e "s#${HOME}#~#"
+	[ -d /dev/shm/${MYUSERNAME} ] || mkdir -p /dev/shm/${MYUSERNAME}
+	pwd | sed -e "s#${HOME}#~#" > /dev/shm/${MYUSERNAME}/apwdpath;
+    fi
+}
+
+function apwd_abc()
+{
+	builtin pwd;
+	local p=$(builtin pwd);
+	grep -q "^$p$"  /dev/shm/${MYUSERNAME}/daily_path
+	if [ $? != 0 ]; then
+		builtin pwd >> /dev/shm/${MYUSERNAME}/daily_path;
+	fi
+	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > \
+	/dev/shm/${MYUSERNAME}/total_count
+}
+
 function ca()
 {
-	if [ ! -f ~/pwd.mk ];then
-		echo "no ~/pwd.mk file"
+	if [ ! -f ~/karlzheng_config/pwd.mk ];then
+		echo "no ~/karlzheng_config/pwd.mk file"
 		return 1;
 	fi
-	if [ ! -f /dev/shm/pwd_pos ]; then
-		echo "1" > /dev/shm/pwd_pos;
+	if [ ! -f /dev/shm/${MYUSERNAME}/pwd_pos ]; then
+		echo "1" > /dev/shm/${MYUSERNAME}/pwd_pos;
 		local  pwd_pos=1;
-	else local pwd_pos=$(cat /dev/shm/pwd_pos);
-		#if [ ! -f /dev/shm/pwd_total_count ];then
-			wc -l ~/pwd.mk |awk '{print $1}' > /dev/shm/pwd_total_count
+	else local pwd_pos=$(cat /dev/shm/${MYUSERNAME}/pwd_pos);
+		#if [ ! -f /dev/shm/${MYUSERNAME}/pwd_total_count ];then
+			wc -l ~/karlzheng_config/pwd.mk |awk '{print $1}' > /dev/shm/${MYUSERNAME}/pwd_total_count
 		#fi
-		local total_count=$(cat /dev/shm/pwd_total_count);
+		local total_count=$(cat /dev/shm/${MYUSERNAME}/pwd_total_count);
 		((pwd_pos ++));
 		if [ $pwd_pos -gt $total_count ];
 		then pwd_pos=$(expr $pwd_pos - $total_count);
 		fi
-		echo $pwd_pos > /dev/shm/pwd_pos;
+		echo $pwd_pos > /dev/shm/${MYUSERNAME}/pwd_pos;
 	fi
-	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/pwd.mk)
+	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/karlzheng_config/pwd.mk)
 	builtin cd "$enter_dir"
 }
 
@@ -68,7 +106,7 @@ function cdc()
 		    cd arch/arm/configs
 		else
 		    if [ -d device ];then
-			local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
+			local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
 			if [ -d device/meizu/ ];then
 			    find device/meizu/ -maxdepth 1 -type d -name "m*" \
 			    | sed -n -e '{2,$p}' | tee $enter_dir_file
@@ -88,7 +126,7 @@ function cdc()
 
 function cds()
 {
-    if [ "$(whoami)" != "karlzheng" ];then
+    if [ "${MYUSERNAME}" != "karlzheng" ];then
 	pwd > ~/server_path.mk
     else
 	local cds_path="${HOME}/$(cat ~/241/server_path.mk | \
@@ -100,10 +138,10 @@ function cds()
 
 function cdv()
 {
-    if [ ! -f /dev/shm/vim_cur_file_path ];
-        then echo "no /dev/shm/vim_cur_file_path file";
+    if [ ! -f /dev/shm/${MYUSERNAME}/vim_cur_file_path ];
+        then echo "no /dev/shm/${MYUSERNAME}/vim_cur_file_path file";
     else
-        local enter_dir="$(cat /dev/shm/vim_cur_file_path)";
+        local enter_dir="$(cat /dev/shm/${MYUSERNAME}/vim_cur_file_path)";
         builtin cd "$enter_dir"
     fi
 }
@@ -277,32 +315,32 @@ function bash_get_keycode()
 
 	#HandleKey
 	keycode=$(HandleKey)
-	#echo $keycode > /dev/shm/keycode.txt
+	#echo $keycode > /dev/shm/${MYUSERNAME}/keycode.txt
 	echo $keycode
 }
 
 function cd_dir_in_file()
 {
 	if [ $# -eq 0 ];then
-		local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
+		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
 	else
 		local enter_dir_file="$1"
 	fi
 	local cnt=$(cat "$enter_dir_file" | wc -l)
 	if [ $cnt -eq 1 ];then
-		cd $(cat "$enter_dir_file")
-		return ;
+	    local enter_dir=$(cat "$enter_dir_file")
+	    builtin cd "${enter_dir/\~/${HOME}}"
+	    return ;
 	fi
 	trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
 	local  cur_pos=0;
-	for file in $(cat $enter_dir_file)
-	do
+	while read file; do
 		local the_dirs[$cur_pos]="$file"
 		((cur_pos++))
-	done
+	done < $enter_dir_file
 	cur_pos=0;
 	while true;do
-		local enter_dir=${the_dirs[cur_pos]}
+		local enter_dir="${the_dirs[cur_pos]}"
 		printf '%-100s\r' "Enter: ${enter_dir} ?"
 		local key=$(bash_get_keycode | tr -d '\r' | tr -d '\n')
 		case "$key" in
@@ -319,8 +357,8 @@ function cd_dir_in_file()
 				fi
 				;;
 			"CR")
-				if [ -d "${enter_dir}" ];then
-					cd "${enter_dir}"
+			    if [ -d "$(eval echo ${enter_dir/\~/${HOME}})" ];then
+					builtin cd "${enter_dir/\~/${HOME}}"
 					break;
 				else
 					printf "No dir:%-120s\n" "${enter_dir}"
@@ -337,15 +375,16 @@ function cd_dir_in_file()
 
 function c()
 {
-	local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
-	mkdir -p /dev/shm/"$(whoami)"
+	local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+	mkdir -p /dev/shm/"${MYUSERNAME}"
 	: > $enter_dir_file
 	if [ $# -eq 0 ];then
-		cat -n ${HOME}/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
-		cat  ${HOME}/pwd.mk > "$enter_dir_file"
+		cat -n ${HOME}/karlzheng_config/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
+		echo "${HOME}" > "$enter_dir_file"
+		cat  ${HOME}/karlzheng_config/pwd.mk >> "$enter_dir_file"
 	else
-		cat -n ${HOME}/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*"
-		cat  ${HOME}/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" \
+		cat -n ${HOME}/karlzheng_config/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*"
+		cat  ${HOME}/karlzheng_config/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" \
 		    > "$enter_dir_file"
 	fi
 
@@ -361,14 +400,14 @@ function cd()
 		builtin cd "$@"
 	    else
 		if [ $# -eq 1 ];then
-		    local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
-		    mkdir -p /dev/shm/"$(whoami)"
+		    local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		    mkdir -p /dev/shm/"${MYUSERNAME}"
 		    : > $enter_dir_file
 		    for d in $(/bin/ls -la | grep -E "^d|^l" | grep "$1" \
-			| awk '{print $8}');
+			| awk '{print $9}');
 		    do
-			if [ -d "$d" ];then
-			    echo "$d" >> $enter_dir_file
+			if [ -d "${d}" ];then
+			    echo "${d}" >> $enter_dir_file
 			fi
 		    done
 		    local cnt=$(cat "$enter_dir_file" | wc -l)
@@ -383,60 +422,74 @@ function cd()
 	fi
 }
 
-function dlb_dirs()
+function dlb()
 {
-	local enter_dir_file=/dev/shm/$(whoami)/cd_enter_dirs
-	local kfb_samba_dir="/home/karlzheng/kfb"
-	root_dirs=(
-	"$kfb_samba_dir/DailyBuild/DailyBuildM03X/app/IceCreamSandwich/eng"
-	"$kfb_samba_dir/DailyBuild/DailyBuildM03X/app/IceCreamSandwich/user"
-	"$kfb_samba_dir/DailyBuild/DailyBuildM03X/app/JellyBean/user"
-	"$kfb_samba_dir/DailyBuild/DailyBuildM03X/app/JellyBean/eng"
-	"$kfb_samba_dir/DailyBuild/DailyBuildM040/app/IceCreamSandwich/user"
-	"$kfb_samba_dir/DailyBuild/DailyBuildM040/app/IceCreamSandwich/eng"
-	"$kfb_samba_dir/DailyBuild/DailyBuildM040/app/JellyBean/user"
-	"$kfb_samba_dir/DailyBuild/DailyBuildM040/app/JellyBean/eng"
-	)
+    local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+    local kfb_samba_dir="/home/karlzheng/kfb"
+    local dir_prefix="$kfb_samba_dir/DailyBuild/DailyBuildM0"
+    local dir3x=(                                  
+    "${dir_prefix}3X/app/IceCreamSandwich/eng"   
+    "${dir_prefix}3X/app/IceCreamSandwich/user"  
+    "${dir_prefix}3X/app/JellyBean/user"
+    "${dir_prefix}3X/app/JellyBean/eng"
+    )
+    local dir40=(
+    "${dir_prefix}40/app/IceCreamSandwich/user"
+    "${dir_prefix}40/app/IceCreamSandwich/eng"
+    "${dir_prefix}40/app/JellyBean/user"
+    "${dir_prefix}40/app/JellyBean/eng"
+    )
+    local buid_dirs
+    local machine=( "3x" "40" )
+    
+    while [ $# -gt 0 ] ; do
+	    case "$1" in
+	    3x) machine=("3x"); shift ;; 
+	    40) machine=("40"); shift ;; 
+	    *)  break ;;
+	    esac
+    done
+    for i in ${machine[@]}; do
+	eval buid_dirs=( \${buid_dirs[@]} \${dir${i}[@]} )
+    done
+    #echo ${buid_dirs[*]}
+    for i in ${buid_dirs[*]}; do
+	if [ -d "$i" ];then
+	    local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $9}'\
+		| grep -E -v '^\.' | sed -n '2,3p')" | tac )
+	    #echo ${recent_dirs[*]};
+	    for j in ${recent_dirs[*]};
+	    do
+		echo -e "$i/$j" | tee -a ${enter_dir_file}
+	    done
+	fi
+    done
 
-	: > ${enter_dir_file}
+    tac ${enter_dir_file} > ${enter_dir_file}.$$.file
+    /bin/mv  ${enter_dir_file}.$$.file ${enter_dir_file}
+    echo ""
 
-	for i in ${root_dirs[*]};
-	do
-	    if [ -d "$i" ];then
-		local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $8}'\
-		    | grep -E -v '^\.' | sed -n '2,3p')" | tac )
-		for j in ${recent_dirs[*]};
-		do
-		    echo -e "$i/$j" | tee -a ${enter_dir_file}
-		done
-	    fi
-	done
-
-	tac ${enter_dir_file} > ${enter_dir_file}.$$.file
-	/bin/mv  ${enter_dir_file}.$$.file ${enter_dir_file}
-
-	echo ""
-
-	cd_dir_in_file
+    cd_dir_in_file
 }
 
 function pa()
 {
-	touch ${HOME}/pwd.mk
-	grep -q "^$(pwd)$" ${HOME}/pwd.mk
+	touch ${HOME}/karlzheng_config/pwd.mk
+	grep -q "^$(pwd)$" ${HOME}/karlzheng_config/pwd.mk
 	if [ $? != 0 ]; then
-		pwd >> ${HOME}/pwd.mk
-		awk '!a[$0]++' ${HOME}/pwd.mk > $$.pwd.mk
-		#cat $$.pwd.mk | sort > ${HOME}/pwd.mk
+		pwd | sed -e "s#${HOME}#~#" >> ${HOME}/karlzheng_config/pwd.mk
+		awk '!a[$0]++' ${HOME}/karlzheng_config/pwd.mk > $$.pwd.mk
+		#cat $$.pwd.mk | sort > ${HOME}/karlzheng_config/pwd.mk
 		#rm $$.pwd.mk
-		/bin/mv $$.pwd.mk ${HOME}/pwd.mk
+		/bin/mv $$.pwd.mk ${HOME}/karlzheng_config/pwd.mk
 	else
-		echo "$(pwd) has already in ${HOME}/pwd.mk"
+		echo "$(pwd) has already in ${HOME}/karlzheng_config/pwd.mk"
 	fi
 }
 
 function ci()
 {
+    local imgout=out/target/product/
     if [ -d "arch/arm/boot" ];then
 	echo "arch/arm/boot"
 	cd "arch/arm/boot"
@@ -459,9 +512,13 @@ function cr()
 	local ANDROIDENVSETUP=build/core/envsetup.mk;
 	local KERNELCONFIGDIR=arch/arm/configs;
 	let is_root_dir=0
-	if [ -f $ANDROIDENVSETUP ] || [ -d '.repo' ] || [ -d '.git' ] ||\
-	    [ -d $KERNELCONFIGDIR ] || ( [ -f .project ] &&\
-	    [ -f project.properties ] );then
+	if [ -f $ANDROIDENVSETUP ] || \
+	   [ -d '.repo' ] || [ -d '.git' ] || \
+	   [ -d $KERNELCONFIGDIR ] || \
+	   [ "$(pwd)" == "${HOME}" ] || \
+	   [ "$(pwd)" == "/" ] || \
+	   ( [ -f .project ] && [ -f project.properties ] ) || \
+	   ( [ -d board ] && [ -d arch ] && [ -d drivers ] );then
 	    let is_root_dir=1
 	fi
 	return $is_root_dir;
@@ -486,7 +543,7 @@ function cr()
     done;
     is_project_root_dir
     cd "$HERE" > /dev/null;
-    if [ $is_root_dir == 1 ]; then
+    if [ $is_root_dir == 1 -a "x$T" != "x" ]; then
 	echo "$HERE => $T";
 	cd "$T";
     else
@@ -497,3 +554,12 @@ function cr()
     unset is_project_root_dir
 }
 
+function ct()
+{
+    local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+
+    echo "/tmp" >  ${enter_dir_file}
+    echo "~/tmp" >>  ${enter_dir_file}
+    cat -n ${enter_dir_file}
+    cd_dir_in_file
+}

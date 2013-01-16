@@ -35,6 +35,11 @@ set expand-tild on
 
 stty -ixon
 
+#export LANG="zh_CN.UTF-8"
+export LANG="en_US.UTF-8"
+export LANG=C
+export LC_CTYPE="zh_CN.UTF-8"
+
 export MYNICKNAME="karlzheng"
 export MYUSERNAME=$(whoami)
 
@@ -49,9 +54,7 @@ export EDITOR=vim
 export HISTSIZE=5000000
 #最大命令历史记录数
 export HISTFILESIZE=5000000
-#export LANG="en.UTF-8"
 export HISTCONTROL="erasedups:ignoreboth"
-export LANG="zh_CN.UTF-8"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:
 export LESS_TERMCAP_mb=$'\E[01;34m'
 export LESS_TERMCAP_md=$'\E[01;34m'
@@ -117,6 +120,8 @@ bind -m emacs '"\C-g\C-n": "find -name "'
 
 unalias ls
 #alias adb_="sudo adb kill-server && sudo adb start-server"
+alias a='ack-grep -H --nogroup '
+alias aa='ack-grep -H -a --nogroup '
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias brm='/bin/rm'
 alias CD='cd'
@@ -169,15 +174,15 @@ alias po='popd'
 alias pp="cat -n /dev/shm/${MYUSERNAME}/daily_path"
 alias pu1='pushd +1'
 alias pu='pushd .'
-alias sb='source ~/mybashrc.sh'
+alias sb='source ~/karlzheng_config/mybashrc.sh'
 alias slog='svn log |tac '
 alias smbmount242_home='sudo smbmount //172.16.10.242/home/ /media/242/ -o iocharset=utf8,username=${MYUSERNAME},dir_mode=0777,file_mode=0777'
 alias smbmount242='mount |grep -q 242; if [ $? = 0 ];then sudo umount /media/x;fi;sudo smbmount //172.16.10.242/home/svn /media/x/ -o iocharset=utf8,dir_mode=0777,file_mode=0777,username=${MYUSERNAME}'
 alias svnaw="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}'"
 alias svnaw_touch="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}' |xargs touch"
 alias t="touch"
-alias vb='vi ~/mybashrc.sh'
-alias vp='vi ~/pwd.mk'
+alias vb='vi ~/karlzheng_config/mybashrc.sh ~/.bashrc'
+alias vp='vi ~/karlzheng_config/mypathfunctions.sh ~/karlzheng_config/pwd.mk'
 alias VI='vi'
 alias wg="wget"
 
@@ -185,40 +190,9 @@ alias wg="wget"
 #alias svnawtar="date_str=$(date +%Y%m%d_%T) && tmp_file_name=svn_diff_$date_str && svnaw |xargs \
 #tar --force-local -rvf \$tmp_file_name.tar && echo \$tmp_file_name && unset \
 #tac ~/.bash_history |awk '!a[$0]++' |tac > /tmp/.bash_history &&  mv /tmp/.bash_history ~/.bash_history -f
-function ac()
-{
-    if [ -f /dev/shm/${MYUSERNAME}/apwdpath ];then
-	tmp_dir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)"
-	if [ -d "$tmp_dir" ];then
-	    builtin cd "$tmp_dir" && unset "tmp_dir"
-	else
-	    echo "Not exist dir: $tmpfile"
-	fi
-    fi
-}
-
 function androidsetrootpath()
 {
     export ANDROID_SRC_ROOT="$(pwd)"
-}
-
-#alias apwd='builtin pwd >> /dev/shm/${MYUSERNAME}path'
-function ap()
-{
-	builtin pwd;
-	[ -d /dev/shm/${MYUSERNAME} ] || mkdir -p /dev/shm/${MYUSERNAME}
-	builtin pwd > /dev/shm/${MYUSERNAME}/apwdpath;
-}
-
-function apwd_abc()
-{
-	builtin pwd;
-	local p=$(builtin pwd);
-	grep -q "^$p$"  /dev/shm/${MYUSERNAME}/daily_path
-	if [ $? != 0 ]; then
-		builtin pwd >> /dev/shm/${MYUSERNAME}/daily_path;
-	fi
-	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
 }
 
 function atar()
@@ -259,7 +233,7 @@ function append_daily_path()
 			echo "$p" >> /dev/shm/${MYUSERNAME}/daily_path;
 		fi
 	done
-	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/total_count
+	wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/${MYUSERNAME}/total_count
 }
 
 function cleantrash()
@@ -307,21 +281,23 @@ function undel()
 
 function fp()
 {
-    if [ -f /dev/shm/filename ];
-        then cat /dev/shm/filename
+    if [ -f /dev/shm/${MYUSERNAME}/filename ];
+        then cat /dev/shm/${MYUSERNAME}/filename
     fi
 }
 
 function fa()
 {
-	pwd > /dev/shm/filename
+    pwd > /dev/shm/${MYUSERNAME}/filename
 }
+
 function gitcobranch()
 {
 	if [ $# -eq 1 ];then
 		git checkout -b "$1" origin/"$1"
 	fi
 }
+
 function gitloghead()
 {
 	local tmpfile="gitloghead.log"
@@ -407,7 +383,7 @@ function ha()
 {
     local ignore_cmd_list=(c h history ha hd he ls la)
     n=0
-    history 10 |sort -r > /dev/shm/hist10.txt
+    history 10 |sort -r > /dev/shm/${MYUSERNAME}/hist10.txt
     while read line;
     do
         local cmd_line=$(echo "$line" |sed -e "s/[0-9]*  \(.*\)/\1/")
@@ -419,21 +395,21 @@ function ha()
             fi
         done
         if [ $is_ignore_cmd == 0 ];then
-            echo "$cmd_line" > /dev/shm/hist_cmd.txt
+            echo "$cmd_line" > /dev/shm/${MYUSERNAME}/hist_cmd.txt
             echo "$cmd_line"
             return 0
         fi
-    done  < /dev/shm/hist10.txt
+    done  < /dev/shm/${MYUSERNAME}/hist10.txt
 }
 
 function hd()
 {
-    cat  /dev/shm/hist_cmd.txt
+    cat  /dev/shm/${MYUSERNAME}/hist_cmd.txt
 }
 
 function he()
 {
-    local cmd_line=$(tail -1 /dev/shm/hist_cmd.txt|tr -d "\r"|tr -d "\n")
+    local cmd_line=$(tail -1 /dev/shm/${MYUSERNAME}/hist_cmd.txt|tr -d "\r"|tr -d "\n")
     echo "$cmd_line"
     history -s "$cmd_line"
     #exec "$cmd_line"
@@ -473,7 +449,7 @@ function mc()
 {
     local cpu_nr=$(/bin/grep processor /proc/cpuinfo \
 	| /usr/bin/awk '{field=$NF};END{print(field+1)*2}')
-    
+
     if [ $# -eq 0 ];then
 	make menuconfig -j$cpu_nr
     else
@@ -511,16 +487,16 @@ function n()
 
 function p()
 {
-	if [ ! -f /dev/shm/cur_pos ];
-	then echo "1" > /dev/shm/cur_pos;
+	if [ ! -f /dev/shm/${MYUSERNAME}/cur_pos ];
+	then echo "1" > /dev/shm/${MYUSERNAME}/cur_pos;
 		local  cur_pos=1;
-	else local cur_pos=$(cat /dev/shm/cur_pos);
-		local total_count=$(cat /dev/shm/total_count);
+	else local cur_pos=$(cat /dev/shm/${MYUSERNAME}/cur_pos);
+		local total_count=$(cat /dev/shm/${MYUSERNAME}/total_count);
 		((cur_pos ++));
 		if [ $cur_pos -gt $total_count ];
 		then cur_pos=$(expr $cur_pos - $total_count);
 		fi
-		echo $cur_pos > /dev/shm/cur_pos;
+		echo $cur_pos > /dev/shm/${MYUSERNAME}/cur_pos;
 	fi
 	local enter_dir=$(sed -n "$cur_pos{p;q;}"  /dev/shm/${MYUSERNAME}/daily_path)
 	builtin cd "$enter_dir"
@@ -576,8 +552,9 @@ sfile ()
     if [ $# -eq 0 ];then
 	local file_list=(
 	.vimrc
-	mybashrc.sh
-	mypathfunctions.sh
+	.ackrc
+	karlzheng_config/mybashrc.sh
+	karlzheng_config/mypathfunctions.sh
 	#mytools
 	)
 	local DEV_SERVER_MOUNT_DIR=${HOME}/241
@@ -819,20 +796,28 @@ function my_bash_login_auto_exec_func()
 	if [ "$(pwd)" == "${HOME}" ];then
 		ac
 	fi
+	if [ -d "/rambuild" ];then
+	    if [ ! -d "/rambuild/ramdisk" ];then
+		mkdir "/rambuild/ramdisk"
+	    fi
+	    if [ ! -d "${HOME}/ramdisk" ];then
+		ln -s "/rambuild/ramdisk" "${HOME}/ramdisk"
+	    fi
+	fi
 }
 
 #bash command:
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do  sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars
 
-if [ -f ~/adb.bash_complete.sh ];then
-	source  ~/adb.bash_complete.sh
+if [ -f ~/karlzheng_config/adb.bash_complete.sh ];then
+	source  ~/karlzheng_config/adb.bash_complete.sh
 fi
 
-if [ -f ~/mypathfunctions.sh ];then
-	source ~/mypathfunctions.sh
+if [ -f ~/karlzheng_config/mypathfunctions.sh ];then
+	source ~/karlzheng_config/mypathfunctions.sh
 fi
-if [ -f ~/my_private_bashrc.sh ];then
-	source ~/my_private_bashrc.sh
+if [ -f ~/karlzheng_config/my_private_bashrc.sh ];then
+	source ~/karlzheng_config/my_private_bashrc.sh
 fi
 my_bash_login_auto_exec_func
