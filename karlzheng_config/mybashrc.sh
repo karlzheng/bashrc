@@ -26,6 +26,7 @@ fi
 unset MAILCHECK
 
 # . /etc/bash_completion
+shopt -s dotglob
 shopt -s histappend
 shopt -s histreedit
 shopt -s histverify
@@ -35,15 +36,15 @@ set expand-tild on
 
 stty -ixon
 
-#export LANG="zh_CN.UTF-8"
-export LANG="en_US.UTF-8"
-export LANG=C
-export LC_CTYPE="zh_CN.UTF-8"
+export GTAGSFORCECPP=
+export LANG="zh_CN.UTF-8"
+export LANGUAGE="zh_CN.UTF-8"
+export LC_MESSAGES="C"
 
 export MYNICKNAME="karlzheng"
 export MYUSERNAME=$(whoami)
 
-export ANDROID_JAVA_HOME=$JAVA_HOME
+#export ANDROID_LOG_TAGS='Sensors:V *:S'
 export ARCH=arm
 #http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
 export BROWSER="$PAGER"
@@ -63,7 +64,6 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;33m'
-export JAVA_HOME=/usr/lib/jvm/java-6-sun/
 export PAGER="`which less` -s"
 export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 #export PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
@@ -75,28 +75,11 @@ export desktop=~/桌面/
 export dl=~/下载/
 export imgout=out/target/product/
 
-if [ $MYUSERNAME != $MYNICKNAME ];then
-	export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
-	export USE_CACHE=1
-	#if [ -d $HOME/ramdisk/ccache ];then
-		#mkdir -p $HOME/ramdisk/ccache
-		#CCACHE_DIR=$HOME/ramdisk/ccache
-	#fi
-	mkdir -p /disk/dev/ccache
-	CCACHE_DIR=/disk/dev/ccache
-	ccache -M 50G
-fi
-
 #add other info here just for android
-#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
-#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
 #export ANDROID_PRODUCT_OUT=out/target/product/
 #export ANDROID_SWT=/home/${MYUSERNAME}/svn/app_group_android/Eclair/out/host/linux-x86/framework
 #export ANDROID_SWT=/media/cdriver/work/software/android-sdk-linux_86/tools/lib/x86/
-
-# for android compiling
 #export TARGET_BUILD_TYPE=debug
-#export skernel=/root/version_control/samsung/android_kernel_smdkc100_RTM20_camera_isp3/android_kernel_smdkc100_RTM20
 
 bind -m emacs '"\en": history-search-forward'
 bind -m emacs '"\ep": history-search-backward'
@@ -113,7 +96,7 @@ bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
 
 bind -m emacs '"\C-g\C-a": "mgrep.sh "'
 bind -m emacs '"\C-g\C-b": "grep \"\" * --color -rHnIC2f"'
-bind -m emacs '"\C-g\C-f": "bcompare $(fp) . &"'
+bind -m emacs '"\C-g\C-f": "bcompare \"$(fp)\" . &"'
 bind -m emacs '"\C-g\C-n": "find -name "'
 #bind -m emacs '"\C-]": character-search-backward'
 #bind -m emacs '"\e\C-]": character-search'
@@ -123,12 +106,13 @@ unalias ls
 alias a='ack-grep -H --nogroup '
 alias aa='ack-grep -H -a --nogroup '
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias brm='/bin/rm'
+alias brm='/bin/rm -rf'
 alias CD='cd'
 alias c.='cd ../..'
 alias cd.='cd ../..'
 alias c..='cd ../../..'
 alias cd..='cd ../../..'
+alias cdance_rsync="rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/"
 alias cdg='cd /media/work/kernel/meizu/git/mx/linux-2.6.35-mx-rtm'
 alias ck="cd /media/cdriver/work/kernel/meizu/"
 alias co="cd -"
@@ -136,16 +120,12 @@ alias copy_to_m8="rsync -av /media/x/english/voa/ /media/Meizu\ M8/Music/voa/"
 alias cp='cp -i '
 alias cw="cd /media/work/"
 alias cz="cd ~/mytools/m032/tz_release_key/"
-alias d='cd $d'
-alias diff='diff -x .svn'
-alias f='find -iname '
-alias g='grep'
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
 alias h='history|tail -n 35'
 alias hi='history'
 alias ht='history |tail -n 10 '
-alias k='kill -9 %1'
+alias j='jobs '
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
 alias LA='ls -latr'
 alias la='ls -latr'
@@ -160,6 +140,7 @@ alias lsr='ls -lasr '
 alias lsr='ls -lasr '
 alias lt='ls -lat '
 alias ltr='ls -latr '
+alias m='mount '
 alias mcd='cd '
 alias md='mkdir '
 alias mj="make -j$(/bin/grep processor /proc/cpuinfo \
@@ -180,10 +161,10 @@ alias smbmount242_home='sudo smbmount //172.16.10.242/home/ /media/242/ -o iocha
 alias smbmount242='mount |grep -q 242; if [ $? = 0 ];then sudo umount /media/x;fi;sudo smbmount //172.16.10.242/home/svn /media/x/ -o iocharset=utf8,dir_mode=0777,file_mode=0777,username=${MYUSERNAME}'
 alias svnaw="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}'"
 alias svnaw_touch="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}' |xargs touch"
-alias t="touch"
 alias vb='vi ~/karlzheng_config/mybashrc.sh ~/.bashrc'
 alias vp='vi ~/karlzheng_config/mypathfunctions.sh ~/karlzheng_config/pwd.mk'
 alias VI='vi'
+alias um="umount "
 alias wg="wget"
 
 #alias mydate="echo $(date +%Y%m%d_%T)"
@@ -257,6 +238,7 @@ function emulator_env()
 
 function gitdir()
 {
+	echo config: .git/config
 	cat .git/config
 }
 
@@ -279,6 +261,21 @@ function undel()
 	mv ~/.trash/$* . ;
 }
 
+function d()
+{
+	cd ~/桌面/
+}
+
+function diff()
+{
+    /usr/bin/diff -x '.svn' "$@"
+}
+
+function f()
+{
+    find -iname "$@"
+}
+
 function fp()
 {
     if [ -f /dev/shm/${MYUSERNAME}/filename ];
@@ -286,9 +283,26 @@ function fp()
     fi
 }
 
+
 function fa()
 {
     pwd > /dev/shm/${MYUSERNAME}/filename
+}
+
+function g()
+{
+    grep "$@"
+}
+
+function gt()
+{
+    if [ -f /tmp/file.tar ];then
+	tar tf /tmp/file.tar
+	read -p "Decompressed ?" choose
+	tar xf /tmp/file.tar
+    else
+	echo "no /tmp/file.tar"
+    fi
 }
 
 function gitcobranch()
@@ -296,6 +310,23 @@ function gitcobranch()
 	if [ $# -eq 1 ];then
 		git checkout -b "$1" origin/"$1"
 	fi
+}
+
+function git_diff()
+{
+    git diff --no-ext-diff -w "$@" | vim -R -
+}
+
+function gitignore.kernel()
+{
+    if [ -f .gitignore ];then
+	echo "exist .gitignore! exit!"
+    else
+	if [ -f ${HOME}/local_git/tips/git/kernel.gitignore ];then
+	    echo cp ${HOME}/local_git/tips/git/kernel.gitignore ./.gitignore
+	    cp ${HOME}/local_git/tips/git/kernel.gitignore ./.gitignore
+	fi
+    fi
 }
 
 function gitloghead()
@@ -354,6 +385,14 @@ function gitsvnup()
 	git rebase --onto git-svn --root
 }
 
+function gitdiffmodified()
+{
+    pid=$$
+    git diff -U1000000 > /tmp/tmp.${pid}.patch
+    patch2dir.sh /tmp/tmp.${pid}.patch
+    bcompare . /tmp/a &
+}
+
 function gittar()
 {
 	# http://blog.csdn.net/free2o/archive/2009/03/11/3981786.aspx
@@ -377,6 +416,26 @@ function gittar()
     gzip --best > "$tar"
 
     echo $tar
+}
+
+function gbr()
+{
+    git br "$@"
+}
+
+function gl()
+{
+    git log "$@"
+}
+
+function glg()
+{
+    git log "$@" > git.log
+}
+
+function gsu()
+{
+    git status -u "$@"
 }
 
 function ha()
@@ -416,6 +475,15 @@ function he()
     eval "$cmd_line"
 }
 
+function k()
+{
+     for i in $(jobs | awk '{print $1}' | sed -e 's#\[\(.*\)\].*#\1#'); do
+	echo "kill -9 %$i"
+	#sudo kill -9 %$i
+	kill -9 %$i
+     done
+}
+
 function ksvn()
 {
 	if [ $# -lt 1 ];then
@@ -430,7 +498,8 @@ function ksvn()
 	fi
 }
 
-function lac() {
+function lac()
+{
      if [ $# -eq 0 ];then
 		 echo "arch/arm/configs"
 		 ls arch/arm/configs
@@ -438,6 +507,13 @@ function lac() {
        ls $1
      fi
      return 0
+}
+
+function lsd()
+{
+    #/bin/ls -la | grep -E "^d|^l" | awk '{print $NF}'
+    #ls -l | awk '/^d/{print $NF}'
+    ls -d */
 }
 
 function mkdircd ()
@@ -505,6 +581,10 @@ function p()
 
 function dnw()
 {
+    if [ $? != 0 ];then
+	echo "last command is okay! exit!!"
+	return 1
+    fi
     if [ $# -ge 1 ];then
 	local START_TIME=`date +%s`
 	local filename="$(echo ${1/11111/})"
@@ -547,17 +627,22 @@ function swap()
   mv tmp.$$ $2
 }
 
+function t()
+{
+    touch "$@"
+}
+
 sfile ()
 {
     if [ $# -eq 0 ];then
 	local file_list=(
 	.vimrc
-	.ackrc
+	#.ackrc
 	karlzheng_config/mybashrc.sh
 	karlzheng_config/mypathfunctions.sh
 	#mytools
 	)
-	local DEV_SERVER_MOUNT_DIR=${HOME}/241
+	local DEV_SERVER_MOUNT_DIR=${HOME}/dev
 	for f in ${file_list[@]}; do
 	    rsync -avurP "${HOME}/${f}" "$DEV_SERVER_MOUNT_DIR/${f}" || return 1
 	    rsync -avurP "$DEV_SERVER_MOUNT_DIR/${f}" "${HOME}/${f}" || return 1
@@ -584,7 +669,72 @@ function unap()
 
 function v()
 {
-    vim -c ":LUTags $@"
+    if [ $# -eq 1 ];then
+	if [ -f "$1" -o -d "$1" ];then
+	    vi "$1"
+	    return
+	fi
+    fi
+    local fn=$(echo "$@" | awk -F: '{print $1}')
+    local ln=$(echo "$@" | awk -F: '{print $2}')
+    if [ -f "$fn" -o -d "$fn" ];then
+	vim -c ":e $fn" -c ":$ln"
+	return;
+    fi
+    if [ $(echo "$fn" | grep "^a/") ];then
+	fn=$(echo "$fn" | cut -b 3-)
+    fi
+    if [ $(echo "$fn" | grep "^b/") ];then
+	fn=$(echo "$fn" | cut -b 3-)
+    fi
+    if [ -f "$fn" -o -d "$fn" ];then
+	vim -c ":e $fn" -c ":$ln"
+	return;
+    else
+	vim -c ":LUTags $fn"
+    fi
+}
+
+function v1()
+{
+   local n=0
+   while [ $n -lt 200 ];do
+       if [ ! -f "/tmp/del${n}.txt" ];then
+	   break
+       fi
+       ((n++))
+   done
+   vi "/tmp/del${n}.txt"
+}
+
+function vl1()
+{
+    mkdir -p ~/tmp/log/
+   local n=0
+   while [ $n -lt 200 ];do
+       if [ ! -f "${HOME}/tmp/log/${n}.txt" ];then
+	   break
+       fi
+       ((n++))
+   done
+   vi ${HOME}/tmp/log/${n}.txt
+}
+
+function vc()
+{
+   if [ -d arch/arm/configs/ ];then
+       vi arch/arm/configs/
+   fi
+}
+
+function vm()
+{
+    #http://ahei.info/bash.htm
+    #vim <(man "$@")
+    local help_file="/tmp/$$.hlp.txt"
+    (man "$@") > ${help_file}
+    vim ${help_file}
+    /bin/rm ${help_file}
 }
 
 function vmdis()
@@ -722,20 +872,28 @@ function _mj_complete()
 
 function _mc_complete()
 {
-     COMPREPLY=()
-     local cur=${COMP_WORDS[COMP_CWORD]};
-     local com=${COMP_WORDS[COMP_CWORD-1]};
-     case $com in
-     'mc')
-		 if [ -d arch/arm/configs ];then
-			 local my_complete_word=$(ls arch/arm/configs/m* -l |awk '{print $8}'|sed "s#.*/##")
-			 COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
-		 fi
-         ;;
-     *)
-         ;;
-     esac
-     return 0
+    COMPREPLY=()
+    local com=${COMP_WORDS[COMP_CWORD-1]};
+    local cur=${COMP_WORDS[COMP_CWORD]};
+    local j k
+    if [[ $COMP_CWORD==1 && -z "$cur" ]];then
+	case $com in
+	    'mc')
+		if [ -d arch/arm/configs ];then
+		    local my_complete_word=$(ls arch/arm/configs/m* -l |awk '{print $8}'|sed "s#.*/##")
+		    COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
+		fi
+		;;
+	    *)
+		;;
+	esac
+    else
+	if [ -d arch/arm/configs ];then
+	    local my_complete_word=$(ls arch/arm/configs/${cur}* -l |awk '{print $8}'|sed "s#.*/##")
+	    COMPREPLY=($(compgen -W '${my_complete_word[@]}' -- $cur))
+	fi
+    fi
+    return 0
 }
 
 function _ksvn_complete() {
@@ -766,6 +924,7 @@ function my_bash_login_auto_exec_func()
 		~/person_tools/
 		~/mytools/
 		~/software/bin
+		/usr/local/arm/arm-2013q1/bin/
 		/usr/local/arm/arm-2010q1/bin/
 		~/software/android-sdk-linux_86/platform-tools
 		~/software/android-sdk-linux_86/tools
@@ -778,6 +937,7 @@ function my_bash_login_auto_exec_func()
 	done
 	export PATH="$mypath"$PATH
 	[ -d ~/.trash ] || mkdir ~/.trash
+	[ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
 	[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
 	append_daily_path
 	unset append_daily_path
@@ -804,11 +964,31 @@ function my_bash_login_auto_exec_func()
 		ln -s "/rambuild/ramdisk" "${HOME}/ramdisk"
 	    fi
 	fi
+	
+	if [ $MYUSERNAME != $MYNICKNAME ];then
+		export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
+		export USE_CACHE=1
+		if [ -d $HOME/ramdisk/ccache ];then
+			mkdir -p $HOME/ramdisk/ccache
+			CCACHE_DIR=$HOME/ramdisk/ccache
+		fi
+		mkdir -p ${HOME}/ccache
+		CCACHE_DIR=${HOME}/ccache
+		ccache -M 50G
+	fi
+
+	mkdir -p /tmp/t
+	
+	#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
+	#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
+	#export JAVA_HOME=/usr/lib/jvm/java-6-sun/
+	#export ANDROID_JAVA_HOME=$JAVA_HOME
 }
 
 #bash command:
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do  sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars
+#rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
 
 if [ -f ~/karlzheng_config/adb.bash_complete.sh ];then
 	source  ~/karlzheng_config/adb.bash_complete.sh
@@ -820,4 +1000,6 @@ fi
 if [ -f ~/karlzheng_config/my_private_bashrc.sh ];then
 	source ~/karlzheng_config/my_private_bashrc.sh
 fi
+
 my_bash_login_auto_exec_func
+

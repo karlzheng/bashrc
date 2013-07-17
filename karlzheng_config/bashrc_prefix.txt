@@ -1,0 +1,3 @@
+if [ -f ~/karlzheng_config/mybashrc.sh ];then
+    source ~/karlzheng_config/mybashrc.sh
+fi

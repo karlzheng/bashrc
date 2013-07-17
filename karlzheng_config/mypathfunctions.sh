@@ -99,6 +99,20 @@ function ca()
 	builtin cd "$enter_dir"
 }
 
+function cda()
+{
+    if [ -d /tmp/a ];then 
+	cd /tmp/a
+    fi
+}
+
+function cdb()
+{
+    if [ -d /tmp/b ];then 
+	cd /tmp/b
+    fi
+}
+
 function cdc()
 {
 	if [ $# -eq 0 ];then
@@ -107,13 +121,18 @@ function cdc()
 		else
 		    if [ -d device ];then
 			local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-			if [ -d device/meizu/ ];then
-			    find device/meizu/ -maxdepth 1 -type d -name "m*" \
-			    | sed -n -e '{2,$p}' | tee $enter_dir_file
+			if [ -d device/de/ ];then
+			    find device/de/ -maxdepth 1 -type d -name "t*" \
+			    | sed -n -e '{1,$p}' | tee $enter_dir_file
 			else
-			    if [ -d device/samsung/ ];then
-				find device/samsung/ -maxdepth 1 -type d -name "smdk4*" \
-				| tee $enter_dir_file
+			    if [ -d device/meizu/ ];then
+				find device/meizu/ -maxdepth 1 -type d -name "m*" \
+				| sed -n -e '{2,$p}' | tee $enter_dir_file
+			    else
+				if [ -d device/samsung/ ];then
+				    find device/samsung/ -maxdepth 1 -type d -name "smdk4*" \
+				    | tee $enter_dir_file
+				fi
 			    fi
 			fi
 			cd_dir_in_file
@@ -124,19 +143,51 @@ function cdc()
 	fi
 }
 
-function cds()
+function cdm()
 {
-    if [ "${MYUSERNAME}" != "karlzheng" ];then
-	pwd > ~/server_path.mk
-    else
-	local cds_path="${HOME}/$(cat ~/241/server_path.mk | \
-	    sed -e "s#/home/\w*/##" | sed -e "s#/disk/##" | tr -d '\r')"
-	echo "$cds_path"
-	builtin cd "$cds_path"
+    if [ -d arch/arm/mach-exynos4/ ];then 
+	cd arch/arm/mach-exynos4/
+    fi
+    if [ -d arch/arm/mach-exynos/ ];then 
+	cd arch/arm/mach-exynos/
     fi
 }
 
-function cdv()
+function cdr()
+{
+    #echo cd $(/bin/ls -Altr | tail -n 1 | awk '{print $NF}')
+    #cd $(/bin/ls -Altr | tail -n 1 | awk '{print $NF}')
+    local recent_dirs=$(echo "$(ls -lt | awk '{print $9}' | grep -E -v '^\.' | sed -n '2,2p')" | tac )
+    echo cd ${recent_dirs}
+    cd ${recent_dirs}
+}
+
+function cds()
+{
+    local DEV_SERVER_MOUNT_DIR=${HOME}/dev
+    #if [ "${MYUSERNAME}" != "karlzheng" ];then
+    if [ ! -d ${DEV_SERVER_MOUNT_DIR} ];then
+	pwd > ~/server_path.mk
+    else
+	local cds_path="$(cat ${DEV_SERVER_MOUNT_DIR}/server_path.mk | \
+	    sed -e "s#/home/\w*/##" | sed -e "s#/disk/##" | tr -d '\r')"
+	echo "${DEV_SERVER_MOUNT_DIR}/$cds_path"
+	builtin cd "${DEV_SERVER_MOUNT_DIR}/$cds_path"
+    fi
+}
+
+function ct()
+{
+    local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+
+    echo "/tmp" >  ${enter_dir_file}
+    echo "~/tmp" >>  ${enter_dir_file}
+    echo "~/mytools/" >>  ${enter_dir_file}
+    cat -n ${enter_dir_file}
+    cd_dir_in_file
+}
+
+function cv()
 {
     if [ ! -f /dev/shm/${MYUSERNAME}/vim_cur_file_path ];
         then echo "no /dev/shm/${MYUSERNAME}/vim_cur_file_path file";
@@ -393,33 +444,39 @@ function c()
 
 function cd()
 {
-	if [ $# -eq 0 ];then
+    if [ $# -eq 0 ];then
+	builtin cd "$@"
+    else
+	if [ -d "$1" -o "$1" == '-' ];then
 	    builtin cd "$@"
 	else
-	    if [ -d "$1" -o "$1" == '-' ];then
-		builtin cd "$@"
-	    else
-		if [ $# -eq 1 ];then
+	    if [ $# -eq 1 ];then
+		local no_host_dir=$(echo $1 | \
+		    sed -e 's#\w*@.*:\(.*\)#\1#')
+		if [ -d "${no_host_dir/\~/${HOME}}" ];then
+		    builtin cd "${no_host_dir/\~/${HOME}}"
+		else
 		    local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
 		    mkdir -p /dev/shm/"${MYUSERNAME}"
 		    : > $enter_dir_file
-		    for d in $(/bin/ls -la | grep -E "^d|^l" | grep "$1" \
-			| awk '{print $9}');
-		    do
-			if [ -d "${d}" ];then
-			    echo "${d}" >> $enter_dir_file
-			fi
-		    done
-		    local cnt=$(cat "$enter_dir_file" | wc -l)
-		    if [ $cnt -gt 0 ];then
-			cat -n "$enter_dir_file"
-			cd_dir_in_file
+		    for d in $(/bin/ls -la | grep -E "^d|^l" | \
+			awk '{print $NF}' | grep -i "$1" );
+		do
+		    if [ -d "${d}" ];then
+			echo "${d}" >> $enter_dir_file
 		    fi
-		else
-		    builtin cd "$@"
+		done
+		local cnt=$(cat "$enter_dir_file" | wc -l)
+		if [ $cnt -gt 0 ];then
+		    cat -n "$enter_dir_file"
+		    cd_dir_in_file
 		fi
 	    fi
+	else
+	    builtin cd "$@"
 	fi
+    fi
+fi
 }
 
 function dlb()
@@ -455,9 +512,13 @@ function dlb()
     #echo ${buid_dirs[*]}
     for i in ${buid_dirs[*]}; do
 	if [ -d "$i" ];then
-	    local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $9}'\
-		| grep -E -v '^\.' | sed -n '2,3p')" | tac )
-	    #echo ${recent_dirs[*]};
+	    if [ "x$LANG" == "xC" ];then
+		local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $9}'\
+		    | grep -E -v '^\.' | sed -n '2,3p')" | tac )
+	    else
+		local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $8}'\
+		    | grep -E -v '^\.' | sed -n '2,3p')" | tac )
+	    fi
 	    for j in ${recent_dirs[*]};
 	    do
 		echo -e "$i/$j" | tee -a ${enter_dir_file}
@@ -478,10 +539,10 @@ function pa()
 	grep -q "^$(pwd)$" ${HOME}/karlzheng_config/pwd.mk
 	if [ $? != 0 ]; then
 		pwd | sed -e "s#${HOME}#~#" >> ${HOME}/karlzheng_config/pwd.mk
-		awk '!a[$0]++' ${HOME}/karlzheng_config/pwd.mk > $$.pwd.mk
+		awk '!a[$0]++' ${HOME}/karlzheng_config/pwd.mk > ${HOME}/karlzheng_config/$$.pwd.mk
 		#cat $$.pwd.mk | sort > ${HOME}/karlzheng_config/pwd.mk
 		#rm $$.pwd.mk
-		/bin/mv $$.pwd.mk ${HOME}/karlzheng_config/pwd.mk
+		/bin/mv ${HOME}/karlzheng_config/$$.pwd.mk ${HOME}/karlzheng_config/pwd.mk
 	else
 		echo "$(pwd) has already in ${HOME}/karlzheng_config/pwd.mk"
 	fi
@@ -523,11 +584,11 @@ function cr()
 	fi
 	return $is_root_dir;
     }
-    if [ -n "$T" ]; then
-	echo "auto change to TOP dir: $T"
-	cd "$T";
-	return 0;
-    fi
+    #if [ -n "$T" ]; then
+	#echo "auto change to TOP dir: $T"
+	#cd "$T";
+	#return 0;
+    #fi
     if [ -n $OLDPWD ];then
 	local SAVE_OLDPWD="$OLDPWD"
     fi
@@ -554,12 +615,7 @@ function cr()
     unset is_project_root_dir
 }
 
-function ct()
+function cdt()
 {
-    local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-
-    echo "/tmp" >  ${enter_dir_file}
-    echo "~/tmp" >>  ${enter_dir_file}
-    cat -n ${enter_dir_file}
-    cd_dir_in_file
+    cd /tmp/t
 }
