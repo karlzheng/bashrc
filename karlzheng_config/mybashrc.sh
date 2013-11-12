@@ -48,14 +48,18 @@ export MYUSERNAME=$(whoami)
 export ARCH=arm
 #http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
 export BROWSER="$PAGER"
-export CROSS_COMPILE=arm-none-linux-gnueabi-
+#export CROSS_COMPILE=arm-none-linux-gnueabi-
+export CROSS_COMPILE=arm-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
+export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
 #命令文件最大行数
 export HISTSIZE=5000000
 #最大命令历史记录数
 export HISTFILESIZE=5000000
 export HISTCONTROL="erasedups:ignoreboth"
+#export JAVA_HOME=${HOME}/bk/sw/jdk1.7.0_25/
+export JAVA_HOME=${HOME}/bk/sw/jdk1.6.0_45/
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:
 export LESS_TERMCAP_mb=$'\E[01;34m'
 export LESS_TERMCAP_md=$'\E[01;34m'
@@ -88,7 +92,8 @@ bind -m emacs '"\ew": backward-kill-word'
 bind -m emacs '"\C-o": menu-complete'
 
 bind -m emacs '"\C-ga": "grep \"\" * --color -rHniI|grep -v ^tags|grep -v ^cscopef"'
-bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
+#bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
+bind -m emacs '"\C-gc": "cd $(!!)"'
 bind -m emacs '"\C-gf": "$(fp)"'
 bind -m emacs '"\C-gh": "--help"'
 bind -m emacs '"\C-gm": "grep mei Makefile"'
@@ -103,8 +108,6 @@ bind -m emacs '"\C-g\C-n": "find -name "'
 
 unalias ls
 #alias adb_="sudo adb kill-server && sudo adb start-server"
-alias a='ack-grep -H --nogroup '
-alias aa='ack-grep -H -a --nogroup '
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias brm='/bin/rm -rf'
 alias CD='cd'
@@ -142,7 +145,6 @@ alias lt='ls -lat '
 alias ltr='ls -latr '
 alias m='mount '
 alias mcd='cd '
-alias md='mkdir '
 alias mj="make -j$(/bin/grep processor /proc/cpuinfo \
     | /usr/bin/awk '{field=$NF};END{print(field+1)*2}') "
 #alias mt3='mount -t ext3 '
@@ -171,6 +173,16 @@ alias wg="wget"
 #alias svnawtar="date_str=$(date +%Y%m%d_%T) && tmp_file_name=svn_diff_$date_str && svnaw |xargs \
 #tar --force-local -rvf \$tmp_file_name.tar && echo \$tmp_file_name && unset \
 #tac ~/.bash_history |awk '!a[$0]++' |tac > /tmp/.bash_history &&  mv /tmp/.bash_history ~/.bash_history -f
+function a()
+{
+    ack-grep -H --nogroup "$@"
+}
+
+function aa()
+{
+    ack-grep -H -a --nogroup "$@"
+}
+
 function androidsetrootpath()
 {
     export ANDROID_SRC_ROOT="$(pwd)"
@@ -236,12 +248,6 @@ function emulator_env()
     export ANDROID_SWT=$(pwd)/out/host/linux-x86/framework
 }
 
-function gitdir()
-{
-	echo config: .git/config
-	cat .git/config
-}
-
 function lstrash()
 {
 	ls -l ~/.trash/ ;
@@ -264,6 +270,19 @@ function undel()
 function d()
 {
 	cd ~/桌面/
+}
+
+function dfd()
+{
+    IFS=$'\n'
+    for i in $(lsd);do
+	du -sh "$i";
+    done
+}
+
+function dl()
+{
+	cd ~/下载/
 }
 
 function diff()
@@ -292,6 +311,18 @@ function fa()
 function g()
 {
     grep "$@"
+}
+
+#function gitdir()
+function gd()
+{
+	echo config: .git/config
+	cat .git/config
+}
+
+function gba()
+{
+	git branch -a
 }
 
 function gt()
@@ -513,7 +544,13 @@ function lsd()
 {
     #/bin/ls -la | grep -E "^d|^l" | awk '{print $NF}'
     #ls -l | awk '/^d/{print $NF}'
+    IFS=":"
     ls -d */
+}
+
+function md()
+{
+    mkdir -p "$@"
 }
 
 function mkdircd ()
@@ -929,6 +966,12 @@ function my_bash_login_auto_exec_func()
 		~/software/android-sdk-linux_86/platform-tools
 		~/software/android-sdk-linux_86/tools
 		~/software/android-ndk-r8c
+		~/bk/sw/adt/sdk/platform-tools
+		~/bk/sw/gradle-1.6/bin
+		~/bk/sw/adt/sdk/tools
+		/usr/local/arm/linaro-arm-linux-gnueabi-4.6.3/bin
+		#~/software/arm-eabi-4.6/bin
+		${JAVA_HOME}/bin
 	);
 	local mypath=""
 	for p in ${path_list[@]};
@@ -964,7 +1007,7 @@ function my_bash_login_auto_exec_func()
 		ln -s "/rambuild/ramdisk" "${HOME}/ramdisk"
 	    fi
 	fi
-	
+
 	if [ $MYUSERNAME != $MYNICKNAME ];then
 		export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
 		export USE_CACHE=1
@@ -977,8 +1020,9 @@ function my_bash_login_auto_exec_func()
 		ccache -M 50G
 	fi
 
+	mkdir -p ~/tmp
 	mkdir -p /tmp/t
-	
+
 	#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
 	#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
 	#export JAVA_HOME=/usr/lib/jvm/java-6-sun/

@@ -9,12 +9,12 @@ alias s='ssh zkl@192.168.2.133'
 
 function ssshfs()
 {
-    local SERVER_USER="zkl"
-    
-    local SERVER_IP="192.168.2.133"
+    local SERVER_USER="sztv"
+    local SERVER_IP="10.232.128.24"
+    #local localip=$(ifconfig | sed -n -e '/Bcast/{s/.*addr:*\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\).*/\1/p}')
+    local localip=$(ifconfig | grep 'Bcast' | awk -F ":| +" '{ print $4 }')
 
-    ifconfig | grep '192.168' > /dev/null
-    if [ $? == 0 ];then
+    if [ ${#localip} != 0 ];then
 	ping -c 1 -w 1 ${SERVER_IP}
 	if [ $? == 0 ];then
 	    echo "sshfs -o nonempty -o reconnect -o follow_symlinks -o allow_other -o uid=1000,gid=1000 ${SERVER_USER}@$SERVER_IP:/home/${SERVER_USER} ~/dev"
@@ -24,6 +24,7 @@ function ssshfs()
 	fi
     fi
 }
+
 
 function ssshfs_unmount()
 {

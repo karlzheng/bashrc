@@ -1,0 +1,36 @@
+[user]
+	name = karlzheng
+	email = zhengkarl@gmail.com
+	;email = karlzhengapp@gmail.com
+	editor = vim
+[core]
+    pager = less -FRSX
+    ;http://zengrong.net/post/1249.htm
+    quotepath = false
+[color]
+	ui = auto
+[diff]
+	#external = echo
+	;external = git_diff_wrap.sh
+[merge]
+	tool = vimdiff
+[sendemail]
+	#confirm = auto
+	suppresscc = all
+	smtpserver = mail.meizu.com
+	#smtpencryption = tls
+	from = zhengkl@meizu.com
+	smtpuser = zhengkl@meizu.com 
+	#smtppass = <PASSWORD>
+	smtpserverport = 587
+	smtpencryption = ntlm 
+[alias]
+	br = branch
+	ci = commit
+	cl = clone
+	co = checkout
+	st = status
+[status]
+	showUntrackedFiles = no
+[push]
+	default = simple

@@ -466,6 +466,9 @@ function cd()
 			echo "${d}" >> $enter_dir_file
 		    fi
 		done
+		if [ -f "$1" ];then
+		    echo "$(dirname $1)" >> $enter_dir_file
+		fi
 		local cnt=$(cat "$enter_dir_file" | wc -l)
 		if [ $cnt -gt 0 ];then
 		    cat -n "$enter_dir_file"
@@ -478,6 +481,12 @@ function cd()
     fi
 fi
 }
+
+#function cl()
+#{
+    #cd $(!!)
+#}
+#alias cl="cd $(!!)"
 
 function dlb()
 {
@@ -589,6 +598,51 @@ function cr()
 	#cd "$T";
 	#return 0;
     #fi
+    if [ -n $OLDPWD ];then
+	local SAVE_OLDPWD="$OLDPWD"
+    fi
+    PWD=$(/bin/pwd);
+    local HERE="$PWD";
+    local T=;
+    is_project_root_dir
+    while [ $is_root_dir != 1 -a "$PWD" != "/" ];
+    do
+	cd .. > /dev/null;
+	T=`PWD= /bin/pwd`;
+	is_project_root_dir
+    done;
+    is_project_root_dir
+    cd "$HERE" > /dev/null;
+    if [ $is_root_dir == 1 -a "x$T" != "x" ]; then
+	echo "$HERE => $T";
+	cd "$T";
+    else
+	if [ -n $SAVE_OLDPWD ];then
+	    OLDPWD=$(echo $SAVE_OLDPWD)
+	fi
+    fi;
+    unset is_project_root_dir
+}
+
+function crr()
+{
+    local is_root_dir=0;
+
+    function is_project_root_dir()
+    {
+	local ANDROIDENVSETUP=build/core/envsetup.mk;
+	local KERNELCONFIGDIR=arch/arm/configs;
+	let is_root_dir=0
+	if [ -f $ANDROIDENVSETUP ] || \
+	   [ -d $KERNELCONFIGDIR ] || \
+	   [ "$(pwd)" == "${HOME}" ] || \
+	   [ "$(pwd)" == "/" ] || \
+	   ( [ -f .project ] && [ -f project.properties ] ) || \
+	   ( [ -d board ] && [ -d arch ] && [ -d drivers ] );then
+	    let is_root_dir=1
+	fi
+	return $is_root_dir;
+    }
     if [ -n $OLDPWD ];then
 	local SAVE_OLDPWD="$OLDPWD"
     fi
