@@ -982,22 +982,22 @@ function my_bash_login_auto_exec_func()
 	    export isfirstlogin=1
 	fi
 
-	function ensure_file_dir()
-	{
-	    [ -d /tmp/t ] || mkdir ~/tmp/t
-	    [ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
-	    [ -d ~/tmp ] || mkdir ~/tmp
-	    [ -d ~/tmp/tmp ] || mkdir ~/tmp/tmp
-	    [ -d ~/tmp/log ] || mkdir ~/tmp/log
-	    [ -d ~/.trash ] || mkdir ~/.trash
-	    [ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
-	    touch /dev/shm/${MYUSERNAME}/notfirstlogin
-	}
-	ensure_file_dir
-	unset ensure_file_dir
-
 	if [ "isfirstlogin" == 1 ];then
 	    sbl
+	    touch /dev/shm/${MYUSERNAME}/notfirstlogin
+	    function ensure_file_dir()
+	    {
+		[ -d ~/.trash ] || mkdir ~/.trash
+		[ -d ~/tmp ] || mkdir ~/tmp
+		[ -d ~/tmp/log ] || mkdir ~/tmp/log
+		[ -d ~/tmp/t ] || mkdir ~/tmp/t
+		[ -d ~/tmp/tmp ] || mkdir ~/tmp/tmp
+		[ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
+		[ -d /tmp/t ] || mkdir /tmp/t
+		[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
+	    }
+	    ensure_file_dir
+	    unset ensure_file_dir
 	fi
 
 	local path_list=(
