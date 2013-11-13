@@ -158,7 +158,7 @@ alias pp="cat -n /dev/shm/${MYUSERNAME}/daily_path"
 alias pu1='pushd +1'
 alias pu='pushd .'
 alias sb='source ~/karlzheng_config/mybashrc.sh'
-alias slog='svn log |tac '
+alias slog='svn log | tac '
 alias smbmount242_home='sudo smbmount //172.16.10.242/home/ /media/242/ -o iocharset=utf8,username=${MYUSERNAME},dir_mode=0777,file_mode=0777'
 alias smbmount242='mount |grep -q 242; if [ $? = 0 ];then sudo umount /media/x;fi;sudo smbmount //172.16.10.242/home/svn /media/x/ -o iocharset=utf8,dir_mode=0777,file_mode=0777,username=${MYUSERNAME}'
 alias svnaw="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}'"
@@ -269,7 +269,11 @@ function undel()
 
 function d()
 {
+    if [ -d ~/Desktop ];then
+	cd ~/Desktop/
+    else
 	cd ~/桌面/
+    fi
 }
 
 function dfd()
@@ -282,7 +286,11 @@ function dfd()
 
 function dl()
 {
+    if [ -d ~/Downloads/ ];then
+	cd ~/Downloads/
+    else
 	cd ~/下载/
+    fi
 }
 
 function diff()
@@ -553,7 +561,7 @@ function md()
     mkdir -p "$@"
 }
 
-function mkdircd ()
+function mdcd ()
 {
   mkdir -p "$@" && eval cd "\"\$$#\"";
 }
@@ -637,7 +645,16 @@ function dnw()
     return 0
 }
 
-function sdu () {
+function sbl()
+{
+    #save bash log
+    cat ~/.bash_history >> ~/tmp/bash_history 
+    sort ~/tmp/bash_history > /tmp/bash_history 
+    cat /tmp/bash_history | awk '!a[$0]++' > ~/tmp/bash_history 
+}
+
+function sdu ()
+{
 	#http://lilydjwg.is-programmer.com/posts/18368.html
 	du -sk $@ | sort -n | awk '
 	BEGIN {
@@ -664,11 +681,6 @@ function swap()
   mv tmp.$$ $2
 }
 
-function t()
-{
-    touch "$@"
-}
-
 sfile ()
 {
     if [ $# -eq 0 ];then
@@ -692,10 +704,17 @@ sfile ()
 	rsync -avurP "$to"   "$from" || return 1
     fi
 }
+
+function t()
+{
+    touch "$@"
+}
+
 function tfind()
 {
 	find . -exec grep -Hn "$@" {} +
 }
+
 function unap()
 {
 	if [ -d /dev/shm/${MYUSERNAME} -a \
@@ -957,6 +976,30 @@ fi
 
 function my_bash_login_auto_exec_func()
 {
+	if [ -f /dev/shm/${MYUSERNAME}/notfirstlogin ];then
+	    export isfirstlogin=0
+	else
+	    export isfirstlogin=1
+	fi
+
+	function ensure_file_dir()
+	{
+	    [ -d /tmp/t ] || mkdir ~/tmp/t
+	    [ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
+	    [ -d ~/tmp ] || mkdir ~/tmp
+	    [ -d ~/tmp/tmp ] || mkdir ~/tmp/tmp
+	    [ -d ~/tmp/log ] || mkdir ~/tmp/log
+	    [ -d ~/.trash ] || mkdir ~/.trash
+	    [ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
+	    touch /dev/shm/${MYUSERNAME}/notfirstlogin
+	}
+	ensure_file_dir
+	unset ensure_file_dir
+
+	if [ "isfirstlogin" == 1 ];then
+	    sbl
+	fi
+
 	local path_list=(
 		~/person_tools/
 		~/mytools/
@@ -979,9 +1022,6 @@ function my_bash_login_auto_exec_func()
 		mypath=$mypath"$p:"
 	done
 	export PATH="$mypath"$PATH
-	[ -d ~/.trash ] || mkdir ~/.trash
-	[ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
-	[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
 	append_daily_path
 	unset append_daily_path
 
@@ -1019,9 +1059,6 @@ function my_bash_login_auto_exec_func()
 		CCACHE_DIR=${HOME}/ccache
 		ccache -M 50G
 	fi
-
-	mkdir -p ~/tmp
-	mkdir -p /tmp/t
 
 	#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
 	#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/

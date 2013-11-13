@@ -1,0 +1,10 @@
+pwd.mk
+*.swp
+cscope.files
+cscope.in.out
+cscope.out
+cscope.po.out
+filenametags
+fullfilenametags
+tags
+
