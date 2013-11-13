@@ -1057,7 +1057,11 @@ function my_bash_login_auto_exec_func()
 		fi
 		mkdir -p ${HOME}/ccache
 		CCACHE_DIR=${HOME}/ccache
-		ccache -M 50G
+		#ccache -M 50G
+	fi
+
+	if [ -d .git ];then
+	    git config http.postBuffer 524288000
 	fi
 
 	#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
@@ -1083,4 +1087,3 @@ if [ -f ~/karlzheng_config/my_private_bashrc.sh ];then
 fi
 
 my_bash_login_auto_exec_func
-
