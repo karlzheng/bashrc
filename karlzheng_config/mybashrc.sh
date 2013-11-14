@@ -603,6 +603,10 @@ function n()
 	else
 		nautilus $1
 	fi
+	type xdotool
+	if [ $? == 0 ];then
+	    xdotool windowactivate $(xdotool search --class nautilus | tail -n 1)
+	fi
 	return 0
 }
 
