@@ -982,9 +982,7 @@ function my_bash_login_auto_exec_func()
 	    export isfirstlogin=1
 	fi
 
-	if [ "isfirstlogin" == 1 ];then
-	    sbl
-	    touch /dev/shm/${MYUSERNAME}/notfirstlogin
+	if [ "${isfirstlogin}" == 1 ];then
 	    function ensure_file_dir()
 	    {
 		[ -d ~/.trash ] || mkdir ~/.trash
@@ -998,6 +996,8 @@ function my_bash_login_auto_exec_func()
 	    }
 	    ensure_file_dir
 	    unset ensure_file_dir
+	    touch /dev/shm/${MYUSERNAME}/notfirstlogin
+	    sbl
 	fi
 
 	local path_list=(
