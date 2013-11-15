@@ -54,5 +54,6 @@ function m106_hardware()
     fi
 }
 
-ssshfs_auto_mount
-
+if [ -d ~/person_tools/ ];then
+    ssshfs_auto_mount
+fi

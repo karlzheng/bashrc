@@ -564,12 +564,17 @@ function ci()
 	echo "arch/arm/boot"
 	cd "arch/arm/boot"
     else
+	OLDPWD=$(pwd)
+	local SAVE_OLDPWD="$OLDPWD"
 	if [ -d "$imgout" ];then
 	    cd $imgout
 	    local recent_product_dir=$(ls -latr | tail -n 1 |awk '{print $NF}');
 	    cd "${recent_product_dir}"
 	    echo $imgout/"${recent_product_dir}"
 	fi
+    fi
+    if [ -n $SAVE_OLDPWD ];then
+	OLDPWD=$(echo $SAVE_OLDPWD)
     fi
 }
 
