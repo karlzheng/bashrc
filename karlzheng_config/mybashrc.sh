@@ -21,6 +21,8 @@
 
 if [ "$SHELL" != "/bin/bash" ];then
 	echo "the SHELL is not bash! exit!!"
+	echo "chsh -s /bin/bash"
+	chsh -s /bin/bash
 fi
 
 unset MAILCHECK
