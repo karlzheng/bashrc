@@ -14,7 +14,7 @@
 #        AUTHOR: Karl Zheng (), ZhengKarl#gmail.com
 #          BLOG: http://blog.csdn.net/zhengkarl
 #         WEIBO: http://weibo.com/zhengkarl
-#       COMPANY: Meizu
+#       COMPANY: Alibaba
 #       CREATED: 2012年05月21日 19时12分43秒 CST
 #      REVISION:  ---
 #===============================================================================
@@ -77,8 +77,8 @@ function apwd_abc()
 
 function ca()
 {
-	if [ ! -f ~/karlzheng_config/pwd.mk ];then
-		echo "no ~/karlzheng_config/pwd.mk file"
+	if [ ! -f ~/bashrc/karlzheng_config/pwd.mk ];then
+		echo "no ~/bashrc/karlzheng_config/pwd.mk file"
 		return 1;
 	fi
 	if [ ! -f /dev/shm/${MYUSERNAME}/pwd_pos ]; then
@@ -86,7 +86,7 @@ function ca()
 		local  pwd_pos=1;
 	else local pwd_pos=$(cat /dev/shm/${MYUSERNAME}/pwd_pos);
 		#if [ ! -f /dev/shm/${MYUSERNAME}/pwd_total_count ];then
-			wc -l ~/karlzheng_config/pwd.mk |awk '{print $1}' > /dev/shm/${MYUSERNAME}/pwd_total_count
+			wc -l ~/bashrc/karlzheng_config/pwd.mk |awk '{print $1}' > /dev/shm/${MYUSERNAME}/pwd_total_count
 		#fi
 		local total_count=$(cat /dev/shm/${MYUSERNAME}/pwd_total_count);
 		((pwd_pos ++));
@@ -95,7 +95,7 @@ function ca()
 		fi
 		echo $pwd_pos > /dev/shm/${MYUSERNAME}/pwd_pos;
 	fi
-	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/karlzheng_config/pwd.mk)
+	local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/bashrc/karlzheng_config/pwd.mk)
 	builtin cd "$enter_dir"
 }
 
@@ -430,12 +430,12 @@ function c()
 	mkdir -p /dev/shm/"${MYUSERNAME}"
 	: > $enter_dir_file
 	if [ $# -eq 0 ];then
-		cat -n ${HOME}/karlzheng_config/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
+		cat -n ${HOME}/bashrc/karlzheng_config/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
 		echo "${HOME}" > "$enter_dir_file"
-		cat  ${HOME}/karlzheng_config/pwd.mk >> "$enter_dir_file"
+		cat  ${HOME}/bashrc/karlzheng_config/pwd.mk >> "$enter_dir_file"
 	else
-		cat -n ${HOME}/karlzheng_config/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*"
-		cat  ${HOME}/karlzheng_config/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" \
+		cat -n ${HOME}/bashrc/karlzheng_config/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*"
+		cat  ${HOME}/bashrc/karlzheng_config/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" \
 		    > "$enter_dir_file"
 	fi
 
@@ -544,16 +544,16 @@ function dlb()
 
 function pa()
 {
-	touch ${HOME}/karlzheng_config/pwd.mk
-	grep -q "^$(pwd)$" ${HOME}/karlzheng_config/pwd.mk
+	touch ${HOME}/bashrc/karlzheng_config/pwd.mk
+	grep -q "^$(pwd)$" ${HOME}/bashrc/karlzheng_config/pwd.mk
 	if [ $? != 0 ]; then
-		pwd | sed -e "s#${HOME}#~#" >> ${HOME}/karlzheng_config/pwd.mk
-		awk '!a[$0]++' ${HOME}/karlzheng_config/pwd.mk > ${HOME}/karlzheng_config/$$.pwd.mk
-		#cat $$.pwd.mk | sort > ${HOME}/karlzheng_config/pwd.mk
+		pwd | sed -e "s#${HOME}#~#" >> ${HOME}/bashrc/karlzheng_config/pwd.mk
+		awk '!a[$0]++' ${HOME}/bashrc/karlzheng_config/pwd.mk > ${HOME}/bashrc/karlzheng_config/$$.pwd.mk
+		#cat $$.pwd.mk | sort > ${HOME}/bashrc/karlzheng_config/pwd.mk
 		#rm $$.pwd.mk
-		/bin/mv ${HOME}/karlzheng_config/$$.pwd.mk ${HOME}/karlzheng_config/pwd.mk
+		/bin/mv ${HOME}/bashrc/karlzheng_config/$$.pwd.mk ${HOME}/bashrc/karlzheng_config/pwd.mk
 	else
-		echo "$(pwd) has already in ${HOME}/karlzheng_config/pwd.mk"
+		echo "$(pwd) has already in ${HOME}/bashrc/karlzheng_config/pwd.mk"
 	fi
 }
 

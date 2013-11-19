@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONF_SUB_DIR="karlzheng_config"
+CONF_SUB_DIR="bashrc/karlzheng_config"
 CONF_DIR="${HOME}/${CONF_SUB_DIR}"
 
 function cp_shell_script()

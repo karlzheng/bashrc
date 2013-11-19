@@ -98,7 +98,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-if [ -f ~/karlzheng_config/mybashrc.sh ];then
-	source ~/karlzheng_config/mybashrc.sh
+if [ -f ~/bashrc/karlzheng_config/mybashrc.sh ];then
+	source ~/bashrc/karlzheng_config/mybashrc.sh
 fi
 
