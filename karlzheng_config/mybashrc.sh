@@ -159,14 +159,14 @@ alias po='popd'
 alias pp="cat -n /dev/shm/${MYUSERNAME}/daily_path"
 alias pu1='pushd +1'
 alias pu='pushd .'
-alias sb='source ~/karlzheng_config/mybashrc.sh'
+alias sb='source ~/bashrc/karlzheng_config/mybashrc.sh'
 alias slog='svn log | tac '
 alias smbmount242_home='sudo smbmount //172.16.10.242/home/ /media/242/ -o iocharset=utf8,username=${MYUSERNAME},dir_mode=0777,file_mode=0777'
 alias smbmount242='mount |grep -q 242; if [ $? = 0 ];then sudo umount /media/x;fi;sudo smbmount //172.16.10.242/home/svn /media/x/ -o iocharset=utf8,dir_mode=0777,file_mode=0777,username=${MYUSERNAME}'
 alias svnaw="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}'"
 alias svnaw_touch="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}' |xargs touch"
-alias vb='vi ~/karlzheng_config/mybashrc.sh ~/.bashrc'
-alias vp='vi ~/karlzheng_config/mypathfunctions.sh ~/karlzheng_config/pwd.mk'
+alias vb='vi ~/bashrc/karlzheng_config/mybashrc.sh ~/.bashrc'
+alias vp='vi ~/bashrc/karlzheng_config/mypathfunctions.sh ~/bashrc/karlzheng_config/pwd.mk'
 alias VI='vi'
 alias um="umount "
 alias wg="wget"
@@ -1117,13 +1117,13 @@ function my_bash_login_auto_exec_func()
 #1727  git checkout --track origin/mars
 #rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
 
-if [ -f ~/karlzheng_config/adb.bash_complete.sh ];then
-	source  ~/karlzheng_config/adb.bash_complete.sh
+if [ -f ~/bashrc/karlzheng_config/adb.bash_complete.sh ];then
+	source  ~/bashrc/karlzheng_config/adb.bash_complete.sh
 fi
-if [ -f ~/karlzheng_config/mypathfunctions.sh ];then
-	source ~/karlzheng_config/mypathfunctions.sh
+if [ -f ~/bashrc/karlzheng_config/mypathfunctions.sh ];then
+	source ~/bashrc/karlzheng_config/mypathfunctions.sh
 fi
-if [ -f ~/karlzheng_config/my_private_bashrc.sh ];then
-	source ~/karlzheng_config/my_private_bashrc.sh
+if [ -f ~/bashrc/karlzheng_config/my_private_bashrc.sh ];then
+	source ~/bashrc/karlzheng_config/my_private_bashrc.sh
 fi
 my_bash_login_auto_exec_func
