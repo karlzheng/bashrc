@@ -1,11 +1,14 @@
 #!/bin/bash
 
-#my_bash_login_auto_exec_func
-alias rsync241="rsync cefanty@172.16.10.241:/home/cefanty/svn/kernel/linux-2.6.35-meizu/arch/arm/boot/zImage ~/img/241/zImage"
-alias smbmount99_common='sudo smbmount //172.16.10.99/开发部公共文件夹/ /media/mzf_common/ -o iocharset=utf8,username=zhengkl,password=zheng09,dir_mode=0777,file_mode=0777'
-alias smbmount99='sudo umount /media/mzf/;sudo smbmount //172.16.10.99/开发部/ /media/mzf/ -o iocharset=utf8,username=zhengkl,password=zheng09,dir_mode=0777,file_mode=0777'
-
-alias s='ssh zkl@192.168.2.133'
+function s()
+{
+    netstat -nl | grep -q "tcp.*2222"
+    if [ $? != 0 ];then
+	ssh -fN -L 2222:localhost:2222 sztv@10.232.128.24
+	sshfs -p 2222 -o uid=1000,gid=1000 changliang@localhost:/sztv/changliang ~/dev2
+    fi
+    ssh changliang@localhost -p 2222
+}
 
 function ssshfs()
 {
@@ -24,7 +27,6 @@ function ssshfs()
 	fi
     fi
 }
-
 
 function ssshfs_unmount()
 {

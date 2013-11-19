@@ -126,7 +126,7 @@ alias cp='cp -i '
 alias cw="cd /media/work/"
 alias cz="cd ~/mytools/m032/tz_release_key/"
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
-alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
+#alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
 alias h='history|tail -n 35'
 alias hi='history'
 alias ht='history |tail -n 10 '
@@ -651,6 +651,22 @@ function dnw()
     return 0
 }
 
+function repo()
+{
+    if [ "x$0" != "x-bash" ];then
+	echo $(basename "$0") $LINENO
+    else
+	echo "in bash config $LINENO"
+    fi
+    echo "$@" > /dev/shm/${MYUSERNAME}/repo_cmd_line
+    grep -qP "alibaba|yunos-inc" /dev/shm/${MYUSERNAME}/repo_cmd_line
+    if [ $? == 0 ];then
+	ali_repo "$@"
+    else
+	google_repo "$@"
+    fi
+}
+
 function sbl()
 {
     #save bash log
@@ -1018,9 +1034,11 @@ function my_bash_login_auto_exec_func()
 		~/bk/sw/adt/sdk/platform-tools
 		~/bk/sw/gradle-1.6/bin
 		~/bk/sw/adt/sdk/tools
-		/usr/local/arm/linaro-arm-linux-gnueabi-4.6.3/bin
-		#~/software/arm-eabi-4.6/bin
-		${JAVA_HOME}/bin
+		~/software/arm-eabi-4.6/bin
+		~/bin
+		~/bin/bin
+		~/software/linaro-arm-linux-gnueabi-4.6.3/bin
+	${JAVA_HOME}/bin
 	);
 	local mypath=""
 	for p in ${path_list[@]};
@@ -1084,12 +1102,10 @@ function my_bash_login_auto_exec_func()
 if [ -f ~/karlzheng_config/adb.bash_complete.sh ];then
 	source  ~/karlzheng_config/adb.bash_complete.sh
 fi
-
 if [ -f ~/karlzheng_config/mypathfunctions.sh ];then
 	source ~/karlzheng_config/mypathfunctions.sh
 fi
 if [ -f ~/karlzheng_config/my_private_bashrc.sh ];then
 	source ~/karlzheng_config/my_private_bashrc.sh
 fi
-
 my_bash_login_auto_exec_func
