@@ -257,11 +257,22 @@ function lstrash()
 
 function rm ()
 {
-   if [ ! -d ~/.trash ]; then
-      mkdir ~/.trash;
-   fi;
-   #mv -i $* ~/.trash
-   /bin/mv $* ~/.trash
+    IFS=$'\n' # set field seperator for bash
+    if [ ! -d ~/.trash ]; then
+	mkdir ~/.trash;
+    fi;
+    while [ "x$1" != x ];do
+	if [ -f "$1" -o -d "$1" ];then
+	    if [ -f "${HOME}/.trash/$1" ];then
+		/bin/mv -f ${HOME}/.trash/$1 ${HOME}/.trash/$1.old 
+	    fi
+	    if [ -d "${HOME}/.trash/$1" ];then
+		/bin/mv ${HOME}/.trash/$1 ${HOME}/.trash/$1.old 
+	    fi
+	    /bin/mv $1 ~/.trash/
+	fi
+	shift
+    done
 }
 
 function undel()
@@ -651,6 +662,13 @@ function dnw()
     return 0
 }
 
+function rbrances()
+{
+    if [ -d .repo/manifests.git ];then
+	git --git-dir .repo/manifests/.git/ branch -a	
+    fi
+}
+
 function repo()
 {
     if [ "x$0" != "x-bash" ];then
@@ -659,7 +677,7 @@ function repo()
 	echo "in bash config $LINENO"
     fi
     echo "$@" > /dev/shm/${MYUSERNAME}/repo_cmd_line
-    grep -qP "alibaba|yunos-inc" /dev/shm/${MYUSERNAME}/repo_cmd_line
+    grep -qP "alibaba|yunos-inc|kangliang.zkl" /dev/shm/${MYUSERNAME}/repo_cmd_line
     if [ $? == 0 ];then
 	ali_repo "$@"
     else
