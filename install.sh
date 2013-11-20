@@ -27,7 +27,7 @@ function add_dot_bashrc_call()
     echo "$CONF_SUB_DIR" "${HOME}/.bashrc"
     grep "$CONF_SUB_DIR" "${HOME}/.bashrc" | grep "mybashrc"
     if [ $? != 0 ];then
-	cat bashrc_prefix.txt >> ${HOME}/.bashrc
+	cat karlzheng_config/bashrc_prefix.txt >> ${HOME}/.bashrc
 	#cp_shell_script
     fi
 }
