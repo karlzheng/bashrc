@@ -39,8 +39,6 @@ set expand-tild on
 stty -ixon
 
 export GTAGSFORCECPP=
-export LANG="zh_CN.UTF-8"
-export LANGUAGE="zh_CN.UTF-8"
 export LC_MESSAGES="C"
 
 export MYNICKNAME="karlzheng"
@@ -1016,6 +1014,10 @@ fi
 
 function my_bash_login_auto_exec_func()
 {
+	if [ $(locale -a | grep zh_CN) ];then
+	    export LANG="zh_CN.UTF-8"
+	    export LANGUAGE="zh_CN.UTF-8"
+	fi
 	if [ -f /dev/shm/${MYUSERNAME}/notfirstlogin ];then
 	    export isfirstlogin=0
 	else
