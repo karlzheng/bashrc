@@ -28,7 +28,7 @@ function add_dot_bashrc_call()
     grep "$CONF_SUB_DIR" "${HOME}/.bashrc" | grep "mybashrc"
     if [ $? != 0 ];then
 	cat bashrc_prefix.txt >> ${HOME}/.bashrc
-	cp_shell_script
+	#cp_shell_script
     fi
 }
 
@@ -52,8 +52,5 @@ function add_mytools()
 }
 
 add_dot_bashrc_call
-add_vim_config
-add_mytools
-
-
-
+#add_vim_config
+#add_mytools
