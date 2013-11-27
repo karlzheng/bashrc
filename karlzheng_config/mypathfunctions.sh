@@ -171,28 +171,17 @@ function cds()
 	pwd > ~/server_path.mk
     else
 	local PATHFILE=${DEV1}/server_path.mk
+	local PREPATH=${DEV1}
 
-	if [ -f ${PATHFILE} ];then
-	    if [ -f ${DEV2}/server_path.mk ];then
-		if [ ${PATHFILE} -ot ${DEV2}/server_path.mk ];then 
-		    PATHFILE=${DEV2}/server_path.mk
-		    local cds_path="$(cat ${PATHFILE} | \
-			sed -e "s#/sztv/\w*/##" | tr -d '\r')"
-		    echo "${DEV2}/$cds_path"
-		    builtin cd "${DEV2}/$cds_path"
-		else
-		    local cds_path="$(cat ${PATHFILE} | \
-			sed -e "s#/home/\w*/##" | tr -d '\r')"
-		    echo "${DEV1}/$cds_path"
-		    builtin cd "${DEV1}/$cds_path"
-		fi
-	    else
-		local cds_path="$(cat ${PATHFILE} | \
-		    sed -e "s#/home/\w*/##" | sed -e "s#/disk/##" | tr -d '\r')"
-		echo "${DEV1}/$cds_path"
-		builtin cd "${DEV1}/$cds_path"
-	    fi
+	if [ ${PATHFILE} -ot ${DEV2}/server_path.mk ];then 
+	    PATHFILE=${DEV2}/server_path.mk
+	    PREPATH=${DEV2}
 	fi
+	
+	local cds_path="$(cat ${PATHFILE} | \
+	    sed -e "s#/\w*/\w*##" | tr -d '\r')"
+	echo "cd ${PREPATH}/$cds_path"
+	builtin cd "${PREPATH}/$cds_path"
     fi
 }
 
