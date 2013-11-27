@@ -168,6 +168,7 @@ function cds()
     local DEV2=${HOME}/dev2
 
     if [ ! -d ${DEV1} ];then
+	touch ~/server_path.mk
 	pwd > ~/server_path.mk
     else
 	local PATHFILE=${DEV1}/server_path.mk
