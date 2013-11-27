@@ -20,8 +20,12 @@ function ssshfs()
     if [ ${#localip} != 0 ];then
 	ping -c 1 -w 1 ${SERVER_IP}
 	if [ $? == 0 ];then
-	    echo "sshfs -o nonempty -o reconnect -o follow_symlinks -o allow_other -o uid=1000,gid=1000 ${SERVER_USER}@$SERVER_IP:/home/${SERVER_USER} ~/dev"
-	    sshfs -o nonempty -o reconnect -o follow_symlinks -o allow_other -o uid=1000,gid=1000 ${SERVER_USER}@$SERVER_IP:/home/${SERVER_USER} ~/dev
+	    echo "sshfs -o nonempty -o reconnect -o follow_symlinks -o \
+	    allow_other -o uid=1000,gid=1000 \
+	    ${SERVER_USER}@$SERVER_IP:/home/${SERVER_USER} ~/dev1"
+	    sshfs -o nonempty -o reconnect -o follow_symlinks -o allow_other \
+	    -o uid=1000,gid=1000 \
+	    ${SERVER_USER}@$SERVER_IP:/home/${SERVER_USER} ~/dev1
 	else
 	    echo "ping ${SERVER_IP} is not okay."
 	fi
@@ -30,12 +34,12 @@ function ssshfs()
 
 function ssshfs_unmount()
 {
-    sudo umount ~/dev
+    sudo umount ~/dev1
 }
 
 function ssshfs_auto_mount()
 {
-    local is_dev_dir_mounted=$(mount | grep "${HOME}/dev" | wc -l)
+    local is_dev_dir_mounted=$(mount | grep "${HOME}/dev1" | wc -l)
     if [ $is_dev_dir_mounted == 0 ];then
 	ssshfs
     fi

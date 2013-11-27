@@ -164,15 +164,35 @@ function cdr()
 
 function cds()
 {
-    local DEV_SERVER_MOUNT_DIR=${HOME}/dev
-    #if [ "${MYUSERNAME}" != "karlzheng" ];then
-    if [ ! -d ${DEV_SERVER_MOUNT_DIR} ];then
+    local DEV1=${HOME}/dev1
+    local DEV2=${HOME}/dev2
+
+    if [ ! -d ${DEV1} ];then
 	pwd > ~/server_path.mk
     else
-	local cds_path="$(cat ${DEV_SERVER_MOUNT_DIR}/server_path.mk | \
-	    sed -e "s#/home/\w*/##" | sed -e "s#/disk/##" | tr -d '\r')"
-	echo "${DEV_SERVER_MOUNT_DIR}/$cds_path"
-	builtin cd "${DEV_SERVER_MOUNT_DIR}/$cds_path"
+	local PATHFILE=${DEV1}/server_path.mk
+
+	if [ -f ${PATHFILE} ];then
+	    if [ -f ${DEV2}/server_path.mk ];then
+		if [ ${PATHFILE} -ot ${DEV2}/server_path.mk ];then 
+		    PATHFILE=${DEV2}/server_path.mk
+		    local cds_path="$(cat ${PATHFILE} | \
+			sed -e "s#/sztv/\w*/##" | tr -d '\r')"
+		    echo "${DEV2}/$cds_path"
+		    builtin cd "${DEV2}/$cds_path"
+		else
+		    local cds_path="$(cat ${PATHFILE} | \
+			sed -e "s#/home/\w*/##" | tr -d '\r')"
+		    echo "${DEV1}/$cds_path"
+		    builtin cd "${DEV1}/$cds_path"
+		fi
+	    else
+		local cds_path="$(cat ${PATHFILE} | \
+		    sed -e "s#/home/\w*/##" | sed -e "s#/disk/##" | tr -d '\r')"
+		echo "${DEV1}/$cds_path"
+		builtin cd "${DEV1}/$cds_path"
+	    fi
+	fi
     fi
 }
 
