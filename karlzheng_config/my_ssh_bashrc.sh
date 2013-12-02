@@ -7,7 +7,7 @@ function s()
 	ssh -fN -L 2222:localhost:2222 sztv@10.232.128.24
 	sshfs -p 2222 -o uid=1000,gid=1000 changliang@localhost:/sztv/changliang ~/dev2
     fi
-    ssh changliang@localhost -p 2222
+    ssh changliang@localhost -p 2222 -X
 }
 
 function stv()
