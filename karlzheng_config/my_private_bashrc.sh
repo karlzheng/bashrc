@@ -10,6 +10,11 @@ function s()
     ssh changliang@localhost -p 2222
 }
 
+function stv()
+{
+    ssh sztv
+}
+
 function ssshfs()
 {
     local SERVER_USER="sztv"

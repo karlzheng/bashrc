@@ -789,6 +789,13 @@ function v()
     fi
 }
 
+function vl()
+{
+    if [ -f ~/tmp/bash_history ];then
+	vi ~/tmp/bash_history
+    fi
+}
+
 function v1()
 {
    local n=0
@@ -1058,6 +1065,7 @@ function my_bash_login_auto_exec_func()
 		~/bin
 		~/bin/bin
 		~/software/linaro-arm-linux-gnueabi-4.6.3/bin
+		~/software/rbox_Linux_Upgrade_Tool_v1.16
 	${JAVA_HOME}/bin
 	);
 	local mypath=""
