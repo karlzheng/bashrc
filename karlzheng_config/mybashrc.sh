@@ -1133,7 +1133,7 @@ fi
 if [ -f ~/bashrc/karlzheng_config/mypathfunctions.sh ];then
 	source ~/bashrc/karlzheng_config/mypathfunctions.sh
 fi
-if [ -f ~/bashrc/karlzheng_config/my_private_bashrc.sh ];then
-	source ~/bashrc/karlzheng_config/my_private_bashrc.sh
+if [ -f ~/bashrc/karlzheng_config/my_ssh_bashrc.sh ];then
+	source ~/bashrc/karlzheng_config/my_ssh_bashrc.sh
 fi
 my_bash_login_auto_exec_func

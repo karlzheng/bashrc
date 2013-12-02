@@ -9,7 +9,7 @@ function cp_shell_script()
     local filelist=(
     adb.bash_complete.sh
     mypathfunctions.sh
-    my_private_bashrc.sh
+    my_ssh_bashrc.sh
     install.sh
     )
     for i in ${filelist[@]}; do
