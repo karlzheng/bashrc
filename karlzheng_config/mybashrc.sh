@@ -265,7 +265,9 @@ function rm ()
 		/bin/mv -f ${HOME}/.trash/$1 ${HOME}/.trash/$1.old 
 	    fi
 	    if [ -d "${HOME}/.trash/$1" ];then
-		/bin/mv ${HOME}/.trash/$1 ${HOME}/.trash/$1.old 
+		#ensure no / at the end of path
+		local d=${1%/}
+		/bin/mv ${HOME}/.trash/${d} ${HOME}/.trash/${d}.old 
 	    fi
 	    /bin/mv $1 ~/.trash/
 	fi
