@@ -144,7 +144,6 @@ alias lsr='ls -lasr '
 alias lt='ls -lat '
 alias ltr='ls -latr '
 alias m='mount '
-alias mcd='cd '
 alias mj="make -j$(/bin/grep processor /proc/cpuinfo \
     | /usr/bin/awk '{field=$NF};END{print(field+1)*2}') "
 #alias mt3='mount -t ext3 '
@@ -574,7 +573,7 @@ function md()
     mkdir -p "$@"
 }
 
-function mdcd ()
+function mcd ()
 {
   mkdir -p "$@" && eval cd "\"\$$#\"";
 }
@@ -1010,7 +1009,6 @@ function _ksvn_complete() {
 #complete -W 'svn://172.16.11.122/svn_src' 'https://172.16.1.21/svn/IceCreamSandwich' ksvn
 
 complete -F  _fastboot_completion fastboot
-complete -F  _mcd_complete mcd
 complete -F  _mj_complete mj
 complete -F  _mc_complete mc
 complete -F  _ksvn_complete ksvn
