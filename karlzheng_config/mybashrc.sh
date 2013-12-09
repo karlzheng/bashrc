@@ -334,11 +334,15 @@ function g()
     grep "$@"
 }
 
-#function gitdir()
-function gd()
+function gc()
 {
 	echo config: .git/config
 	cat .git/config
+}
+    
+function gd()
+{
+    git diff "$@"
 }
 
 function gba()
