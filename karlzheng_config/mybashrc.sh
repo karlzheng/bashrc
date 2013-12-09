@@ -261,12 +261,12 @@ function rm ()
     while [ "x$1" != x ];do
 	if [ -f "$1" -o -d "$1" ];then
 	    if [ -f "${HOME}/.trash/$1" ];then
-		/bin/mv -f ${HOME}/.trash/$1 ${HOME}/.trash/$1.old 
+		/bin/mv -f ${HOME}/.trash/$1 ${HOME}/.trash/$1.old
 	    fi
 	    if [ -d "${HOME}/.trash/$1" ];then
 		#ensure no / at the end of path
 		local d=${1%/}
-		/bin/mv ${HOME}/.trash/${d} ${HOME}/.trash/${d}.old 
+		/bin/mv ${HOME}/.trash/${d} ${HOME}/.trash/${d}.old
 	    fi
 	    /bin/mv $1 ~/.trash/
 	fi
@@ -484,6 +484,22 @@ function glg()
     git log "$@" > git.log
 }
 
+function gp()
+{
+    if [ -d ~/bashrc ];then
+	cd ~/bashrc
+	git pull
+	cd -
+    fi
+    if [ -d ~/vimrc ];then
+	#git --git-dir ~/vimrc pull
+	cd ~/vimrc
+	git pull
+	cd -
+    fi
+}
+
+
 function gsu()
 {
     git status -u "$@"
@@ -524,6 +540,13 @@ function he()
     history -s "$cmd_line"
     #exec "$cmd_line"
     eval "$cmd_line"
+}
+
+function hn()
+{
+    if [ -f ~/person_tools/headneck.jpg ];then
+	eog -f ~/person_tools/headneck.jpg
+    fi
 }
 
 function k()
@@ -664,7 +687,7 @@ function dnw()
 function rbrances()
 {
     if [ -d .repo/manifests.git ];then
-	git --git-dir .repo/manifests/.git/ branch -a	
+	git --git-dir .repo/manifests/.git/ branch -a
     fi
 }
 
@@ -687,9 +710,9 @@ function repo()
 function sbl()
 {
     #save bash log
-    cat ~/.bash_history >> ~/tmp/bash_history 
-    sort ~/tmp/bash_history > /tmp/bash_history 
-    cat /tmp/bash_history | awk '!a[$0]++' > ~/tmp/bash_history 
+    cat ~/.bash_history >> ~/tmp/bash_history
+    sort ~/tmp/bash_history > /tmp/bash_history
+    cat /tmp/bash_history | awk '!a[$0]++' > ~/tmp/bash_history
 }
 
 function sdu ()
