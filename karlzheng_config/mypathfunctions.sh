@@ -75,6 +75,11 @@ function apwd_abc()
 	/dev/shm/${MYUSERNAME}/total_count
 }
 
+function avp()
+{
+    pwd > /dev/shm/cur_file_rela_path
+}
+
 function ca()
 {
 	if [ ! -f ~/bashrc/karlzheng_config/pwd.mk ];then
