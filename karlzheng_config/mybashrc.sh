@@ -97,6 +97,7 @@ bind -m emacs '"\C-gc": "cd $(!!)"'
 bind -m emacs '"\C-gf": "$(fp)"'
 bind -m emacs '"\C-gh": "--help"'
 bind -m emacs '"\C-gm": "grep mei Makefile"'
+bind -m emacs '"\C-gt": " | tee ~/tmp/f"'
 bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
 
 bind -m emacs '"\C-g\C-a": "mgrep.sh "'
@@ -810,6 +811,13 @@ function v()
 	return;
     else
 	vim -c ":LUTags $fn"
+    fi
+}
+
+function vf()
+{
+    if [ -f ~/tmp/f ];then
+	vi ~/tmp/f
     fi
 }
 
