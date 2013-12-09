@@ -77,7 +77,7 @@ function apwd_abc()
 
 function avp()
 {
-    pwd > /dev/shm/cur_file_rela_path
+    pwd > /dev/shm/diff_file_rela_path
 }
 
 function ca()
