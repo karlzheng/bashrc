@@ -311,6 +311,18 @@ function diff()
     /usr/bin/diff -x '.svn' "$@"
 }
 
+function ey()
+{
+    local c
+    echo "/dev/shm/$(whoami)/yank.txt :"
+    cat /dev/shm/$(whoami)/yank.txt
+    read -p "exec y|n ?" c
+    if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+	source /dev/shm/$(whoami)/yank.txt
+	history -s "$(cat /dev/shm/$(whoami)/yank.txt | head -n 1)"
+    fi
+}
+
 function f()
 {
     find -iname "$@"
