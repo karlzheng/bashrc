@@ -43,14 +43,5 @@ function add_vim_config()
     fi
 }
 
-function add_mytools()
-{
-    
-    if [ ! -d ${HOME}/mytools -a -d mytools ];then
-	cp mytools ${HOME}/mytools -a
-    fi
-}
-
 add_dot_bashrc_call
 #add_vim_config
-#add_mytools

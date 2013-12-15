@@ -197,7 +197,7 @@ function ct()
 
     echo "/tmp" >  ${enter_dir_file}
     echo "~/tmp" >>  ${enter_dir_file}
-    echo "~/mytools/" >>  ${enter_dir_file}
+    echo "~/bashrc/script/" >>  ${enter_dir_file}
     cat -n ${enter_dir_file}
     cd_dir_in_file
 }

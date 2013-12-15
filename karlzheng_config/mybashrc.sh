@@ -123,7 +123,6 @@ alias co="cd -"
 alias copy_to_m8="rsync -av /media/x/english/voa/ /media/Meizu\ M8/Music/voa/"
 alias cp='cp -i '
 alias cw="cd /media/work/"
-alias cz="cd ~/mytools/m032/tz_release_key/"
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 #alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
 alias h='history|tail -n 35'
@@ -768,7 +767,6 @@ sfile ()
 	#.ackrc
 	karlzheng_config/mybashrc.sh
 	karlzheng_config/mypathfunctions.sh
-	#mytools
 	)
 	local DEV_SERVER_MOUNT_DIR=${HOME}/dev
 	for f in ${file_list[@]}; do
@@ -1098,7 +1096,7 @@ function my_bash_login_auto_exec_func()
 
 	local path_list=(
 		~/person_tools/
-		~/mytools/
+		~/bashrc/script/
 		~/software/bin
 		/usr/local/arm/arm-2013q1/bin/
 		/usr/local/arm/arm-2010q1/bin/

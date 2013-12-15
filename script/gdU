@@ -1,0 +1,4 @@
+#!/bin/bash -
+
+git diff -U100000 > "/dev/shm/gitdiff.c"
+patch2dir.sh "/dev/shm/gitdiff.c"
