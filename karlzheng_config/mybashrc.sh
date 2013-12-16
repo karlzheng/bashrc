@@ -541,7 +541,7 @@ function gps()
 	local c
 	read -p "git push y|n ?" c
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-	    git push
+	    git push "$@"
 	fi
     fi
 }
