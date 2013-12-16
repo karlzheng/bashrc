@@ -360,6 +360,11 @@ function gd()
     git diff "$@"
 }
 
+function gdp()
+{
+    git diff -p -U100000 --raw "$@"
+}
+
 function gba()
 {
 	git branch -a
