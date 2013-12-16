@@ -1,10 +1,13 @@
 #!/bin/bash
 
 #http://forum.ubuntu.org.cn/viewtopic.php?t=445579
+#https://github.com/yajin/360-wifi-linux
 
-#● ai hostapd dhcp3-server
 iw list|grep '* AP'
 [ $? -ne 0 ] && echo "No device support AP mode." && exit
+
+rfkill list | grep Wireless -A 3 | grep -q yes
+[ $? -eq 0 ] && echo "exec rfkill unblock wifi" && rfkill unblock wifi
 
 sudo ifconfig wlan0 192.168.0.1 netmask 255.255.255.0
 sudo sysctl -w net.ipv4.ip_forward=1
@@ -35,11 +38,13 @@ ssid=`hostname`-hostapd
 hw_mode=g
 channel=11
 auth_algs=1
+ignore_broadcast_ssid=0
 # 如果需要开启密码，wpa=1。
-wpa=0
-wpa_passphrase=12345678
+wpa=1
+wpa_passphrase=98765432
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 EOF
-sudo hostapd -d /tmp/hostapd.conf
+
+sudo hostapd -d /tmp/hostapd.conf > /dev/null
