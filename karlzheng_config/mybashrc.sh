@@ -349,6 +349,11 @@ function g()
     grep "$@"
 }
 
+function gba()
+{
+	git branch -a
+}
+
 function gc()
 {
 	echo config: .git/config
@@ -363,11 +368,6 @@ function gd()
 function gdp()
 {
     git diff -p -U100000 --raw "$@"
-}
-
-function gba()
-{
-	git branch -a
 }
 
 function gt()
@@ -511,19 +511,40 @@ function glg()
 
 function gp()
 {
-    if [ -d ~/bashrc ];then
-	cd ~/bashrc
-	git pull
-	cd -
+    local c
+
+    if [ -d .git ];then
+	read -p "git pull current dir y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+	    git pull
+	fi
     fi
-    if [ -d ~/vimrc ];then
-	#git --git-dir ~/vimrc pull
-	cd ~/vimrc
-	git pull
-	cd -
+    read -p "git pull bashrc and vimrc y|n ?" c
+    if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+	if [ -d ~/bashrc ];then
+	    cd ~/bashrc
+	    git pull
+	    cd -
+	fi
+	if [ -d ~/vimrc ];then
+	    #git --git-dir ~/vimrc pull
+	    cd ~/vimrc
+	    git pull
+	    cd -
+	fi
     fi
 }
 
+function gps()
+{
+    if [ -d .git ];then
+	local c
+	read -p "git push y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+	    git push
+	fi
+    fi
+}
 
 function gsu()
 {
