@@ -114,37 +114,23 @@ def processLog(lines):
 	if l == "\n":
 	    end = i
 	else:
-	    try:
-		if re.search("^commit [a-z|0-9]{40}$", l):
-		    if start < end:
-			log = []
-			log.append(lines[start:end + 1])
-			log.append(datestr)
-			appendLog(log)
-			start = end + 1
-		else:
-		    if re.search("^Date:   ", l):
-			try:
-			    lock.acquire()
-			    datestr = time.strptime(l[8:32].strip(), "%c")
-			    datestr = int(time.mktime(datestr))
-			    lock.release()
-			except Exception,e:
-			    print ("%s %d" %(__file__, inspect.currentframe().f_lineno))
-			    lock.release()
-			#datestr = l[8:32].strip()
-			#delta = datetime.strptime(datestr, '%a %b %d %H:%M:%S %Y')
-			#epoch = datetime.utcfromtimestamp(0)
-			#delta = str((delta - epoch).total_seconds())
-			#datestr = delta.split('.')[0]
-	    except Exception,e:
-		lock.acquire()
-		print ("%s %d" %(__file__, inspect.currentframe().f_lineno))
-		print e
-		print "datestr: ", datestr
-		print "log: ", log
-		print ("%s %d" %(__file__, inspect.currentframe().f_lineno))
-		lock.release()
+	    if re.search("^commit [a-z|0-9]{40}$", l):
+		if start < end:
+		    log = []
+		    log.append(lines[start:end + 1])
+		    log.append(datestr)
+		    appendLog(log)
+		    start = end + 1
+	    else:
+		if re.search("^Date:   ", l):
+		    try:
+			lock.acquire()
+			datestr = time.strptime(l[8:32].strip(), "%c")
+			datestr = int(time.mktime(datestr))
+			lock.release()
+		    except Exception,e:
+			print ("%s %d" %(__file__, inspect.currentframe().f_lineno))
+			lock.release()
 	i += 1
     if i == len(lines):
 	log = []
@@ -153,7 +139,6 @@ def processLog(lines):
 	logs.append(log)
 
 def saveLog(fn):
-    #fn = fn + ".tmp"
     fd = open(fn, "wb")
     for l in logs:
 	if (l[1]) == 0:
