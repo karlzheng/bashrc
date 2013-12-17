@@ -817,6 +817,11 @@ function t()
     touch "$@"
 }
 
+function tp()
+{
+    type "$@"
+}
+
 function tfind()
 {
 	find . -exec grep -Hn "$@" {} +
