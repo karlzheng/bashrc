@@ -34,7 +34,7 @@ logs = []
 lock = threading.Lock() 
 appendLock = threading.Lock() 
 
-def add_dir_line(fn):
+def addGitDirPrefix(fn):
     global loglines
     fd = open(fn, "rb")
     lines = fd.readlines()
@@ -95,9 +95,8 @@ def seperateLogProcess(lines):
 	aThread = threading.Thread(target = processLog, args=(lines[start:end], ))
 	thread_pool.append(aThread)
 	start += plen + 1
-    print "%s %d"%(__file__, inspect.currentframe().f_lineno),
+    print "%d threads in thread_pool will run !!"%(len(thread_pool)),
     printTimeStamp()
-    print " %d threads in thread_pool will run !!"%(len(thread_pool))
     for aThread in thread_pool:
 	aThread.start()
     for aThread in thread_pool:
@@ -165,25 +164,25 @@ if __name__ == '__main__':
     else:
       fn = "/tmp/git.tmp.log"
 
-    print "%s %d"%(__file__, inspect.currentframe().f_lineno),
+    print "genGitLog(%s)"%(fn),
     printTimeStamp()
     genGitLog(fn)
 
-    print "%s %d"%(__file__, inspect.currentframe().f_lineno),
+    print "addGitDirPrefix(%s)"%(fn),
     printTimeStamp()
-    add_dir_line(fn)
+    addGitDirPrefix(fn)
 
-    print "%s %d"%(__file__, inspect.currentframe().f_lineno),
+    print "seperateLogProcess",
     printTimeStamp()
     seperateLogProcess(loglines)
 
-    print "%s %d"%(__file__, inspect.currentframe().f_lineno),
+    print "sortLog",
     printTimeStamp()
     sortLog()
 
-    print "%s %d"%(__file__, inspect.currentframe().f_lineno),
+    print "saveLog(repo.log)",
     printTimeStamp()
     saveLog("repo.log")
 
-    print "%s %d"%(__file__, inspect.currentframe().f_lineno),
+    print "finished!",
     printTimeStamp()
