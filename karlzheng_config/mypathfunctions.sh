@@ -459,6 +459,7 @@ function c()
 
 function cd()
 {
+    local d
     if [ $# -eq 0 ];then
 	builtin cd "$@"
     else
