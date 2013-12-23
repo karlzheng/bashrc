@@ -291,9 +291,11 @@ function d()
 function dfd()
 {
     IFS=$'\n'
+    : > /dev/shm/dfd.tmp.log
     for i in $(lsd);do
-	du -sh "$i";
+	du -sh "$i" >> /dev/shm/dfd.tmp.log
     done
+    cat /dev/shm/dfd.tmp.log | sort -h
 }
 
 function dl()
