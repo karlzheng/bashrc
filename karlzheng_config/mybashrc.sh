@@ -1117,6 +1117,8 @@ function my_bash_login_auto_exec_func()
 	    function ensure_file_dir()
 	    {
 		[ -d ~/.trash ] || mkdir ~/.trash
+		[ -d ~/dev1 ] || mkdir ~/dev1
+		[ -d ~/dev2 ] || mkdir ~/dev2
 		[ -d ~/tmp ] || mkdir ~/tmp
 		[ -d ~/tmp/log ] || mkdir ~/tmp/log
 		[ -d ~/tmp/t ] || mkdir ~/tmp/t
