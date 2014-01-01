@@ -1,6 +1,6 @@
 #!/bin/bash - 
 
-if [ "x${NEWIP} == "x" ];then
+if [ "x${NEWIP}" == "x" ];then
     echo "pls export NEWIP env var"
 else
     rsync -avP ~/.ssh $(whoami)@${NEWIP}:~/ 
