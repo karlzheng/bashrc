@@ -10,7 +10,8 @@ function syncListedFile()
 	l=${l/\~/${HOME}}
 	if [ -f "${l}" -o -d "${l}" ];then
 	    #echo "exist: ${l}"
-	    rsync -avP ${l} $(whoami)@${NEWIP}:~/ 
+	    echo ${l#${HOME}/}
+	    rsync -avP ${l} $(whoami)@${NEWIP}:~/${l#${HOME}/}
 	fi
     done < syncFile.list
 }
