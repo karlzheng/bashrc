@@ -1,15 +1,17 @@
 ~/.ssh
-~/bashrc
-~/vimrc
+~/bashrc/
+~/vimrc/
+~/.vimperator/
+~/.vimperatorrc
 ~/.netrc
 ~/.gitconfig
 ~/.minirc.dfl
-~/tmp
-~/.mozilla
-~/.thunderbird
-~/software
-~/person_tools
-~/bk
-~/.android
-~/.VirtualBox
-~/VirtualBox VMs
+~/tmp/
+~/.mozilla/
+~/.thunderbird/
+~/software/
+~/person_tools/
+~/bk/
+~/.android/
+~/.VirtualBox/
+~/VirtualBox VMs/

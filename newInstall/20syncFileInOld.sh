@@ -19,8 +19,9 @@ if [ "x${NEWIP}" == "x" ];then
     echo "pls export NEWIP env var"
 else
     dpkg -l | grep ^ii |awk '{print $2}' | grep -v "^linux-generic" | \
-	grep -v "^linux-headers" | grep -v "^linux-image-" > inst.list
-    rsync -avP ~/inst.list $(whoami)@${NEWIP}:~/ 
+	grep -v "^linux-headers" | grep -v "^linux-image-" > ~/inst.list
+    rsync -avP ~/inst.list $(whoami)@${NEWIP}:~/
+    rm ~/inst.list
 
     syncListedFile
 fi
