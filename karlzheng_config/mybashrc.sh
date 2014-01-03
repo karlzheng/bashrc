@@ -784,14 +784,7 @@ function sdu ()
 	}'
 }
 
-function swap()
-{
-  mv $1 tmp.$$
-  mv $2 $1
-  mv tmp.$$ $2
-}
-
-sfile ()
+function sfile ()
 {
     if [ $# -eq 0 ];then
 	local file_list=(
@@ -813,6 +806,19 @@ sfile ()
 	rsync -avurP "$to"   "$from" || return 1
     fi
 }
+
+function sproxy()
+{ 
+    ssh -fNg -D 7001 sztv
+}
+
+function swap()
+{
+  mv $1 tmp.$$
+  mv $2 $1
+  mv tmp.$$ $2
+}
+
 
 function t()
 {

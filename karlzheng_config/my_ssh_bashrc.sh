@@ -31,6 +31,8 @@ function ssshfs()
 	    sshfs -o nonempty -o reconnect -o follow_symlinks -o allow_other \
 	    -o uid=1000,gid=1000 \
 	    ${SERVER_USER}@$SERVER_IP:/home/${SERVER_USER} ~/dev1
+	
+	    ssh -fNg -D 7001 sztv@10.232.128.24
 	else
 	    echo "ping ${SERVER_IP} is not okay."
 	fi
