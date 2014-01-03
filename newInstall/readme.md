@@ -1,8 +1,11 @@
 1. first:
-1ExecInNew.sh
+10execInNew.sh
 
 2. second:
-2installToNewSys.sh
+20syncFileInOld.sh
 
 3. third:
-3ExecInNew.sh
+30execInNew.sh
+
+4. fourth:
+40configInNew.sh
