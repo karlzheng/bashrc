@@ -1,6 +1,7 @@
 ~/.ssh
 ~/bashrc/
 ~/vimrc/
+~/.gconf/apps/gnome-terminal
 ~/.vimperator/
 ~/.vimperatorrc
 ~/.netrc
