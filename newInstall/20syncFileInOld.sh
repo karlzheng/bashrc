@@ -2,6 +2,9 @@
 
 function syncListedFile()
 {
+    python -c "open('/tmp/syncFile.list', 'w').\
+	writelines(set(open('syncFile.list').readlines())-\
+	set(open('alreadySyncFile.list')))"
     IFS=$'\n'
     local l
     while read l;do
@@ -13,7 +16,7 @@ function syncListedFile()
 	    echo ${l#${HOME}/}
 	    rsync -avP ${l} $(whoami)@${NEWIP}:~/${l#${HOME}/}
 	fi
-    done < syncFile.list
+    done < /tmp/syncFile.list
 }
 
 if [ "x${NEWIP}" == "x" ];then
@@ -26,4 +29,3 @@ else
 
     syncListedFile
 fi
-
