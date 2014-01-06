@@ -1,5 +1,7 @@
-sudo smbpasswd -a $(whoami)
+sudo cp udev_rules.d/* /etc/udev/rules.d/
 
+# samba
+sudo smbpasswd -a $(whoami)
 sudo mkdir -p /home/share
 sudo chmod 777 /home/share
 
