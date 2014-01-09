@@ -30,3 +30,8 @@ sudo bash -c "cat /tmp/tmp.conf >> /etc/samba/smb.conf"
 rm /tmp/tmp.conf
 
 sudo service smbd restart
+
+cat /etc/group | grep -q vboxusers
+if [ $? == 0 ];then
+    sudo adduser $(whoami) vboxusers
+fi
