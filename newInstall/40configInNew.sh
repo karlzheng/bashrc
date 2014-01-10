@@ -2,14 +2,20 @@ sudo cp udev_rules.d/* /etc/udev/rules.d/
 
 # samba
 sudo smbpasswd -a $(whoami)
+
+sudo mkdir -p /home/personal
+sudo chmod 777 /home/personal
+sudo chown $(whoami).$(whoami) /home/personal
+
 sudo mkdir -p /home/share
 sudo chmod 777 /home/share
+sudo chown $(whoami).$(whoami) /home/share
 
 cat << EEOOFF > /tmp/tmp.conf
     security = user
-[Share]
-    comment = Shared Folder with username and password
-    path = /home/share
+[personal]
+    comment = personalFolder
+    path = /home/personal
     public = yes
     writable = yes
     create mask = 0700
@@ -22,6 +28,17 @@ cat << EEOOFF > /tmp/tmp.conf
     dos charset = cp936
 EEOOFF
 echo "    valid users = $(whoami)" >> /tmp/tmp.conf
+echo "    force user = $(whoami)" >> /tmp/tmp.conf
+echo "    force group = $(whoami)" >> /tmp/tmp.conf
+
+cat << EEOOFF >> /tmp/tmp.conf
+[share]
+    comment = publicShare
+    path = /home/share
+    read only = no
+    public = yes
+    guest ok = yes
+EEOOFF
 echo "    force user = $(whoami)" >> /tmp/tmp.conf
 echo "    force group = $(whoami)" >> /tmp/tmp.conf
 
