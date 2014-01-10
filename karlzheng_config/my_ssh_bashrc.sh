@@ -66,7 +66,3 @@ function m106_hardware()
 	sudo mount -t cifs -o iocharset=utf8,pass="" //192.168.1.106/hardware/ /home/karlzheng/de/106
     fi
 }
-
-if [ -d ~/person_tools/ ];then
-    ssshfs_auto_mount
-fi

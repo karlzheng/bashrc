@@ -1227,3 +1227,6 @@ if [ -f ~/bashrc/karlzheng_config/my_ssh_bashrc.sh ];then
 	source ~/bashrc/karlzheng_config/my_ssh_bashrc.sh
 fi
 my_bash_login_auto_exec_func
+if [ -d ~/person_tools/ ];then
+    ssshfs_auto_mount
+fi
