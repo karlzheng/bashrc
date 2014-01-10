@@ -1167,17 +1167,6 @@ function my_bash_login_auto_exec_func()
 	append_daily_path
 	unset append_daily_path
 
-	echo $SHELL |grep -q 'bash'
-	if [ $? == 0 ];then
-		grep -q "mybashrc\.sh" ~/.bashrc
-		if [ $? != 0 ];then
-			echo "" >> ~/.bashrc
-			echo "if [ -f ~/mybashrc.sh ];then" >> ~/.bashrc
-			echo '	source ~/mybashrc.sh' >> ~/.bashrc
-			echo "fi" >> ~/.bashrc
-			echo "" >> ~/.bashrc
-		fi
-	fi
 	if [ "$(pwd)" == "${HOME}" ];then
 		ac
 	fi
@@ -1226,7 +1215,9 @@ fi
 if [ -f ~/bashrc/karlzheng_config/my_ssh_bashrc.sh ];then
 	source ~/bashrc/karlzheng_config/my_ssh_bashrc.sh
 fi
+
 my_bash_login_auto_exec_func
+
 if [ -d ~/person_tools/ ];then
     ssshfs_auto_mount
 fi
