@@ -577,6 +577,7 @@ function ci()
 {
     local imgout=out/target/product/
     if [ -d "arch/arm/boot" ];then
+	OLDPWD=$(pwd)
 	echo "arch/arm/boot"
 	cd "arch/arm/boot"
     else
