@@ -1014,7 +1014,8 @@ function _fastboot_completion()
 		COMPREPLY=($( compgen -W 'flash' -- $cur ))
 	else
 		if [ $COMP_CWORD -eq 2 ];then
-			COMPREPLY=($( compgen -W 'kernel bootloader ramdisk system userdata' -- $cur ))
+			COMPREPLY=($( compgen -W 'kernel bootloader ramdisk \
+			reboot system userdata' -- $cur ))
 		else
 			if [ $COMP_CWORD -eq 3 ];then
 				case "$prev" in
@@ -1096,13 +1097,6 @@ function _ksvn_complete() {
 }
 #complete -W 'svn://172.16.11.122/svn_src' 'https://172.16.1.21/svn/IceCreamSandwich' ksvn
 
-complete -F  _fastboot_completion fastboot
-complete -F  _mj_complete mj
-complete -F  _mc_complete mc
-complete -F  _ksvn_complete ksvn
-complete -F  _dnw_complete dnw
-complete -W 'arch/arm/configs' lac
-complete -W 'xconfig' make
 if [ $MYUSERNAME == $MYNICKNAME ];then
 	complete -o default -F _longopt vi
 fi
@@ -1205,6 +1199,15 @@ function my_bash_login_auto_exec_func()
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do  sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars
 #rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
+
+complete -c vm
+complete -F  _fastboot_completion fastboot
+complete -F  _mj_complete mj
+complete -F  _mc_complete mc
+complete -F  _ksvn_complete ksvn
+complete -F  _dnw_complete dnw
+complete -W 'arch/arm/configs' lac
+complete -W 'xconfig' make
 
 if [ -f ~/bashrc/karlzheng_config/adb.bash_complete.sh ];then
 	source  ~/bashrc/karlzheng_config/adb.bash_complete.sh
