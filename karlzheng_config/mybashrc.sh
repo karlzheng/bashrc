@@ -921,8 +921,13 @@ function vm()
 {
 	#http://ahei.info/bash.htm
 	#vim <(man "$@")
-	local help_file="/dev/shm/$(whoami)/$$.hlp.txt"
-	(man "$@" | fold -s -w 80) > ${help_file}
+	local help_file="/dev/shm/$(whoami)/$@.$$.hlp.txt"
+	type "$@" | grep -q builtin
+	if [ $? == 0 ];then
+		(help "$@" | fold -s -w 80) > ${help_file}
+	else
+		(man "$@" | fold -s -w 80) > ${help_file}
+	fi
 	vim ${help_file}
 	/bin/rm ${help_file}
 }
