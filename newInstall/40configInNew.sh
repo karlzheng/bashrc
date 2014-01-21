@@ -23,3 +23,8 @@ cat /etc/group | grep -q vboxusers
 if [ $? == 0 ];then
     sudo adduser $(whoami) vboxusers
 fi
+
+if [ -f /etc/dictd/dict.conf ];then
+	sudo cp /etc/dictd/dict.conf /etc/dictd/dict.conf.org
+	sudo cp dictd/dict.conf /etc/dictd/dict.conf 
+fi
