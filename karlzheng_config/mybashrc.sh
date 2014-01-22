@@ -755,6 +755,11 @@ function repo()
 	fi
 }
 
+function sai()
+{
+	sudo apt-get install "$@"
+}
+
 function sbl()
 {
 	#save bash log
