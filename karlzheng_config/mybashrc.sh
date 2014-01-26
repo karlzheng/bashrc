@@ -595,7 +595,7 @@ function he()
 function hn()
 {
 	if [ -f ~/person_tools/headneck.jpg ];then
-		eog -f ~/person_tools/headneck.jpg
+		eog -f ~/person_tools/headneck.jpg && disown &
 	fi
 }
 
