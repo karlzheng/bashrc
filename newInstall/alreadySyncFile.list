@@ -1,9 +1,9 @@
-~/.gconf/apps/gnome-terminal
-~/tmp/
-~/.mozilla/
-~/.thunderbird/
-~/person_tools/
-~/bk/
-~/.android/
-~/.VirtualBox/
-~/VirtualBox VMs/
+~/.android
+~/bk
+~/.mozilla
+~/.netrc
+~/person_tools
+~/.thunderbird
+~/tmp
+~/.VirtualBox
+~/VirtualBox VMs

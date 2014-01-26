@@ -34,7 +34,9 @@ shopt -s histreedit
 shopt -s histverify
 shopt -s lithist
 
+set completion-ignore-case on
 set expand-tild on
+set match-hidden-files off
 
 stty -ixon
 
