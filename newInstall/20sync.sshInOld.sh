@@ -36,11 +36,18 @@ function installConfigInNew()
 	ssh $(whoami)@${NEWIP} "cd bashrc;./install.sh"
 }
 
+function ssh-copy-id_2NEWIP()
+{
+	#http://roclinux.cn/?p=2551#more-2551
+	ssh-copy-id $(whoami)@${NEWIP}
+}
+
 if [ "x${NEWIP}" == "x" ];then
     echo "pls export NEWIP env var"
 else
-    echo 'rsync -avP .ssh $(whoami)@${NEWIP}:~/'
-	rsync -avP .ssh $(whoami)@${NEWIP}:~/
+    #echo 'rsync -avP .ssh $(whoami)@${NEWIP}:~/'
+	#rsync -avP .ssh $(whoami)@${NEWIP}:~/
+	ssh-copy-id_2NEWIP
 
 	syncInstList
     syncListedFile
