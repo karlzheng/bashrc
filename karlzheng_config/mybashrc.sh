@@ -50,8 +50,8 @@ export MYUSERNAME=$(whoami)
 export ARCH=arm
 #http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
 export BROWSER="$PAGER"
-#export CROSS_COMPILE=arm-none-linux-gnueabi-
-export CROSS_COMPILE=arm-linux-gnueabi-
+export CROSS_COMPILE=arm-none-linux-gnueabi-
+#export CROSS_COMPILE=arm-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
 export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
@@ -1152,15 +1152,14 @@ function my_bash_login_auto_exec_func()
 				~/person_tools/
 				~/bashrc/script/
 				~/software/bin
-				/usr/local/arm/arm-2013q1/bin/
-				/usr/local/arm/arm-2010q1/bin/
+				~/software/arm-2009q3/bin/
+				~/software/arm-eabi-4.6/bin
 				~/software/android-sdk-linux_86/platform-tools
 				~/software/android-sdk-linux_86/tools
 				~/software/android-ndk-r8c
 				~/bk/sw/adt/sdk/platform-tools
 				~/bk/sw/gradle-1.6/bin
 				~/bk/sw/adt/sdk/tools
-				~/software/arm-eabi-4.6/bin
 				~/bin
 				~/bin/bin
 				~/software/linaro-arm-linux-gnueabi-4.6.3/bin
