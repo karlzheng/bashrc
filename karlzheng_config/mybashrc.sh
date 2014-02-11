@@ -557,12 +557,12 @@ function gsu()
 
 function ha()
 {
-	local ignore_cmd_list=(c h history ha hd he ls la)
+	local ignore_cmd_list=(c h history ha hd he hi la ls sb)
 	n=0
 	history 10 |sort -r > /dev/shm/${MYUSERNAME}/hist10.txt
 	while read line;
 	do
-		local cmd_line=$(echo "$line" |sed -e "s/[0-9]*	 \(.*\)/\1/")
+		local cmd_line=$(echo "$line" |sed -e "s/\s*[0-9]*\s*\(.*\)/\1/")
 		local is_ignore_cmd=0
 		for cmd in ${ignore_cmd_list[@]};
 		do
