@@ -741,6 +741,11 @@ function rbrances()
 	fi
 }
 
+function rcp()
+{
+	rsync -avP "$@"
+}
+
 function repo()
 {
 	if [ "x$0" != "x-bash" ];then
