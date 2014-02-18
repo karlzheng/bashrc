@@ -50,8 +50,8 @@ export MYUSERNAME=$(whoami)
 export ARCH=arm
 #http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
 export BROWSER="$PAGER"
-export CROSS_COMPILE=arm-none-linux-gnueabi-
-#export CROSS_COMPILE=arm-linux-gnueabi-
+#export CROSS_COMPILE=arm-none-linux-gnueabi-
+export CROSS_COMPILE=arm-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
 export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
@@ -715,6 +715,7 @@ function p()
 
 function dnw()
 {
+	local dnwpro=$(which dnw)
 	if [ $? != 0 ];then
 		echo "last command is okay! exit!!"
 		return 1
@@ -722,8 +723,7 @@ function dnw()
 	if [ $# -ge 1 ];then
 		local START_TIME=`date +%s`
 		local filename="$(echo ${1/11111/})"
-		#sudo dnw $1
-		/usr/bin/dnw "$filename"
+		${dnwpro} "$filename"
 		local END_TIME=`date +%s`
 		local ELAPSED_TIME
 		let "ELAPSED_TIME=$END_TIME-$START_TIME"

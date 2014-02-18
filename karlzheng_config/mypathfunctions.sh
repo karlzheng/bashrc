@@ -169,25 +169,32 @@ function cdr()
 
 function cds()
 {
-	local DEV1=${HOME}/dev1
-	local DEV2=${HOME}/dev2
+	local i=1
+	local prePath=${HOME}
+	local sDev=dev1
+	local newFile=${prePath}/${sDev}/server_path.mk
 
-	if [ ! -d ${DEV1} ];then
+	if [ ! -d ${prePath}/dev1 ];then
 		touch ~/server_path.mk
 		pwd > ~/server_path.mk
 	else
-		local PATHFILE=${DEV1}/server_path.mk
-		local PREPATH=${DEV1}
-
-		if [ ${PATHFILE} -ot ${DEV2}/server_path.mk ];then 
-			PATHFILE=${DEV2}/server_path.mk
-			PREPATH=${DEV2}
-		fi
+		local devlist=(dev1 dev2 dev3 dev4)
+		local dev
+		for dev in ${devlist[@]}; do
+			local file=${prePath}/${dev}/server_path.mk
+			if [ -f ${file} ];then
+				if [ ${newFile} -ot ${file}  ];then
+					newFile=${file}
+					sDev=${dev}
+				fi
+			fi
+		done
+		echo ${newFile}
 		
-		local cds_path="$(cat ${PATHFILE} | \
+		local cds_path="$(cat ${newFile} | \
 			sed -e "s#/\w*/\w*##" | tr -d '\r')"
-		echo "cd ${PREPATH}/$cds_path"
-		builtin cd "${PREPATH}/$cds_path"
+		echo "cd ${prePath}/${sDev}/${cds_path}"
+		builtin cd "${prePath}/${sDev}/${cds_path}"
 	fi
 }
 
