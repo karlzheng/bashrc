@@ -360,8 +360,12 @@ function gba()
 
 function gc()
 {
+	if [ -f .git/config ];then
 		echo config: .git/config
 		cat .git/config
+	else
+		echo "no .git/config "
+	fi
 }
 	
 function gd()
