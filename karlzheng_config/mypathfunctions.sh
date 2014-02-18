@@ -582,19 +582,19 @@ function pa()
 
 function ci()
 {
-	local imgout=out/target/product/
+	local productDir=out/target/product/
+	local SAVE_OLDPWD=""
 	if [ -d "arch/arm/boot" ];then
-		OLDPWD=$(pwd)
+		SAVE_OLDPWD="$(pwd)"
 		echo "arch/arm/boot"
 		cd "arch/arm/boot"
 	else
-		OLDPWD=$(pwd)
-		local SAVE_OLDPWD="$OLDPWD"
-		if [ -d "$imgout" ];then
-			cd $imgout
-			local recent_product_dir=$(ls -latr | tail -n 1 |awk '{print $NF}');
-			cd "${recent_product_dir}"
-			echo $imgout/"${recent_product_dir}"
+		if [ -d "$productDir" ];then
+			SAVE_OLDPWD="$(pwd)"
+			cd $productDir
+			local recent_productDir=$(ls -latr | tail -n 1 |awk '{print $NF}');
+			cd "${recent_productDir}"
+			echo $productDir/"${recent_productDir}"
 		fi
 	fi
 	if [ -n $SAVE_OLDPWD ];then
