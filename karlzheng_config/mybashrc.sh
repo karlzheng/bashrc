@@ -1204,7 +1204,7 @@ function my_bash_login_auto_exec_func()
 				#ccache -M 50G
 		fi
 
-		if [ -d .git ];then
+		if [ -f .git/config ];then
 			git config http.postBuffer 524288000
 		fi
 
