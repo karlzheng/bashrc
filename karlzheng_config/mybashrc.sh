@@ -337,15 +337,15 @@ function f()
 
 function fp()
 {
-	if [ -f /dev/shm/${MYUSERNAME}/filename ];
-		then cat /dev/shm/${MYUSERNAME}/filename
+	if [ -f /dev/shm/${MYUSERNAME}/absfn ];
+		then cat /dev/shm/${MYUSERNAME}/absfn
 	fi
 }
 
 
 function fa()
 {
-	pwd > /dev/shm/${MYUSERNAME}/filename
+	pwd > /dev/shm/${MYUSERNAME}/absfn
 }
 
 function g()
@@ -367,7 +367,7 @@ function gc()
 		echo "no .git/config "
 	fi
 }
-	
+
 function gd()
 {
 	git diff "$@"
@@ -827,7 +827,7 @@ function sfile ()
 }
 
 function sproxy()
-{ 
+{
 	ssh -fNg -D 7001 sztv
 }
 
