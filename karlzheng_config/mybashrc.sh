@@ -345,7 +345,13 @@ function fp()
 
 function fa()
 {
-	pwd > /dev/shm/${MYUSERNAME}/absfn
+	if [ $# -ge 1 ];then
+		if [ -f $1 ];then
+			echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
+		fi
+	else
+		pwd > /dev/shm/${MYUSERNAME}/absfn
+	fi
 }
 
 function g()
