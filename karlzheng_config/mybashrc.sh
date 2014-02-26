@@ -945,16 +945,32 @@ function vc()
 function vm()
 {
 	#http://ahei.info/bash.htm
+	#http://blog.morebits.org/?p=103
 	#vim <(man "$@")
-	local help_file="/dev/shm/$(whoami)/$@.$$.hlp.txt"
-	type "$@" | grep -q builtin
-	if [ $? == 0 ];then
-		(help "$@" | fold -s -w 80) > ${help_file}
-	else
-		(man "$@" | fold -s -w 80) > ${help_file}
+	#local help_file="/dev/shm/$(whoami)/$@.$$.hlp.txt"
+	local help_file="/dev/shm/$(whoami)/$1.$$.hlp.txt"
+	if [ $# -ge 1 ];then
+		#eval echo \${$#}
+		#echo ${!#}
+		local lastarg=${!#}
+		if [ ${lastarg} == "--help" ];then
+			#shift
+			local allargs="$@"
+			echo ${allargs}
+			(${allargs} | fold -s -w 80) > ${help_file}
+		else
+			type "$@" | grep -q builtin
+			if [ $? == 0 ];then
+				(help "$@" | fold -s -w 80) > ${help_file}
+			else
+				(man "$@" | fold -s -w 80) > ${help_file}
+			fi
+		fi
 	fi
-	vim ${help_file}
-	/bin/rm ${help_file}
+	if [ -f ${help_file} ];then
+		vim ${help_file}
+		/bin/rm ${help_file}
+	fi
 }
 
 function vmdis()
