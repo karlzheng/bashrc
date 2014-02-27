@@ -169,19 +169,41 @@ function cdr()
 
 function cds()
 {
-	local i=1
-	local prePath=${HOME}
 	local sDev=dev1
-	local newFile=${prePath}/${sDev}/server_path.mk
+	local newFile=${HOME}/${sDev}/server_path.mk
 
-	if [ ! -d ${prePath}/dev1 ];then
+	if [ ! -d ${HOME}/dev1 ];then
 		touch ~/server_path.mk
 		pwd > ~/server_path.mk
 	else
+		function pathReplace()
+		{
+			local prefix=""
+			local suffix=""
+			if [ $1 == "dev1" ];then
+				suffix=$(echo "$2" | sed -e "s#/home/sztv/##")
+				prefix="dev1"
+			fi
+			if [ $1 == "dev2" ];then
+				suffix=$(echo "$2" | sed -e "s#/sztv/changliang/##")
+				prefix="dev2"
+			fi
+			if [ $1 == "dev3" ];then
+				local is1Tdisk=$(echo "$2" | sed -e "s#^/home/karlzheng/.*##")
+				if [ "x${is1Tdisk}" == "x" ];then
+					suffix=$(echo "$2" | sed -e "s#/home/karlzheng/##")
+					prefix="dev3"
+				else
+					suffix=$(echo "$2" | sed -e "s#/1t/home/karlzheng/##")
+					prefix="dev4"
+				fi
+			fi
+			echo ${prefix}/${suffix}
+		}
 		local devlist=(dev1 dev2 dev3 dev4)
 		local dev
 		for dev in ${devlist[@]}; do
-			local file=${prePath}/${dev}/server_path.mk
+			local file=${HOME}/${dev}/server_path.mk
 			if [ -f ${file} ];then
 				if [ ${newFile} -ot ${file}  ];then
 					newFile=${file}
@@ -191,10 +213,10 @@ function cds()
 		done
 		echo ${newFile}
 		
-		local cds_path="$(cat ${newFile} | \
-			sed -e "s#/\w*/\w*##" | tr -d '\r')"
-		echo "cd ${prePath}/${sDev}/${cds_path}"
-		builtin cd "${prePath}/${sDev}/${cds_path}"
+		local cds_path="$(cat ${newFile} | tr -d '\r')"
+		cds_path=$(pathReplace ${sDev} ${cds_path})
+		echo "cd ${HOME}/${cds_path}"
+		builtin cd "${HOME}/${cds_path}"
 	fi
 }
 
