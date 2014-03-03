@@ -1058,28 +1058,40 @@ function _fastboot_completion()
 		cur=${COMP_WORDS[COMP_CWORD]}
 		prev=${COMP_WORDS[COMP_CWORD-1]}
 		if [ $COMP_CWORD -eq 1 ];then
-				COMPREPLY=($( compgen -W 'flash' -- $cur ))
+				COMPREPLY=($( compgen -W 'flash reboot' -- $cur ))
 		else
 				if [ $COMP_CWORD -eq 2 ];then
 						COMPREPLY=($( compgen -W 'kernel bootloader ramdisk \
-						reboot system userdata' -- $cur ))
+						system userdata' -- $cur ))
 				else
 						if [ $COMP_CWORD -eq 3 ];then
 								case "$prev" in
 										"system")
+											if [ -f system.img ];then
 												COMPREPLY=($( compgen -W 'system.img' -- $cur ))
+											else
+												COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
+											fi
 												;;
 										"userdata")
 												COMPREPLY=($( compgen -W 'userdata.img' -- $cur ))
 												;;
 										"ramdisk")
+											if [ -f ramdisk-uboot.img ];then
 												COMPREPLY=($( compgen -W 'ramdisk-uboot.img' -- $cur ))
+											else
+												COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
+											fi
 												;;
 										"bootloader")
 												COMPREPLY=($( compgen -W 'uboot_fuse.bin' -- $cur ))
 												;;
 										"kernel")
-												COMPREPLY=($( compgen -W 'arch/arm/boot/zImage zImage' -- $cur ))
+											if [ -f zImage ];then
+												COMPREPLY=($( compgen -W 'zImage' -- $cur ))
+											else
+												COMPREPLY=($( compgen -W 'arch/arm/boot/zImage' -- $cur ))
+											fi
 												;;
 										*)
 												COMPREPLY=($( compgen -W 'zImage' -- $cur ))
