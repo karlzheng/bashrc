@@ -611,6 +611,11 @@ function ci()
 		echo "arch/arm/boot"
 		cd "arch/arm/boot"
 	else
+		if [ -d out/debug/target/product/ ];then
+			if [ $productDir -ot out/debug/target/product/ ];then
+				productDir=out/debug/target/product/
+			fi
+		fi
 		if [ -d "$productDir" ];then
 			SAVE_OLDPWD="$(pwd)"
 			cd $productDir
