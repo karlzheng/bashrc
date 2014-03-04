@@ -23,7 +23,7 @@ function ssshfs()
 	local localip=$(ifconfig | grep 'Bcast' | awk -F ":| +" '{ print $4 }')
 
 	if [ ${#localip} != 0 ];then
-		ping -c 1 -w 1 ${SERVER_IP}
+		ping -c 1 -w 1 ${SERVER_IP} 2>&1 1>/dev/null
 		if [ $? == 0 ];then
 			echo "sshfs -o nonempty -o reconnect -o follow_symlinks -o \
 			allow_other -o uid=1000,gid=1000 \
