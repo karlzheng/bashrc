@@ -113,7 +113,6 @@ bind -m emacs '"\C-g\C-n": "find -name "'
 unalias ls
 #alias adb_="sudo adb kill-server && sudo adb start-server"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-alias brm='/bin/rm -rf'
 alias CD='cd'
 alias c.='cd ../..'
 alias cd.='cd ../..'
@@ -229,6 +228,22 @@ function append_daily_path()
 				fi
 		done
 		wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/${MYUSERNAME}/total_count
+}
+
+function brm()
+{
+	if [ $# -ge 2 ];then
+		echo "pls use brm to delete dir one dir by one dir"
+		return 0;
+	fi
+	read -p "Are you really want to remove "$@"? y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		IFS=$'\n' # set field seperator for bash
+		/bin/mv $1 $1.dir.tmp
+		echo "/bin/rm -rf $@"
+		echo "/bin/rm -rf $1.dir.tmp"
+		/bin/rm -rf $1.dir.tmp &
+	fi
 }
 
 function cleantrash()
