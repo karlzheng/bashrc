@@ -127,9 +127,6 @@ alias cp='cp -i '
 alias cw="cd /media/work/"
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 #alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
-alias h='history|tail -n 35'
-alias hi='history'
-alias ht='history |tail -n 10 '
 alias j='jobs '
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
 alias LA='ls -latr'
@@ -619,11 +616,26 @@ function he()
 	eval "$cmd_line"
 }
 
+function h()
+{
+	history|tail -n 35
+}
+
+function hi()
+{
+	history
+}
+
 function hn()
 {
 	if [ -f ~/person_tools/headneck.jpg ];then
 		eog -f ~/person_tools/headneck.jpg && disown &
 	fi
+}
+
+function ht()
+{
+	history |tail -n 10
 }
 
 function k()

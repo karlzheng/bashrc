@@ -1,0 +1,7 @@
+sudo apt-get install nfs-kernel-server 
+sudo apt-get install portmap
+sudo apt-get install rpcbind
+sudo vi /etc/exports 
+echo '/1t/home/karlzheng/src 10.39.70.42/24(rw,sync,fsid=0,crossmnt,no_subtree_check)' >> /etc/exports 
+sudo service nfs-kernel-server restart
+sudo exportfs -ra
