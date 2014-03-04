@@ -239,10 +239,11 @@ function brm()
 	read -p "Are you really want to remove "$@"? y|n" c
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
 		IFS=$'\n' # set field seperator for bash
-		/bin/mv $1 $1.dir.tmp
+		local d=${1%/}
+		/bin/mv $d $d.dir.tmp
 		echo "/bin/rm -rf $@"
-		echo "/bin/rm -rf $1.dir.tmp"
-		/bin/rm -rf $1.dir.tmp &
+		echo "/bin/rm -rf $d.dir.tmp"
+		/bin/rm -rf $d.dir.tmp &
 	fi
 }
 
