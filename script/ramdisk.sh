@@ -34,6 +34,14 @@ elif [ "2" = ${CHOOSE} ];then
 	cd root
 	find . | cpio -H newc -o | gzip -9 > ../ramdisk_new.img
 	cd -
+	if [ -f ramdisk-uboot.img ];then
+		mv ramdisk-uboot.img ramdisk-uboot.img.old
+	fi
+	mkimage -A arm -O linux -T ramdisk -C none -a 0x41000000 -n "ramdisk" -d ramdisk_new.img ramdisk-uboot.img
+	rm ramdisk_new.img
+fi
+
+cat << EEOOFF > /dev/null
 	echo "1. mkimage for meizum8(s3c6410)"
 	echo "2. mkimage for meizu3g(s5pc100)"
 	echo "3. mkimage for meizum9(S5PC110)"
@@ -56,4 +64,4 @@ elif [ "2" = ${CHOOSE} ];then
 		rm -f ramdisk-uboot-4412.img
 		mkimage -A arm -O linux -T ramdisk -C none -a 0x41000000 -n "ramdisk" -d ramdisk_new.img ramdisk-uboot-4412.img
 	fi
-fi
+EEOOFF
