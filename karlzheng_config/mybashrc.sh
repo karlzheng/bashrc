@@ -1286,6 +1286,7 @@ function my_bash_login_auto_exec_func()
 #1727  git checkout --track origin/mars
 #rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
 
+complete -c tp
 complete -c vm
 complete -F	 _fastboot_completion fastboot
 complete -F	 _mj_complete mj
@@ -1293,7 +1294,8 @@ complete -F	 _mc_complete mc
 complete -F	 _ksvn_complete ksvn
 complete -F	 _dnw_complete dnw
 complete -W 'arch/arm/configs' lac
-complete -W 'xconfig' make
+complete -W 'xconfig clean distclean' make
+complete -W 'xconfig clean distclean zImage' mj
 
 if [ -f ~/bashrc/karlzheng_config/adb.bash_complete.sh ];then
 		source	~/bashrc/karlzheng_config/adb.bash_complete.sh

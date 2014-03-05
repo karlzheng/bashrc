@@ -1,11 +1,11 @@
 #!/bin/bash 
 #===============================================================================
 #
-#          FILE:  mgrep.sh
+#          FILE:  mg.sh
 # 
-#         USAGE:  ./mgrep.sh 
+#         USAGE:  ./mg.sh 
 # 
-#   DESCRIPTION:  mgrep = grep in multi dirs
+#   DESCRIPTION:  mg = grep in multi dirs
 # 
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
@@ -81,7 +81,7 @@ function modify_seach_result_file()
 
 : > $SEACH_RESULT_FILE
 
-if [ -f ./mgrep.mk ];then
+if [ -f ./mg.mk ];then
 	while read line;do
 		line=$(echo -n "$line" |sed -e 's#^\#.*##g')
 		if [ "x$line" != "x" ];then
@@ -104,7 +104,7 @@ if [ -f ./mgrep.mk ];then
 				echo "not exist dir:$line"
 			fi
 		fi
-	done < ./mgrep.mk
+	done < ./mg.mk
 
 	if [ $(whoami) != "karlzheng" ];then
 		cp  $SEACH_RESULT_FILE "${HOME}/quickfix.txt"
