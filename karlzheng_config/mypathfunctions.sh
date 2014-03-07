@@ -171,8 +171,8 @@ function cds()
 {
 	local sDev=dev1
 	local newFile=${HOME}/${sDev}/server_path.mk
-
-	if [ ! -d ${HOME}/dev1 ];then
+	
+	if [ ! -d ${HOME}/person_tools ];then
 		touch ~/server_path.mk
 		pwd > ~/server_path.mk
 	else
