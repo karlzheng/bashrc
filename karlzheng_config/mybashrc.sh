@@ -943,12 +943,12 @@ function v1()
 {
    local n=0
    while [ $n -lt 200 ];do
-	   if [ ! -f "/tmp/del${n}.txt" ];then
+	   if [ ! -f "${HOME}/tmp/del${n}.txt" ];then
 		   break
 	   fi
 	   ((n++))
    done
-   vi "/tmp/del${n}.txt"
+   vi "${HOME}/tmp/del${n}.txt"
 }
 
 function vl1()
