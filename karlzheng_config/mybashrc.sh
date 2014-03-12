@@ -295,6 +295,11 @@ function undel()
 		mv ~/.trash/$* . ;
 }
 
+function bcp()
+{
+	/bin/cp "$@"
+}
+
 function d()
 {
 	if [ -d ~/Desktop ];then
