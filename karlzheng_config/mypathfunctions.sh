@@ -37,6 +37,15 @@ function ..()
 		fi
 }
 
+function ...()
+{
+		if [ $# -eq 0 ];then
+				cd "../../.."
+		else
+			builtin ... "$@"
+		fi
+}
+
 function ac()
 {
 	if [ -f /dev/shm/${MYUSERNAME}/apwdpath ];then
