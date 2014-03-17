@@ -58,8 +58,9 @@ export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
 #命令文件最大行数
 export HISTSIZE=5000000
 #最大命令历史记录数
-export HISTFILESIZE=5000000
 export HISTCONTROL="erasedups:ignoreboth"
+export HISTFILESIZE=5000000
+export HISTIGNORE="c:h:history:ha:hd:he:hi:la:ls:sb"
 #export JAVA_HOME=${HOME}/bk/sw/jdk1.7.0_25/
 export JAVA_HOME=${HOME}/bk/sw/jdk1.6.0_45/
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:
@@ -73,6 +74,7 @@ export LESS_TERMCAP_us=$'\E[01;33m'
 export PAGER="`which less` -s"
 #export PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 #export PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
+#export PROMPT_COMMAND="history -a"
 export PS4='+[$LINENO]'
 export SVN_EDITOR=/usr/bin/vim
 
