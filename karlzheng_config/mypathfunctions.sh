@@ -66,9 +66,9 @@ function ap()
 			echo $PATH
 		fi
 	else
-		pwd | sed -e "s#${HOME}#~#"
+		pwd | sed -e "s#^${HOME}#~#"
 		[ -d /dev/shm/${MYUSERNAME} ] || mkdir -p /dev/shm/${MYUSERNAME}
-		pwd | sed -e "s#${HOME}#~#" > /dev/shm/${MYUSERNAME}/apwdpath;
+		pwd | sed -e "s#^${HOME}#~#" > /dev/shm/${MYUSERNAME}/apwdpath;
 	fi
 }
 
