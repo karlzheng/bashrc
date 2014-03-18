@@ -529,13 +529,19 @@ function glg()
 function gp()
 {
 	local c
-
 	if [ -d .git ];then
 		read -p "git pull current dir y|n ?" c
 		if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
 			git pull
 		fi
+	else
+		echo "Not a git repository!"
 	fi
+}
+
+function gpc()
+{
+	local c
 	read -p "git pull bashrc and vimrc y|n ?" c
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
 		if [ -d ~/bashrc ];then
