@@ -231,18 +231,22 @@ function append_daily_path()
 
 function brm()
 {
-	if [ $# -ge 2 ];then
-		echo "pls use brm to delete dir one dir by one dir"
-		return 0;
-	fi
-	read -p "Are you really want to remove "$@"? y|n" c
+	echo "Are you really want to remove $@ ?"
+	read -p "y|n" c
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
-		IFS=$'\n' # set field seperator for bash
-		local d=${1%/}
-		/bin/mv $d $d.dir.tmp
+		# set field seperator for bash
+		IFS=$'\n'
 		echo "/bin/rm -rf $@"
-		echo "/bin/rm -rf $d.dir.tmp"
-		/bin/rm -rf $d.dir.tmp &
+		while [ "x$1" != x ];do
+			if [ -f "$1" -o -d "$1" ];then
+				local d=${1%/}
+				/bin/mv $d $d.dir.tmp
+				/bin/rm -rf $d.dir.tmp &
+			fi
+			shift
+		done
+	else
+		echo "Removing $@ cancled !!"
 	fi
 }
 
@@ -268,31 +272,6 @@ function emulator_env()
 function lstrash()
 {
 		ls -l ~/.trash/ ;
-}
-
-function rm ()
-{
-	IFS=$'\n' # set field seperator for bash
-	if [ ! -d ~/.trash ]; then
-		mkdir ~/.trash;
-	fi;
-	while [ "x$1" != x ];do
-		if [ -f "$1" -o -d "$1" ];then
-			if [ -f "${HOME}/.trash/$1" ];then
-				/bin/mv -f ${HOME}/.trash/$1 ${HOME}/.trash/$1.old
-			fi
-			if [ -d "${HOME}/.trash/$1" ];then
-				#ensure no / at the end of path
-				local d=${1%/}
-				if [ -d ${HOME}/.trash/${d}.old ];then
-					/bin/rm ${HOME}/.trash/${d}.old -rf
-				fi
-				/bin/mv ${HOME}/.trash/${d} ${HOME}/.trash/${d}.old
-			fi
-			/bin/mv $1 ~/.trash/
-		fi
-		shift
-	done
 }
 
 function undel()
@@ -809,6 +788,31 @@ function repo()
 	else
 		google_repo "$@"
 	fi
+}
+
+function rm ()
+{
+	IFS=$'\n' # set field seperator for bash
+	if [ ! -d ~/.trash ]; then
+		mkdir ~/.trash;
+	fi;
+	while [ "x$1" != x ];do
+		if [ -f "$1" -o -d "$1" ];then
+			if [ -f "${HOME}/.trash/$1" ];then
+				/bin/mv -f ${HOME}/.trash/$1 ${HOME}/.trash/$1.old
+			fi
+			if [ -d "${HOME}/.trash/$1" ];then
+				#ensure no / at the end of path
+				local d=${1%/}
+				if [ -d ${HOME}/.trash/${d}.old ];then
+					/bin/rm ${HOME}/.trash/${d}.old -rf
+				fi
+				/bin/mv ${HOME}/.trash/${d} ${HOME}/.trash/${d}.old
+			fi
+			/bin/mv $1 ~/.trash/
+		fi
+		shift
+	done
 }
 
 function sai()
