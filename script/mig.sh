@@ -1,11 +1,11 @@
 #!/bin/bash 
 #===============================================================================
 #
-#          FILE:  mg.sh
+#          FILE:  mig.sh
 # 
-#         USAGE:  ./mg.sh 
+#         USAGE:  ./mig.sh 
 # 
-#   DESCRIPTION:  mg = grep in multi dirs
+#   DESCRIPTION:  mig = multi dirs ignore-case grep
 # 
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
@@ -81,7 +81,7 @@ function modify_seach_result_file()
 
 : > $SEACH_RESULT_FILE
 
-if [ -f ./mg.mk ];then
+if [ -f ./mig.mk ];then
 	while read line;do
 		line=$(echo -n "$line" |sed -e 's#^\#.*##g')
 		if [ "x$line" != "x" ];then
@@ -91,7 +91,7 @@ if [ -f ./mg.mk ];then
 					-not -regex '.*.cmd' \
 					-not -regex '.*.svn-base' \
 					-not -regex  '.*\.svn.*' \
-					-exec grep -HIn "$@" {} + \
+					-exec grep -HniI "$@" {} + \
 					| grep -v "./tags" \
 					| grep -v "./gtags" \
 					| grep -v "./cscope" \
@@ -104,7 +104,7 @@ if [ -f ./mg.mk ];then
 				echo "not exist dir:$line"
 			fi
 		fi
-	done < ./mg.mk
+	done < ./mig.mk
 
 	if [ $(whoami) != "karlzheng" ];then
 		cp  $SEACH_RESULT_FILE "${HOME}/quickfix.txt"
@@ -115,7 +115,7 @@ else
 		-not -regex '.*.cmd' \
 		-not -regex '.*.svn-base' \
 		-not -regex  '.*\.svn.*' \
-		-exec grep -HnI "$@" {} + \
+		-exec grep -HniI "$@" {} + \
 		| grep -v "./tags" \
 		| grep -v "./gtags" \
 		| grep -v "./cscope" \
