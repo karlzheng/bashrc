@@ -363,9 +363,14 @@ function g()
 	grep "$@"
 }
 
+function gaa()
+{
+	git add -A
+}
+
 function gba()
 {
-		git branch -a
+	git branch -a
 }
 
 function gc()
@@ -376,6 +381,11 @@ function gc()
 	else
 		echo "no .git/config "
 	fi
+}
+
+function gci()
+{
+	git commit "$@"
 }
 
 function gd()
