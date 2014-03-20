@@ -251,7 +251,7 @@ function brm()
 	fi
 }
 
-function cleantrash()
+function ctrash()
 {
 		/bin/rm -rf ~/.trash;
 		mkdir ~/.trash;
