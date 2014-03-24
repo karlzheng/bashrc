@@ -646,11 +646,8 @@ function cr()
 	function is_project_root_dir()
 	{
 		local ANDROIDENVSETUP=build/core/envsetup.mk;
-		local KERNELCONFIGDIR=arch/arm/configs;
 		let is_root_dir=0
 		if [ -f $ANDROIDENVSETUP ] || \
-		   [ -d '.repo' ] || [ -d '.git' ] || \
-		   [ -d $KERNELCONFIGDIR ] || \
 		   [ "$(pwd)" == "${HOME}" ] || \
 		   [ "$(pwd)" == "/" ] || \
 		   ( [ -f .project ] && [ -f project.properties ] ) || \
@@ -659,11 +656,6 @@ function cr()
 		fi
 		return $is_root_dir;
 	}
-	#if [ -n "$T" ]; then
-		#echo "auto change to TOP dir: $T"
-		#cd "$T";
-		#return 0;
-	#fi
 	if [ -n $OLDPWD ];then
 		local SAVE_OLDPWD="$OLDPWD"
 	fi
@@ -700,6 +692,7 @@ function crr()
 		local KERNELCONFIGDIR=arch/arm/configs;
 		let is_root_dir=0
 		if [ -f $ANDROIDENVSETUP ] || \
+		   [ -d '.repo' ] || [ -d '.git' ] || \
 		   [ -d $KERNELCONFIGDIR ] || \
 		   [ "$(pwd)" == "${HOME}" ] || \
 		   [ "$(pwd)" == "/" ] || \
@@ -709,6 +702,11 @@ function crr()
 		fi
 		return $is_root_dir;
 	}
+	#if [ -n "$T" ]; then
+		#echo "auto change to TOP dir: $T"
+		#cd "$T";
+		#return 0;
+	#fi
 	if [ -n $OLDPWD ];then
 		local SAVE_OLDPWD="$OLDPWD"
 	fi
