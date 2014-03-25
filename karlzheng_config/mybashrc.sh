@@ -101,7 +101,7 @@ bind -m emacs '"\C-gc": "cd $(!!)"'
 bind -m emacs '"\C-gf": "$(fp)"'
 bind -m emacs '"\C-gh": "--help"'
 bind -m emacs '"\C-gm": "grep mei Makefile"'
-bind -m emacs '"\C-gt": " | tee ~/tmp/f"'
+bind -m emacs '"\C-gt": " | tee ~/tmp/tee.log"'
 bind -m emacs '"\C-gv": "--version"'
 bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
 
