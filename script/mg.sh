@@ -91,7 +91,7 @@ if [ -f ./mg.mk ];then
 					-not -regex '.*.cmd' \
 					-not -regex '.*.svn-base' \
 					-not -regex  '.*\.svn.*' \
-					-exec grep -HIn "$@" {} + \
+					-exec grep -HnI "$@" {} + \
 					| grep -v "./tags" \
 					| grep -v "./gtags" \
 					| grep -v "./cscope" \
