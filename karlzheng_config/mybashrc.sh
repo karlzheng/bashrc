@@ -146,8 +146,6 @@ alias lsr='ls -lasr '
 alias lt='ls -lat '
 alias ltr='ls -latr '
 alias m='mount '
-alias mj="make -j$(/bin/grep processor /proc/cpuinfo \
-	| /usr/bin/awk '{field=$NF};END{print(field+1)*2}') "
 #alias mt3='mount -t ext3 '
 #alias mtnfs=' mount -t nfs '
 #alias mto='mount -o loop '
@@ -691,11 +689,6 @@ function md()
 	mkdir -p "$@"
 }
 
-function mcd ()
-{
-  mkdir -p "$@" && eval cd "\"\$$#\"";
-}
-
 function mc()
 {
 	local cpu_nr=$(/bin/grep processor /proc/cpuinfo \
@@ -707,6 +700,18 @@ function mc()
 		make $1 -j$cpu_nr
 	fi
 	return 0
+}
+
+function mcd ()
+{
+  mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+
+function mj()
+{
+	local CPUS=$(/bin/grep processor /proc/cpuinfo \
+		| /usr/bin/awk '{field=$NF};END{print(field+1)*2}')
+    make -j${CPUS} "$@"
 }
 
 function mypath()
