@@ -814,24 +814,26 @@ function repo()
 	fi
 }
 
-function rm ()
+function rm()
 {
-	IFS=$'\n' # set field seperator for bash
+	# set field seperator for bash
+	IFS=$'\n'
 	if [ ! -d ~/.trash ]; then
 		mkdir ~/.trash;
 	fi;
 	while [ "x$1" != x ];do
 		if [ -f "$1" -o -d "$1" ];then
-			if [ -f "${HOME}/.trash/$1" ];then
-				/bin/mv -f ${HOME}/.trash/$1 ${HOME}/.trash/$1.old
+			local bn=$(basename "$1")
+			if [ -f "${HOME}/.trash/${bn}" ];then
+				/bin/mv -f ${HOME}/.trash/${bn} ${HOME}/.trash/${bn}.old
 			fi
-			if [ -d "${HOME}/.trash/$1" ];then
+			if [ -d "${HOME}/.trash/${bn}" ];then
 				#ensure no / at the end of path
-				local d=${1%/}
-				if [ -d ${HOME}/.trash/${d}.old ];then
-					/bin/rm ${HOME}/.trash/${d}.old -rf
+				#local d=${1%/}
+				if [ -d ${HOME}/.trash/${bn}.old ];then
+					/bin/rm ${HOME}/.trash/${bn}.old -rf
 				fi
-				/bin/mv ${HOME}/.trash/${d} ${HOME}/.trash/${d}.old
+				/bin/mv ${HOME}/.trash/${bn} ${HOME}/.trash/${bn}.old
 			fi
 			/bin/mv $1 ~/.trash/
 		fi
