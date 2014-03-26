@@ -24,8 +24,9 @@ if [ "$CHOOSE" == "1" ];then
 	fi
 	dd if=../ramdisk-uboot.img of=../ramdisk.img.gz bs=1 skip=64
 	gzip -dc ../ramdisk.img.gz | cpio -idm
+	rm ../ramdisk.img.gz
 	#chmod 777 -R ./
-elif [ "2" = ${CHOOSE} ];then
+elif [ "2" = "${CHOOSE}" ];then
 	echo "create()"
 	if [ ! -d root ];then 
 		echo "no a dir name root in sub dir"
@@ -39,6 +40,8 @@ elif [ "2" = ${CHOOSE} ];then
 	fi
 	mkimage -A arm -O linux -T ramdisk -C none -a 0x41000000 -n "ramdisk" -d ramdisk_new.img ramdisk-uboot.img
 	rm ramdisk_new.img
+else
+	echo -e "\npls choose inflate or create ramdisk!!\n"
 fi
 
 cat << EEOOFF > /dev/null

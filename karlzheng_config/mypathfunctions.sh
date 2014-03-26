@@ -507,31 +507,38 @@ function cd()
 			if [ $# -eq 1 ];then
 				local no_host_dir=$(echo $1 | \
 					sed -e 's#\w*@.*:\(.*\)#\1#')
+				no_host_dir=$(echo $1 | sed -e 's#:.*$##')
 				if [ -d "${no_host_dir/\~/${HOME}}" ];then
 					builtin cd "${no_host_dir/\~/${HOME}}"
 				else
-					local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-					mkdir -p /dev/shm/"${MYUSERNAME}"
-					: > $enter_dir_file
-					for d in $(/bin/ls -la | grep -E "^d|^l" | \
-						awk '{print $NF}' | grep -i "$1" );
-				do
-					if [ -d "${d}" ];then
-						echo "${d}" >> $enter_dir_file
+					IFS=$'\n'
+					local bn=$(dirname $1)
+					if [ -d ${bn} ];then
+						builtin cd ${bn}
+					else
+						local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+						mkdir -p /dev/shm/"${MYUSERNAME}"
+						: > $enter_dir_file
+						for d in $(/bin/ls -la | grep -E "^d|^l" | \
+							awk '{print $NF}' | grep -i "$1" );
+						do
+							if [ -d "${d}" ];then
+								echo "${d}" >> $enter_dir_file
+							fi
+						done
+						if [ -f "$1" ];then
+							echo "$(dirname $1)" >> $enter_dir_file
+						fi
+						local cnt=$(cat "$enter_dir_file" | wc -l)
+						if [ $cnt -gt 0 ];then
+							cat -n "$enter_dir_file"
+							cd_dir_in_file
+						fi
 					fi
-				done
-				if [ -f "$1" ];then
-					echo "$(dirname $1)" >> $enter_dir_file
 				fi
-				local cnt=$(cat "$enter_dir_file" | wc -l)
-				if [ $cnt -gt 0 ];then
-					cat -n "$enter_dir_file"
-					cd_dir_in_file
-				fi
+			else
+				builtin cd "$@"
 			fi
-		else
-			builtin cd "$@"
-		fi
 	fi
 fi
 }
