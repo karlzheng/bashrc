@@ -513,7 +513,7 @@ function cd()
 				else
 					IFS=$'\n'
 					local bn=$(dirname $1)
-					if [ -d ${bn} ];then
+					if [ -d "${bn}" -a "x${bn}" != 'x.' ];then
 						builtin cd ${bn}
 					else
 						local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
@@ -542,12 +542,6 @@ function cd()
 	fi
 fi
 }
-
-#function cl()
-#{
-	#cd $(!!)
-#}
-#alias cl="cd $(!!)"
 
 function dlb()
 {
