@@ -652,6 +652,8 @@ function cr()
 		   [ "$(pwd)" == "${HOME}" ] || \
 		   [ "$(pwd)" == "/" ] || \
 		   ([ -d $KERNELCONFIGDIR ] && [ ! -f ../${ANDROIDENVSETUP} ]) || \
+		   ([ -d '.git' ] && [ ! -f ../${ANDROIDENVSETUP} ]) || \
+		   ([ -d '.repo' ] && [ ! -f ../${ANDROIDENVSETUP} ]) || \
 		   ( [ -f .project ] && [ -f project.properties ] ) || \
 		   ( [ -d board ] && [ -d arch ] && [ -d drivers ] );then
 			let is_root_dir=1
