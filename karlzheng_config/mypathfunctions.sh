@@ -646,10 +646,12 @@ function cr()
 	function is_project_root_dir()
 	{
 		local ANDROIDENVSETUP=build/core/envsetup.mk;
+		local KERNELCONFIGDIR=arch/arm/configs;
 		let is_root_dir=0
-		if [ -f $ANDROIDENVSETUP ] || \
+		if [ -f ${ANDROIDENVSETUP} ] || \
 		   [ "$(pwd)" == "${HOME}" ] || \
 		   [ "$(pwd)" == "/" ] || \
+		   ([ -d $KERNELCONFIGDIR ] && [ ! -f ../${ANDROIDENVSETUP} ]) || \
 		   ( [ -f .project ] && [ -f project.properties ] ) || \
 		   ( [ -d board ] && [ -d arch ] && [ -d drivers ] );then
 			let is_root_dir=1
