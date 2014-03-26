@@ -550,20 +550,22 @@ function gp()
 
 function gpc()
 {
-	local c
-	read -p "git pull bashrc and vimrc y|n ?" c
-	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-		if [ -d ~/bashrc ];then
-			cd ~/bashrc
-			git pull
-			cd -
-		fi
-		if [ -d ~/vimrc ];then
-			#git --git-dir ~/vimrc pull
-			cd ~/vimrc
-			git pull
-			cd -
-		fi
+	if [ -n $OLDPWD ];then
+		local SAVE_OLDPWD="$OLDPWD"
+	fi
+	if [ -d ~/bashrc ];then
+		pushd ~/bashrc
+		git pull
+		popd
+	fi
+	if [ -d ~/vimrc ];then
+		#git --git-dir ~/vimrc pull
+		pushd ~/vimrc
+		git pull
+		popd
+	fi
+	if [ -n $SAVE_OLDPWD ];then
+		OLDPWD=$(echo $SAVE_OLDPWD)
 	fi
 }
 
