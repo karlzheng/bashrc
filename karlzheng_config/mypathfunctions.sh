@@ -448,13 +448,13 @@ function cd_dir_in_file()
 				printf '%-100s\r' "Enter: ${enter_dir} ?"
 				local key=$(bash_get_keycode | tr -d '\r' | tr -d '\n')
 				case "$key" in
-						"UP")
+						"UP" | "-up")
 								((cur_pos --));
 								if [ $cur_pos -lt 0 ];then
 										let cur_pos=$cur_pos+$cnt
 								fi
 								;;
-						"DOWN"|"SPACE")
+						"DOWN"| "-down" | "SPACE")
 								((cur_pos ++));
 								if [ $cur_pos -ge $cnt ];then
 										let cur_pos=0
