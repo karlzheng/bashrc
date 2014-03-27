@@ -747,6 +747,14 @@ function n()
 		return 0
 }
 
+function nq()
+{
+	read -p "Are you sure quit all nautilus? y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		nautilus -q
+	fi
+}
+
 function p()
 {
 		if [ ! -f /dev/shm/${MYUSERNAME}/cur_pos ];
