@@ -1,49 +1,58 @@
 #!/bin/bash
 
-echo "Modify the ramdisk.img"
- 
-echo "1.Inflate the image"
-echo "2.Create the image"
 
-read -p "Choose:" CHOOSE
+function r()
+{
+	echo "Modify the ramdisk.img"
 
-if [ "$CHOOSE" == "1" ];then
-	echo "inflate()"
-	if [ -d root ];then 
-		echo "exist root dir!!"
-		echo "mv root root_old"
-		if [ -d root_old ];then 
-			rm root_old
+	echo "1.Inflate the image"
+	echo "2.Create the image"
+
+	read -p "Choose:" CHOOSE
+
+	fn=ramdisk-uboot.img
+	if [ ! -f ${fn} ];then
+		if [ -f ramdisk.img.ub ];then
+			fn=ramdisk.img.ub
 		fi
-		mv root root_old
-		#exit 1;
 	fi
-	mkdir root &&  cd root
-	if [ -f ../ramdisk.img.gz ];then
-		mv ../ramdisk.img.gz ../ramdisk.img.gz.old
-	fi
-	dd if=../ramdisk-uboot.img of=../ramdisk.img.gz bs=1 skip=64
-	gzip -dc ../ramdisk.img.gz | cpio -idm
-	rm ../ramdisk.img.gz
-	#chmod 777 -R ./
-elif [ "2" = "${CHOOSE}" ];then
-	echo "create()"
-	if [ ! -d root ];then 
-		echo "no a dir name root in sub dir"
-		exit 1
-	fi
-	cd root
-	find . | cpio -H newc -o | gzip -9 > ../ramdisk_new.img
-	cd -
-	if [ -f ramdisk-uboot.img ];then
-		mv ramdisk-uboot.img ramdisk-uboot.img.old
-	fi
-	mkimage -A arm -O linux -T ramdisk -C none -a 0x41000000 -n "ramdisk" -d ramdisk_new.img ramdisk-uboot.img
-	rm ramdisk_new.img
-else
-	echo -e "\npls choose inflate or create ramdisk!!\n"
-fi
 
+	if [ "${CHOOSE}" == "1" ];then
+		echo "inflate()"
+		if [ -d root ];then 
+			echo "exist root dir!!"
+			echo "mv root root_old"
+			if [ -d root_old ];then 
+				/bin/rm -rf root_old
+			fi
+			/bin/mv root root_old
+			#exit 1;
+		fi
+		mkdir root &&  cd root
+		if [ -f ../ramdisk.img.gz ];then
+			mv ../ramdisk.img.gz ../ramdisk.img.gz.old
+		fi
+		dd if=../${fn} of=../ramdisk.img.gz bs=1 skip=64
+		gzip -dc ../ramdisk.img.gz | cpio -idm
+		rm ../ramdisk.img.gz
+		#chmod 777 -R ./
+	elif [ "2" = "${CHOOSE}" ];then
+		echo "create()"
+		if [ ! -d root ];then 
+			echo "no a dir name root in sub dir"
+			exit 1
+		fi
+		cd root
+		find . | cpio -H newc -o | gzip -9 > ../ramdisk_new.img
+		cd -
+		if [ -f ${fn} ];then
+			mv ${fn} ${fn}.old
+		fi
+		mkimage -A arm -O linux -T ramdisk -C none -a 0x41000000 -n "ramdisk" -d ramdisk_new.img ${fn}
+		rm ramdisk_new.img
+	else
+		echo -e "\npls choose inflate or create ramdisk!!\n"
+	fi
 cat << EEOOFF > /dev/null
 	echo "1. mkimage for meizum8(s3c6410)"
 	echo "2. mkimage for meizu3g(s5pc100)"
@@ -51,7 +60,7 @@ cat << EEOOFF > /dev/null
 	echo "4. mkimage for meizumx(S5PC210)"
 	echo "5. mkimage for meizumxse(4412)"
 	read -p "Choose:" CHOOSE
-	if [ "$CHOOSE" == "1" ];then
+	if [ "${CHOOSE}" == "1" ];then
 		#ramdisk-uboot-s3c6410.img
 		mkimage -A arm -O linux -T ramdisk -C none -a 0x50800000 -n "ramdisk" -d ramdisk_new.img ramdisk-uboot-s3c6410.img
 	elif [ "2" = ${CHOOSE} ];then
@@ -68,3 +77,7 @@ cat << EEOOFF > /dev/null
 		mkimage -A arm -O linux -T ramdisk -C none -a 0x41000000 -n "ramdisk" -d ramdisk_new.img ramdisk-uboot-4412.img
 	fi
 EEOOFF
+}
+
+r "$@"
+
