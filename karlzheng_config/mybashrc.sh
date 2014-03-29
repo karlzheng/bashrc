@@ -973,6 +973,11 @@ function v()
 	fi
 }
 
+function vd()
+{
+	vimdiff "$@"
+}
+
 function vf()
 {
 	if [ -f ~/tmp/f ];then
