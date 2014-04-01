@@ -1225,9 +1225,27 @@ function _mc_complete()
 		fi
 	fi
 	return 0
+} 
+
+function _bypy_completion()
+{
+	local cur
+	COMPREPLY=()
+	cur=${COMP_WORDS[COMP_CWORD]}
+	prev=${COMP_WORDS[COMP_CWORD-1]}
+	if [ $COMP_CWORD -eq 1 ];then
+		COMPREPLY=($( compgen -W 'upload' -- $cur ))
+	else
+		if [ $COMP_CWORD -eq 2 ];then
+			COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
+		fi
+	fi
+
+	return 0
 }
 
-function _ksvn_complete() {
+function _ksvn_complete()
+{
 		local my_complete_word=(
 				'svn://172.16.9.63/svn_src'
 				'https://172.16.1.21/svn/IceCreamSandwich'
@@ -1240,6 +1258,17 @@ function _ksvn_complete() {
 if [ $MYUSERNAME == $MYNICKNAME ];then
 		complete -o default -F _longopt vi
 fi
+complete -c tp
+complete -c vm
+complete -F _bypy_completion bypy.py
+complete -F	_dnw_complete dnw
+complete -F	_ksvn_complete ksvn
+complete -F	_fastboot_completion fastboot
+complete -F	_mj_complete mj
+complete -F	_mc_complete mc
+complete -W 'arch/arm/configs' lac
+complete -W 'xconfig clean distclean' make
+complete -W 'xconfig clean distclean zImage' mj
 
 function my_bash_login_auto_exec_func()
 {
@@ -1338,17 +1367,6 @@ function my_bash_login_auto_exec_func()
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do	 sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars
 #rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
-
-complete -c tp
-complete -c vm
-complete -F	 _fastboot_completion fastboot
-complete -F	 _mj_complete mj
-complete -F	 _mc_complete mc
-complete -F	 _ksvn_complete ksvn
-complete -F	 _dnw_complete dnw
-complete -W 'arch/arm/configs' lac
-complete -W 'xconfig clean distclean' make
-complete -W 'xconfig clean distclean zImage' mj
 
 if [ -f ~/bashrc/karlzheng_config/adb.bash_complete.sh ];then
 		source	~/bashrc/karlzheng_config/adb.bash_complete.sh
