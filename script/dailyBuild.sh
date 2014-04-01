@@ -4,7 +4,11 @@ function runBuild()
 {
 	local orgVerHash="5ee45d2e28dc216e8cedcd2decd156ef6d3ace50"
 	#git clone gitolite@10.39.70.10:gameBox/samsung/5422-android-release
-	local prePath="/1t/home/share/arndale_img/dailyBuild_Android4.4"
+	if [ -d ${HOME}/dailyBuild ];then
+		local prePath=${HOME}/dailyBuild
+	else
+		local prePath="/1t/home/share/arndale_img/dailyBuild_Android4.4"
+	fi
 	local logList=$(git log |grep "^commit"|awk '{print $2}')
 	for ll in ${logList[@]};do
 		if [ -d out ];then
