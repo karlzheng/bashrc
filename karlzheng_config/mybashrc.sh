@@ -383,7 +383,7 @@ function gc()
 
 function gci()
 {
-	git commit "$@"
+	git commit -s "$@"
 }
 
 function gd()
@@ -801,9 +801,14 @@ function rbrances()
 	fi
 }
 
-function rcp()
+function racp()
 {
 	rsync -avP "$@"
+}
+
+function rcp()
+{
+	rsync -vP "$@"
 }
 
 function repo()
