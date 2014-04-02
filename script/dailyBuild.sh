@@ -9,6 +9,11 @@ function runBuild()
 	else
 		local prePath="/1t/home/share/arndale_img/dailyBuild_Android4.4"
 	fi
+	local oldBranch=$(git branch | grep '^*' |awk '{print $2}')
+	if [ "x${oldBranch}" != "xmaster" ];then
+		git checkout master
+		git branch -D ${oldBranch}
+	fi
 	local logList=$(git log |grep "^commit"|awk '{print $2}')
 	for ll in ${logList[@]};do
 		if [ -d out ];then
