@@ -19,7 +19,7 @@ function runBuild()
 		if [ -d out ];then
 			/bin/rm out -rf
 		fi
-		if [ ! -d ${prePath}/${ll} ];then
+		if [ ! -f ${prePath}/${ll}/system.img -o ! -f ${prePath}/${ll}/ramdisk-uboot.img ];then
 			git checkout ${ll} -b ${ll}
 			git reset --hard
 			git clean -df
