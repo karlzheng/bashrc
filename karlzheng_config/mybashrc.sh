@@ -1144,11 +1144,18 @@ function _fastboot_completion()
 		cur=${COMP_WORDS[COMP_CWORD]}
 		prev=${COMP_WORDS[COMP_CWORD-1]}
 		if [ $COMP_CWORD -eq 1 ];then
-				COMPREPLY=($( compgen -W 'flash reboot' -- $cur ))
+				COMPREPLY=($(compgen -W ' flash reboot erase ' -- $cur ))
 		else
 				if [ $COMP_CWORD -eq 2 ];then
-						COMPREPLY=($( compgen -W 'kernel bootloader ramdisk \
-						system userdata' -- $cur ))
+					case "$prev" in
+						"flash")
+							COMPREPLY=($( compgen -W 'kernel bootloader \
+								ramdisk system userdata' -- $cur ))
+							;;
+						"erase")
+							COMPREPLY=($(compgen -W 'userdata cache' -- $cur ))
+							;;
+					esac
 				else
 						if [ $COMP_CWORD -eq 3 ];then
 								case "$prev" in
@@ -1186,7 +1193,6 @@ function _fastboot_completion()
 						fi
 				fi
 		fi
-
   return 0
 }
 
