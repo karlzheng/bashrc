@@ -1,21 +1,19 @@
 #!/bin/bash
 
-
 function r()
 {
 	echo "Modify the ramdisk.img"
-
 	echo "1.Inflate the image"
 	echo "2.Create the image"
 
-	read -p "Choose:" CHOOSE
-
-	fn=ramdisk-uboot.img
+	local fn=ramdisk-uboot.img
 	if [ ! -f ${fn} ];then
 		if [ -f ramdisk.img.ub ];then
 			fn=ramdisk.img.ub
 		fi
 	fi
+	
+	read -p "Choose:" CHOOSE
 
 	if [ "${CHOOSE}" == "1" ];then
 		echo "inflate()"
@@ -80,4 +78,3 @@ EEOOFF
 }
 
 r "$@"
-

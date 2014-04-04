@@ -69,7 +69,7 @@ print "file_header chunks:%X"%(file_header.total_chunks)
 total_chunks = file_header.total_chunks
 print("total chunk = %d "%(total_chunks))
 
-ofd = open("tmp.img", "wb")
+ofd = open("simg2img.img", "wb")
 
 sector_base = 82528
 output_len = 0
