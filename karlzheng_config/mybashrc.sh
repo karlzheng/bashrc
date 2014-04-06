@@ -808,7 +808,7 @@ function racp()
 
 function rcp()
 {
-	rsync -vP "$@"
+	rsync -rvP "$@"
 }
 
 function repo()
