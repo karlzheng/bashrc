@@ -117,14 +117,14 @@ function ca()
 
 function cda()
 {
-	if [ -d /tmp/a ];then 
+	if [ -d /tmp/a ];then
 		cd /tmp/a
 	fi
 }
 
 function cdb()
 {
-	if [ -d /tmp/b ];then 
+	if [ -d /tmp/b ];then
 		cd /tmp/b
 	fi
 }
@@ -161,10 +161,10 @@ function cdc()
 
 function cdm()
 {
-	if [ -d arch/arm/mach-exynos4/ ];then 
+	if [ -d arch/arm/mach-exynos4/ ];then
 		cd arch/arm/mach-exynos4/
 	fi
-	if [ -d arch/arm/mach-exynos/ ];then 
+	if [ -d arch/arm/mach-exynos/ ];then
 		cd arch/arm/mach-exynos/
 	fi
 }
@@ -182,7 +182,7 @@ function cds()
 {
 	local sDev=dev1
 	local newFile=${HOME}/${sDev}/server_path.mk
-	
+
 	if [ ! -d ${HOME}/person_tools ];then
 		touch ~/server_path.mk
 		pwd > ~/server_path.mk
@@ -223,7 +223,7 @@ function cds()
 			fi
 		done
 		echo ${newFile}
-		
+
 		local cds_path="$(cat ${newFile} | tr -d '\r')"
 		cds_path=$(pathReplace ${sDev} ${cds_path})
 		echo "cd ${HOME}/${cds_path}"
@@ -513,6 +513,7 @@ function cd()
 				if [ -d "${no_host_dir/\~/${HOME}}" ];then
 					builtin cd "${no_host_dir/\~/${HOME}}"
 				else
+					local OLD_IFS=${IFS}
 					IFS=$'\n'
 					local bn=$(dirname $1)
 					if [ -d "${bn}" -a "x${bn}" != 'x.' ];then
@@ -537,9 +538,17 @@ function cd()
 							cd_dir_in_file
 						fi
 					fi
+					IFS=${OLD_IFS}
 				fi
 			else
-				builtin cd "$@"
+				if [ $# -eq 3 ];then
+					if [ $2 == "is" ];then
+						echo "cd $3"
+						cd "$3"
+					fi
+				else
+					builtin cd "$@"
+				fi
 			fi
 	fi
 fi
@@ -550,9 +559,9 @@ function dlb()
 	local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
 	local kfb_samba_dir="/home/karlzheng/kfb"
 	local dir_prefix="$kfb_samba_dir/DailyBuild/DailyBuildM0"
-	local dir3x=(								   
-	"${dir_prefix}3X/app/IceCreamSandwich/eng"	 
-	"${dir_prefix}3X/app/IceCreamSandwich/user"	 
+	local dir3x=(
+	"${dir_prefix}3X/app/IceCreamSandwich/eng"
+	"${dir_prefix}3X/app/IceCreamSandwich/user"
 	"${dir_prefix}3X/app/JellyBean/user"
 	"${dir_prefix}3X/app/JellyBean/eng"
 	)
@@ -564,11 +573,11 @@ function dlb()
 	)
 	local buid_dirs
 	local machine=( "3x" "40" )
-	
+
 	while [ $# -gt 0 ] ; do
 			case "$1" in
-			3x) machine=("3x"); shift ;; 
-			40) machine=("40"); shift ;; 
+			3x) machine=("3x"); shift ;;
+			40) machine=("40"); shift ;;
 			*)	break ;;
 			esac
 	done
