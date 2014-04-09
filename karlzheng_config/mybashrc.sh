@@ -97,7 +97,7 @@ bind -m emacs '"\C-o": menu-complete'
 
 bind -m emacs '"\C-ga": "grep \"\" * --color -rHniI|grep -v ^tags|grep -v ^cscopef"'
 #bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
-bind -m emacs '"\C-gc": "cd $(!!)"'
+bind -m emacs '"\C-gc": "$(!!)"'
 bind -m emacs '"\C-gf": "$(fp)"'
 bind -m emacs '"\C-gh": "--help"'
 bind -m emacs '"\C-gm": "grep mei Makefile"'
