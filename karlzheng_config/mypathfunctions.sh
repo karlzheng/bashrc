@@ -634,6 +634,48 @@ function cr()
 	unset is_project_root_dir
 }
 
+function crm()
+{
+	local is_root_dir=0;
+
+	function is_project_root_dir()
+	{
+		local ANDROIDENVSETUP=build/core/envsetup.mk;
+		local KERNELCONFIGDIR=arch/arm/configs;
+		let is_root_dir=0
+		if [ -e Android.mk ] || [ -e Makefile ] || [ -e makefile ] ||
+		   [ "$(pwd)" == "${HOME}" ] || [ "$(pwd)" == "/" ];then
+			let is_root_dir=1
+		fi
+		return $is_root_dir;
+	}
+	if [ -n $OLDPWD ];then
+		local SAVE_OLDPWD="$OLDPWD"
+	fi
+	PWD=$(/bin/pwd);
+	local HERE="$PWD";
+	local T=;
+	is_project_root_dir
+	while [ $is_root_dir != 1 -a "$PWD" != "/" ];
+	do
+		cd .. > /dev/null;
+		T=`PWD= /bin/pwd`;
+		is_project_root_dir
+	done;
+	is_project_root_dir
+	cd "$HERE" > /dev/null;
+	if [ $is_root_dir == 1 -a "x$T" != "x" ]; then
+		echo "$HERE => $T";
+		cd "$T";
+	else
+		echo "$HERE";
+		if [ -n $SAVE_OLDPWD ];then
+			OLDPWD=$(echo $SAVE_OLDPWD)
+		fi
+	fi;
+	unset is_project_root_dir
+}
+
 function crr()
 {
 	local is_root_dir=0;
@@ -737,48 +779,6 @@ function dlb()
 	echo ""
 
 	cd_dir_in_file
-}
-
-function fm()
-{
-	local is_root_dir=0;
-
-	function is_project_root_dir()
-	{
-		local ANDROIDENVSETUP=build/core/envsetup.mk;
-		local KERNELCONFIGDIR=arch/arm/configs;
-		let is_root_dir=0
-		if [ -e Android.mk ] || [ -e Makefile ] || [ -e makefile ] ||
-		   [ "$(pwd)" == "${HOME}" ] || [ "$(pwd)" == "/" ];then
-			let is_root_dir=1
-		fi
-		return $is_root_dir;
-	}
-	if [ -n $OLDPWD ];then
-		local SAVE_OLDPWD="$OLDPWD"
-	fi
-	PWD=$(/bin/pwd);
-	local HERE="$PWD";
-	local T=;
-	is_project_root_dir
-	while [ $is_root_dir != 1 -a "$PWD" != "/" ];
-	do
-		cd .. > /dev/null;
-		T=`PWD= /bin/pwd`;
-		is_project_root_dir
-	done;
-	is_project_root_dir
-	cd "$HERE" > /dev/null;
-	if [ $is_root_dir == 1 -a "x$T" != "x" ]; then
-		echo "$HERE => $T";
-		cd "$T";
-	else
-		echo "$HERE";
-		if [ -n $SAVE_OLDPWD ];then
-			OLDPWD=$(echo $SAVE_OLDPWD)
-		fi
-	fi;
-	unset is_project_root_dir
 }
 
 function pa()
