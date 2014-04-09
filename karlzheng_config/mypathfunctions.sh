@@ -554,73 +554,9 @@ function cd()
 fi
 }
 
-function dlb()
+function cdt()
 {
-	local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-	local kfb_samba_dir="/home/karlzheng/kfb"
-	local dir_prefix="$kfb_samba_dir/DailyBuild/DailyBuildM0"
-	local dir3x=(
-	"${dir_prefix}3X/app/IceCreamSandwich/eng"
-	"${dir_prefix}3X/app/IceCreamSandwich/user"
-	"${dir_prefix}3X/app/JellyBean/user"
-	"${dir_prefix}3X/app/JellyBean/eng"
-	)
-	local dir40=(
-	"${dir_prefix}40/app/IceCreamSandwich/user"
-	"${dir_prefix}40/app/IceCreamSandwich/eng"
-	"${dir_prefix}40/app/JellyBean/user"
-	"${dir_prefix}40/app/JellyBean/eng"
-	)
-	local buid_dirs
-	local machine=( "3x" "40" )
-
-	while [ $# -gt 0 ] ; do
-			case "$1" in
-			3x) machine=("3x"); shift ;;
-			40) machine=("40"); shift ;;
-			*)	break ;;
-			esac
-	done
-	for i in ${machine[@]}; do
-		eval buid_dirs=( \${buid_dirs[@]} \${dir${i}[@]} )
-	done
-	#echo ${buid_dirs[*]}
-	for i in ${buid_dirs[*]}; do
-		if [ -d "$i" ];then
-			if [ "x$LANG" == "xC" ];then
-				local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $9}'\
-					| grep -E -v '^\.' | sed -n '2,3p')" | tac )
-			else
-				local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $8}'\
-					| grep -E -v '^\.' | sed -n '2,3p')" | tac )
-			fi
-			for j in ${recent_dirs[*]};
-			do
-				echo -e "$i/$j" | tee -a ${enter_dir_file}
-			done
-		fi
-	done
-
-	tac ${enter_dir_file} > ${enter_dir_file}.$$.file
-	/bin/mv	 ${enter_dir_file}.$$.file ${enter_dir_file}
-	echo ""
-
-	cd_dir_in_file
-}
-
-function pa()
-{
-		touch ${HOME}/bashrc/karlzheng_config/pwd.mk
-		grep -q "^$(pwd)$" ${HOME}/bashrc/karlzheng_config/pwd.mk
-		if [ $? != 0 ]; then
-				pwd | sed -e "s#${HOME}#~#" >> ${HOME}/bashrc/karlzheng_config/pwd.mk
-				awk '!a[$0]++' ${HOME}/bashrc/karlzheng_config/pwd.mk > ${HOME}/bashrc/karlzheng_config/$$.pwd.mk
-				#cat $$.pwd.mk | sort > ${HOME}/bashrc/karlzheng_config/pwd.mk
-				#rm $$.pwd.mk
-				/bin/mv ${HOME}/bashrc/karlzheng_config/$$.pwd.mk ${HOME}/bashrc/karlzheng_config/pwd.mk
-		else
-				echo "$(pwd) has already in ${HOME}/bashrc/karlzheng_config/pwd.mk"
-		fi
+	cd /tmp/t
 }
 
 function ci()
@@ -749,7 +685,113 @@ function crr()
 	unset is_project_root_dir
 }
 
-function cdt()
+function dlb()
 {
-	cd /tmp/t
+	local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+	local kfb_samba_dir="/home/karlzheng/kfb"
+	local dir_prefix="$kfb_samba_dir/DailyBuild/DailyBuildM0"
+	local dir3x=(
+	"${dir_prefix}3X/app/IceCreamSandwich/eng"
+	"${dir_prefix}3X/app/IceCreamSandwich/user"
+	"${dir_prefix}3X/app/JellyBean/user"
+	"${dir_prefix}3X/app/JellyBean/eng"
+	)
+	local dir40=(
+	"${dir_prefix}40/app/IceCreamSandwich/user"
+	"${dir_prefix}40/app/IceCreamSandwich/eng"
+	"${dir_prefix}40/app/JellyBean/user"
+	"${dir_prefix}40/app/JellyBean/eng"
+	)
+	local buid_dirs
+	local machine=( "3x" "40" )
+
+	while [ $# -gt 0 ] ; do
+			case "$1" in
+			3x) machine=("3x"); shift ;;
+			40) machine=("40"); shift ;;
+			*)	break ;;
+			esac
+	done
+	for i in ${machine[@]}; do
+		eval buid_dirs=( \${buid_dirs[@]} \${dir${i}[@]} )
+	done
+	#echo ${buid_dirs[*]}
+	for i in ${buid_dirs[*]}; do
+		if [ -d "$i" ];then
+			if [ "x$LANG" == "xC" ];then
+				local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $9}'\
+					| grep -E -v '^\.' | sed -n '2,3p')" | tac )
+			else
+				local recent_dirs=$(echo "$(ls -lt "$i" | awk '{print $8}'\
+					| grep -E -v '^\.' | sed -n '2,3p')" | tac )
+			fi
+			for j in ${recent_dirs[*]};
+			do
+				echo -e "$i/$j" | tee -a ${enter_dir_file}
+			done
+		fi
+	done
+
+	tac ${enter_dir_file} > ${enter_dir_file}.$$.file
+	/bin/mv	 ${enter_dir_file}.$$.file ${enter_dir_file}
+	echo ""
+
+	cd_dir_in_file
+}
+
+function fm()
+{
+	local is_root_dir=0;
+
+	function is_project_root_dir()
+	{
+		local ANDROIDENVSETUP=build/core/envsetup.mk;
+		local KERNELCONFIGDIR=arch/arm/configs;
+		let is_root_dir=0
+		if [ -e Android.mk ] || [ -e Makefile ] || [ -e makefile ] ||
+		   [ "$(pwd)" == "${HOME}" ] || [ "$(pwd)" == "/" ];then
+			let is_root_dir=1
+		fi
+		return $is_root_dir;
+	}
+	if [ -n $OLDPWD ];then
+		local SAVE_OLDPWD="$OLDPWD"
+	fi
+	PWD=$(/bin/pwd);
+	local HERE="$PWD";
+	local T=;
+	is_project_root_dir
+	while [ $is_root_dir != 1 -a "$PWD" != "/" ];
+	do
+		cd .. > /dev/null;
+		T=`PWD= /bin/pwd`;
+		is_project_root_dir
+	done;
+	is_project_root_dir
+	cd "$HERE" > /dev/null;
+	if [ $is_root_dir == 1 -a "x$T" != "x" ]; then
+		echo "$HERE => $T";
+		cd "$T";
+	else
+		echo "$HERE";
+		if [ -n $SAVE_OLDPWD ];then
+			OLDPWD=$(echo $SAVE_OLDPWD)
+		fi
+	fi;
+	unset is_project_root_dir
+}
+
+function pa()
+{
+		touch ${HOME}/bashrc/karlzheng_config/pwd.mk
+		grep -q "^$(pwd)$" ${HOME}/bashrc/karlzheng_config/pwd.mk
+		if [ $? != 0 ]; then
+				pwd | sed -e "s#${HOME}#~#" >> ${HOME}/bashrc/karlzheng_config/pwd.mk
+				awk '!a[$0]++' ${HOME}/bashrc/karlzheng_config/pwd.mk > ${HOME}/bashrc/karlzheng_config/$$.pwd.mk
+				#cat $$.pwd.mk | sort > ${HOME}/bashrc/karlzheng_config/pwd.mk
+				#rm $$.pwd.mk
+				/bin/mv ${HOME}/bashrc/karlzheng_config/$$.pwd.mk ${HOME}/bashrc/karlzheng_config/pwd.mk
+		else
+				echo "$(pwd) has already in ${HOME}/bashrc/karlzheng_config/pwd.mk"
+		fi
 }
