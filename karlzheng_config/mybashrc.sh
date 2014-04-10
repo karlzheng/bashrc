@@ -958,6 +958,15 @@ function v()
 			return
 		fi
 	fi
+	if [ $# -eq 3 ];then
+		local a1=$1
+		local a2=$2
+		local a3=$3
+		if [ ! -e ${a1} ] && [ ${a2} == "is" ] && [ -e ${a3} ];then
+			vim ${a3}
+			return
+		fi
+	fi
 	local fn=$(echo "$@" | awk -F: '{print $1}')
 	local ln=$(echo "$@" | awk -F: '{print $2}')
 	if [ -f "$fn" -o -d "$fn" ];then
