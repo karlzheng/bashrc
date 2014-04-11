@@ -962,9 +962,14 @@ function v()
 		local a1=$1
 		local a2=$2
 		local a3=$3
-		if [ ! -e ${a1} ] && [ ${a2} == "is" ] && [ -e ${a3} ];then
-			vim ${a3}
+		if [ -e ${a1} ] && [ ${a2} == "is" ] && [ -e ${a3} ];then
+			vim ${a1} ${a3}
 			return
+		else
+			if [ ! -e ${a1} ] && [ ${a2} == "is" ] && [ -e ${a3} ];then
+				vim ${a3}
+				return
+			fi
 		fi
 	fi
 	local fn=$(echo "$@" | awk -F: '{print $1}')
