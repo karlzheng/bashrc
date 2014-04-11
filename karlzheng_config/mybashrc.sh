@@ -182,6 +182,11 @@ function aa()
 	ack-grep -H -a --nogroup "$@"
 }
 
+function adblistpackages()
+{
+	adb shell pm list packages -f "$@"
+}
+
 function androidsetrootpath()
 {
 	export ANDROID_SRC_ROOT="$(pwd)"
