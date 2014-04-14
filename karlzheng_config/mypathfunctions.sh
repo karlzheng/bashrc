@@ -173,7 +173,8 @@ function cdr()
 {
 	#echo cd $(/bin/ls -Altr | tail -n 1 | awk '{print $NF}')
 	#cd $(/bin/ls -Altr | tail -n 1 | awk '{print $NF}')
-	local recent_dirs=$(echo "$(ls -lt | awk '{print $9}' | grep -E -v '^\.' | sed -n '2,2p')" | tac )
+	local recent_dirs=$(echo "$(ls -lt | grep "^d" | awk '{print $9}' |\
+		grep -E -v '^\.' | sed -n '1,1p')" | tac )
 	echo cd ${recent_dirs}
 	cd ${recent_dirs}
 }
