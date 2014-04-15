@@ -977,6 +977,16 @@ function v()
 			fi
 		fi
 	fi
+	if [ $# -eq 4 ];then
+		local a1=$1
+		local a2=$2
+		local a3=$3
+		local a4=$(echo $4 | sed 's#^(\(.*\))#\1#')
+		if [ ${a2} == "is" ] && [ ${a3} == "hashed" ] && [ -e ${a4} ];then
+			vim ${a4}
+			return
+		fi
+	fi
 	local fn=$(echo "$@" | awk -F: '{print $1}')
 	local ln=$(echo "$@" | awk -F: '{print $2}')
 	if [ -f "$fn" -o -d "$fn" ];then
