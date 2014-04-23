@@ -162,8 +162,6 @@ alias smbmount242_home='sudo smbmount //172.16.10.242/home/ /media/242/ -o iocha
 alias smbmount242='mount |grep -q 242; if [ $? = 0 ];then sudo umount /media/x;fi;sudo smbmount //172.16.10.242/home/svn /media/x/ -o iocharset=utf8,dir_mode=0777,file_mode=0777,username=${MYUSERNAME}'
 alias svnaw="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}'"
 alias svnaw_touch="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}' |xargs touch"
-alias vb='vi ~/bashrc/karlzheng_config/mybashrc.sh ~/.bashrc'
-alias vp='vi ~/bashrc/karlzheng_config/mypathfunctions.sh ~/pwd.mk'
 alias VI='vi'
 alias um="umount "
 alias wg="wget"
@@ -1007,6 +1005,29 @@ function v()
 	fi
 }
 
+function vb()
+{
+	local f=""
+	local f1=~/bashrc/karlzheng_config/mybashrc.sh
+	if [ -e ${f1} ];then
+		f=${f1}
+	fi
+	local f1=~/.bashrc
+	if [ -e ${f1} ];then
+		f="${f} ${f1}"
+	fi
+	if [ "${f}" != "" ];then
+		vi ${f}
+	fi
+}
+
+function vc()
+{
+   if [ -d arch/arm/configs/ ];then
+	   vi arch/arm/configs/
+   fi
+}
+
 function vd()
 {
 	vimdiff "$@"
@@ -1049,13 +1070,6 @@ function vl1()
 	   ((n++))
    done
    vi ${HOME}/tmp/log/${n}.txt
-}
-
-function vc()
-{
-   if [ -d arch/arm/configs/ ];then
-	   vi arch/arm/configs/
-   fi
 }
 
 function vm()
@@ -1110,6 +1124,22 @@ function vmdis()
 				arm-none-linux-gnueabi-objdump -S vmlinux --start-address=$startaddress --stop-address=$stopaddress > $tmpfile
 				#vi $tmpfile
 		fi
+}
+
+function vp()
+{
+	local f=""
+	local f1=${HOME}/bashrc/karlzheng_config/mypathfunctions.sh
+	if [ -e ${f1} ];then
+		f=${f1}
+	fi
+	local f1=${HOME}/pwd.mk
+	if [ -e ${f1} ];then
+		f="${f} ${f1}"
+	fi
+	if [ "${f}" != "" ];then
+		vi ${f}
+	fi
 }
 
 #alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 /dev/shm/${MYUSERNAME}path); cd $${MYUSERNAME}path'
@@ -1265,7 +1295,7 @@ function _mc_complete()
 		fi
 	fi
 	return 0
-} 
+}
 
 function _bypy_completion()
 {
