@@ -239,7 +239,7 @@ function brm()
 	read -p "y|n" c
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
 		# set field seperator for bash
-		IFS=$'\n'
+		local IFS=$'\n'
 		echo "/bin/rm -rf $@"
 		while [ "x$1" != x ];do
 			if [ -f "$1" -o -d "$1" ];then
@@ -299,7 +299,7 @@ function d()
 
 function dfd()
 {
-	IFS=$'\n'
+	local IFS=$'\n'
 	: > /dev/shm/dfd.tmp.log
 	for i in $(lsd);do
 		du -sh "$i" >> /dev/shm/dfd.tmp.log
@@ -687,7 +687,7 @@ function lsd()
 {
 	#/bin/ls -la | grep -E "^d|^l" | awk '{print $NF}'
 	#ls -l | awk '/^d/{print $NF}'
-	IFS=":"
+	local IFS=":"
 	ls -d */
 }
 
@@ -835,7 +835,7 @@ function repo()
 function rm()
 {
 	# set field seperator for bash
-	IFS=$'\n'
+	local IFS=$'\n'
 	if [ ! -d ~/.trash ]; then
 		mkdir ~/.trash;
 	fi;

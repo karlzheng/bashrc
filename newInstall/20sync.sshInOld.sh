@@ -13,7 +13,7 @@ function syncListedFile()
     python -c "open('/tmp/syncFile.list', 'w').\
 	writelines(set(open('syncFile.list').readlines())-\
 	set(open('alreadySyncFile.list').readlines()))"
-    IFS=$'\n'
+    local IFS=$'\n'
     local l
     local ol
     while read l;do
