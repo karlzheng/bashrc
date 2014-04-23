@@ -163,7 +163,7 @@ alias smbmount242='mount |grep -q 242; if [ $? = 0 ];then sudo umount /media/x;f
 alias svnaw="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}'"
 alias svnaw_touch="svn diff --diff-cmd=diff | grep ^Index | awk '{printf \$2 \" \"}END{print \" \"}' |xargs touch"
 alias vb='vi ~/bashrc/karlzheng_config/mybashrc.sh ~/.bashrc'
-alias vp='vi ~/bashrc/karlzheng_config/mypathfunctions.sh ~/bashrc/karlzheng_config/pwd.mk'
+alias vp='vi ~/bashrc/karlzheng_config/mypathfunctions.sh ~/pwd.mk'
 alias VI='vi'
 alias um="umount "
 alias wg="wget"
