@@ -787,7 +787,7 @@ function pa()
 		touch ${HOME}/pwd.mk
 		grep -q "^$(pwd)$" ${HOME}/pwd.mk
 		if [ $? != 0 ]; then
-				pwd | sed -e "s#${HOME}#~#" >> ${HOME}/pwd.mk
+				pwd | sed -e "s#^${HOME}#~#" >> ${HOME}/pwd.mk
 				awk '!a[$0]++' ${HOME}/pwd.mk > ${HOME}/$$.pwd.mk
 				#cat $$.pwd.mk | sort > ${HOME}/pwd.mk
 				#rm $$.pwd.mk
