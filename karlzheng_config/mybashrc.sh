@@ -871,6 +871,7 @@ function sbl()
 	cat ~/.bash_history >> ~/tmp/bash_history
 	sort ~/tmp/bash_history > /tmp/bash_history
 	cat /tmp/bash_history | awk '!a[$0]++' > ~/tmp/bash_history
+	rm /tmp/bash_history
 }
 
 function sdu ()
