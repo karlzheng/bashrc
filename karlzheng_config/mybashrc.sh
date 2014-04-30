@@ -1392,11 +1392,18 @@ function my_bash_login_auto_exec_func()
 		${JAVA_HOME}/bin
 		);
 		local mypath=""
-		for p in ${path_list[@]};
-		do
-				mypath=$mypath"$p:"
+		for p in ${path_list[@]};do
+				mypath=$mypath:"$p"
 		done
-		export PATH="$mypath"$PATH
+		export PATH="$mypath":$PATH
+		local path_list=(
+		${HOME}/bashrc/pythonlib
+		);
+		local mypath=""
+		for p in ${path_list[@]};do
+				mypath=$mypath:"$p"
+		done
+		export PYTHONPATH="$mypath":$PYTHONPATH
 		append_daily_path
 		unset append_daily_path
 
