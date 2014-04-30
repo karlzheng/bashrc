@@ -117,10 +117,6 @@ unalias ls
 #alias adb_="sudo adb kill-server && sudo adb start-server"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias CD='cd'
-alias c.='cd ../..'
-alias cd.='cd ../..'
-alias c..='cd ../../..'
-alias cd..='cd ../../..'
 alias cdance_rsync="rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/"
 alias cdg='cd /media/work/kernel/meizu/git/mx/linux-2.6.35-mx-rtm'
 alias ck="cd /media/cdriver/work/kernel/meizu/"
@@ -154,8 +150,6 @@ alias mz='make zImage -j32 '
 alias MZ='mz'
 alias po='popd'
 alias pp="cat -n /dev/shm/${MYUSERNAME}/daily_path"
-alias pu1='pushd +1'
-alias pu='pushd .'
 alias sb='source ~/bashrc/karlzheng_config/mybashrc.sh'
 alias slog='svn log | tac '
 alias smbmount242_home='sudo smbmount //172.16.10.242/home/ /media/242/ -o iocharset=utf8,username=${MYUSERNAME},dir_mode=0777,file_mode=0777'
@@ -216,17 +210,16 @@ function atar()
 function append_daily_path()
 {
 		local path_list=(
-				#'/media/work/4212/meizu/linux-3.0.15-beta'
-				#'/home/karlzheng/to_del1/uboot-mxse'
-				'/media/cdriver/work/kernel/meizu/meizu_m040/linux-3.0.39-rtm-mp-dev'
-				'/media/cdriver/work/kernel/meizu/m032/linux-3.0.15-rtm-dev'
+		~/person_tools/
 		);
 		[ -f /dev/shm/${MYUSERNAME}/daily_path ] || touch /dev/shm/${MYUSERNAME}/daily_path
 		for p in ${path_list[@]}; do
+			if [ -d ${p} ];then
 				grep -q "^$p$"	/dev/shm/${MYUSERNAME}/daily_path
 				if [ $? != 0 ]; then
-						echo "$p" >> /dev/shm/${MYUSERNAME}/daily_path;
+					echo "$p" >> /dev/shm/${MYUSERNAME}/daily_path;
 				fi
+			fi
 		done
 		wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/${MYUSERNAME}/total_count
 }
@@ -760,20 +753,16 @@ function nq()
 
 function p()
 {
-		if [ ! -f /dev/shm/${MYUSERNAME}/cur_pos ];
-		then echo "1" > /dev/shm/${MYUSERNAME}/cur_pos;
-				local  cur_pos=1;
-		else local cur_pos=$(cat /dev/shm/${MYUSERNAME}/cur_pos);
-				local total_count=$(cat /dev/shm/${MYUSERNAME}/total_count);
-				((cur_pos ++));
-				if [ $cur_pos -gt $total_count ];
-				then cur_pos=$(expr $cur_pos - $total_count);
-				fi
-				echo $cur_pos > /dev/shm/${MYUSERNAME}/cur_pos;
-		fi
-		local enter_dir=$(sed -n "$cur_pos{p;q;}"  /dev/shm/${MYUSERNAME}/daily_path)
-		builtin cd "$enter_dir"
-		ap
+	pushd -1
+}
+
+function pu()
+{
+	if [ $# -ge 1 ];then
+		pushd "$@"
+	else
+		pushd .
+	fi
 }
 
 function dnw()
@@ -797,16 +786,16 @@ function dnw()
 	return 0
 }
 
+function racp()
+{
+	rsync -avP "$@"
+}
+
 function rbrances()
 {
 	if [ -d .repo/manifests.git ];then
 		git --git-dir .repo/manifests/.git/ branch -a
 	fi
-}
-
-function racp()
-{
-	rsync -avP "$@"
 }
 
 function rcp()
@@ -916,6 +905,24 @@ function sfile ()
 		rsync -avurP "$from" "$to" || return 1
 		rsync -avurP "$to"	 "$from" || return 1
 	fi
+}
+
+function sp()
+{
+		if [ ! -f /dev/shm/${MYUSERNAME}/cur_pos ];
+		then echo "1" > /dev/shm/${MYUSERNAME}/cur_pos;
+				local  cur_pos=1;
+		else local cur_pos=$(cat /dev/shm/${MYUSERNAME}/cur_pos);
+				local total_count=$(cat /dev/shm/${MYUSERNAME}/total_count);
+				((cur_pos ++));
+				if [ $cur_pos -gt $total_count ];
+				then cur_pos=$(expr $cur_pos - $total_count);
+				fi
+				echo $cur_pos > /dev/shm/${MYUSERNAME}/cur_pos;
+		fi
+		local enter_dir=$(sed -n "$cur_pos{p;q;}"  /dev/shm/${MYUSERNAME}/daily_path)
+		builtin cd "$enter_dir"
+		ap
 }
 
 function sproxy()
