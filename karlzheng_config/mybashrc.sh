@@ -298,6 +298,11 @@ function dfd()
 	cat /dev/shm/dfd.tmp.log | sort -h
 }
 
+function diff()
+{
+	/usr/bin/diff -x '.svn' "$@"
+}
+
 function dl()
 {
 	if [ -d ~/Downloads/ ];then
@@ -307,9 +312,9 @@ function dl()
 	fi
 }
 
-function diff()
+function ds()
 {
-	/usr/bin/diff -x '.svn' "$@"
+	dirs "$@"
 }
 
 function ey()
@@ -753,7 +758,7 @@ function nq()
 
 function p()
 {
-	pushd -1
+	pushd +1
 }
 
 function pu()
