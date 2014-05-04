@@ -173,10 +173,13 @@ function cdr()
 {
 	#echo cd $(/bin/ls -Altr | tail -n 1 | awk '{print $NF}')
 	#cd $(/bin/ls -Altr | tail -n 1 | awk '{print $NF}')
-	local recent_dirs=$(echo "$(ls -lt | grep "^d" | awk '{print $9}' |\
+	local OLD_TIME_STYLE=$(echo ${TIME_STYLE})
+	export TIME_STYLE='+%Y/%m/%d %H:%M:%S'
+	local recent_dirs=$(echo "$(ls -lt | grep "^d" | awk '{print $8}' |\
 		grep -E -v '^\.' | sed -n '1,1p')" | tac )
 	echo cd ${recent_dirs}
 	cd ${recent_dirs}
+	export TIME_STYLE=$(echo ${OLD_TIME_STYLE})
 }
 
 function cds()
