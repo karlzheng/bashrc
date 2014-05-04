@@ -1249,7 +1249,11 @@ function _fastboot_completion()
 											fi
 												;;
 										"bootloader")
+											if [ -f uboot_fuse.bin ];then
 												COMPREPLY=($( compgen -W 'uboot_fuse.bin' -- $cur ))
+											else
+												COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
+											fi
 												;;
 										"kernel")
 											if [ -f zImage ];then
