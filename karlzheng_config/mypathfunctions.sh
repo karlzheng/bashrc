@@ -193,6 +193,7 @@ function cds()
 			local suffix=""
 			if [ $1 == "dev1" ];then
 				suffix=$(echo "$2" | sed -e "s#/home/sztv/##")
+				suffix=$(echo "$2" | sed -e "s#/2t/home/karlzheng/##")
 				prefix="dev1"
 			fi
 			if [ $1 == "dev2" ];then
