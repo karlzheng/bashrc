@@ -340,8 +340,8 @@ function f()
 
 function fp()
 {
-	if [ -f /dev/shm/${MYUSERNAME}/absfn ];
-		then cat /dev/shm/${MYUSERNAME}/absfn
+	if [ -f /dev/shm/$(whoami)/absfn ];
+		then cat /dev/shm/$(whoami)/absfn
 	fi
 }
 
