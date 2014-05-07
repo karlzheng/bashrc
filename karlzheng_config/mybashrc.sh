@@ -1062,14 +1062,15 @@ function vl()
 
 function v1()
 {
-   local n=0
-   while [ $n -lt 200 ];do
-	   if [ ! -f "${HOME}/tmp/del${n}.txt" ];then
-		   break
-	   fi
-	   ((n++))
-   done
-   vi "${HOME}/tmp/del${n}.txt"
+	mkdir -p ~/tmp/log/
+	local n=0
+	while [ ${n} -lt 200 ];do
+		if [ ! -e "${HOME}/tmp/log/del${n}.txt" ];then
+			break
+		fi
+		((n++))
+	done
+	vi "${HOME}/tmp/log/del${n}.txt"
 }
 
 function vm()
