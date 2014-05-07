@@ -1072,19 +1072,6 @@ function v1()
    vi "${HOME}/tmp/del${n}.txt"
 }
 
-function vl1()
-{
-	mkdir -p ~/tmp/log/
-   local n=0
-   while [ $n -lt 200 ];do
-	   if [ ! -f "${HOME}/tmp/log/${n}.txt" ];then
-		   break
-	   fi
-	   ((n++))
-   done
-   vi ${HOME}/tmp/log/${n}.txt
-}
-
 function vm()
 {
 	#http://ahei.info/bash.htm
@@ -1153,6 +1140,36 @@ function vp()
 	if [ "${f}" != "" ];then
 		vi ${f}
 	fi
+}
+
+function wl()
+{
+	mkdir -p ~/tmp/log/
+	local f=""
+	if [ $# -ge 1 ];then
+		f=$1
+	else
+		f=log.log
+	fi
+	if [ -e ${HOME}/tmp/log/${f} ];then
+		/bin/mv ${HOME}/tmp/log/${f} ${HOME}/tmp/log/${f}.old
+	fi
+	vi ${HOME}/tmp/log/${f}
+}
+
+function wln()
+{
+	mkdir -p ~/tmp/log/
+	local f=""
+	local n=0
+	while [ $n -lt 2000 ];do
+		if [ ! -e "${HOME}/tmp/log/${n}.log" ];then
+			break
+		fi
+		((n++))
+	done
+	f="${n}.log"
+	vi ${HOME}/tmp/log/${f}
 }
 
 #alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 /dev/shm/${MYUSERNAME}path); cd $${MYUSERNAME}path'
