@@ -317,6 +317,11 @@ function ds()
 	dirs "$@"
 }
 
+function dt()
+{
+	date +%Y%m%d
+}
+
 function ey()
 {
 	local c
@@ -1377,6 +1382,7 @@ complete -W 'xconfig clean distclean zImage' mj
 
 function my_bash_login_auto_exec_func()
 {
+		export DT=$(date +%Y%m%d)
 		if [ $(locale -a | grep zh_CN) ];then
 			export LANG="zh_CN.UTF-8"
 			export LANGUAGE="zh_CN.UTF-8"
@@ -1473,6 +1479,13 @@ function my_bash_login_auto_exec_func()
 		#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
 		#export JAVA_HOME=/usr/lib/jvm/java-6-sun/
 		#export ANDROID_JAVA_HOME=$JAVA_HOME
+		if [ -d ${HOME}/bk/sw/android-ndk-r9c ];then
+			export NDK_ROOT=${HOME}/bk/sw/android-ndk-r9c/
+		fi
+		if [ -d ${HOME}/bk/sw/adt/sdk ];then
+			export ANDROID_SDK_ROOT=${HOME}/bk/sw/adt/sdk/
+		fi
+
 }
 
 #bash command:
