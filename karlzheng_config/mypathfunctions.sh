@@ -86,11 +86,6 @@ function apwd_abc()
 		/dev/shm/${MYUSERNAME}/total_count
 }
 
-function avp()
-{
-	pwd > /dev/shm/diff_file_rela_path
-}
-
 function ca()
 {
 		if [ ! -f ~/pwd.mk ];then
