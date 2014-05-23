@@ -15,6 +15,10 @@ if [ -f u-boot.bin ];then
 fi
 if [ -f zImage ];then
 	fastboot flash kernel zImage
+else
+	if [ -f zImage-dtb ];then
+		fastboot flash kernel zImage-dtb
+	fi
 fi
 if [ -f ramdisk-uboot.img ];then
 	fastboot flash ramdisk ramdisk-uboot.img
