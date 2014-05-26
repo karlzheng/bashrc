@@ -350,18 +350,6 @@ function fp()
 	fi
 }
 
-
-function fa()
-{
-	if [ $# -ge 1 ];then
-		if [ -f $1 ];then
-			echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
-		fi
-	else
-		pwd > /dev/shm/${MYUSERNAME}/absfn
-	fi
-}
-
 function g()
 {
 	grep "$@"
@@ -894,6 +882,17 @@ function sdu ()
 		}'
 }
 
+function sf()
+{
+	if [ $# -ge 1 ];then
+		if [ -f $1 ];then
+			echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
+		fi
+	else
+		pwd > /dev/shm/${MYUSERNAME}/absfn
+	fi
+}
+
 function sfile ()
 {
 	if [ $# -eq 0 ];then
@@ -1053,8 +1052,12 @@ function vd()
 
 function vf()
 {
-	if [ -f ~/tmp/f ];then
-		vi ~/tmp/f
+	if [ $# -ge 1 ];then
+		if [ -f $1 ];then
+			echo "$(pwd)/$1" > /dev/shm/$(whoami)/vimEditFn
+		fi
+	else
+		pwd > /dev/shm/$(whoami)/vimEditFn
 	fi
 }
 
