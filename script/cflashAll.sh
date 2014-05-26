@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 echo "Are you sure want to erase userdata ?"
 read -p "y|n" c
@@ -13,6 +13,12 @@ fi
 if [ -f u-boot.bin ];then
 	fastboot flash bootloader u-boot.bin
 fi
+if [ -f primary_gpt_Espresso5430_32G ];then
+	fastboot flash  primary_gpt primary_gpt_Espresso5430_32G
+fi
+if [ -f second_gpt_Espresso5430_32G ];then
+	fastboot flash  second_gpt second_gpt_Espresso5430_32G
+fi
 if [ -f zImage ];then
 	fastboot flash kernel zImage
 else
@@ -22,9 +28,13 @@ else
 fi
 if [ -f ramdisk-uboot.img ];then
 	fastboot flash ramdisk ramdisk-uboot.img
+else
+	if [ -f ramdisk.img ];then
+		fastboot flash ramdisk ramdisk.img
+	fi
 fi
 if [ -f ramdisk.img.ub ];then
-	fastboot flash ramdisk ramdisk.img.ub 
+	fastboot flash ramdisk ramdisk.img.ub
 fi
 if [ -f system.img ];then
 	fastboot flash system system.img

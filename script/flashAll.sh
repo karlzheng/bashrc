@@ -3,11 +3,25 @@
 if [ -f u-boot.bin ];then
 	fastboot flash bootloader u-boot.bin
 fi
+if [ -f primary_gpt_Espresso5430_32G ];then
+	fastboot flash  primary_gpt primary_gpt_Espresso5430_32G
+fi
+if [ -f second_gpt_Espresso5430_32G ];then
+	fastboot flash  second_gpt second_gpt_Espresso5430_32G
+fi
 if [ -f zImage ];then
 	fastboot flash kernel zImage
+else
+	if [ -f zImage-dtb ];then
+		fastboot flash kernel zImage-dtb
+	fi
 fi
 if [ -f ramdisk-uboot.img ];then
 	fastboot flash ramdisk ramdisk-uboot.img
+else
+	if [ -f ramdisk.img ];then
+		fastboot flash ramdisk ramdisk.img
+	fi
 fi
 if [ -f ramdisk.img.ub ];then
 	fastboot flash ramdisk ramdisk.img.ub 
