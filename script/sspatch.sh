@@ -19,12 +19,12 @@
 
 function unPatchZip()
 {
-	local d=/tmp/ssPatch
+	local d=/tmp/sspatch
 	[ ! -d ${d} ] || /bin/rm -rf ${d}
 	mkdir -p ${d}
 	local IFS=$'\n'
-	echo "unzip $(ls -tr ~/ssPatch/*.zip | tail -n 1) -d ${d}"
-	unzip $(ls -tr ~/ssPatch/*.zip | tail -n 1) -d ${d}
+	echo "unzip $(ls -tr ~/sspatch/*.zip | tail -n 1) -d ${d}"
+	unzip $(ls -tr ~/sspatch/*.zip | tail -n 1) -d ${d}
 	echo ""
 }
 
@@ -37,7 +37,7 @@ function gitamAfile()
 
 function makeAndroiAndKernelGitAM()
 {
-	local d=/tmp/ssPatch
+	local d=/tmp/sspatch
 	if [ -d bionic ] && [ -d packages ];then
 		for f in $(ls ${d}/android/*.patch |sort);do
 			gitamAfile ${f}
@@ -53,12 +53,13 @@ function makeAndroiAndKernelGitAM()
 			cd -
 		fi
 	fi
-	if [ -d arch ] && [ -d drivers ];then
+	
+	if [ -d android ] && [ -d drivers ];then
 		for f in $(ls ${d}/kernel/*.patch |sort);do
 			gitamAfile ${f}
 		done
 	else
-		if [ -d kernel/arch ] && [ -d kernel/drivers ];then
+		if [ -d kernel/android ] && [ -d kernel/drivers ];then
 			cd kernel
 			for f in $(ls ${d}/kernel/*.patch |sort);do
 				gitamAfile ${f}
@@ -75,6 +76,35 @@ function makeAndroiAndKernelGitAM()
 			fi
 		fi
 	fi
+	
+	if [ -d nand_spl ] && [ -d onenand_ipl ];then
+		echo karldbg ${BASH_SOURCE[0]} $LINENO
+		for f in $(/bin/ls ${d}/uboot/*.patch |sort);do
+			gitamAfile ${f}
+		done
+	else
+		echo karldbg ${BASH_SOURCE[0]} $LINENO
+		if [ -d uboot/nand_spl ] && [ -d uboot/onenand_ipl ];then
+			echo karldbg ${BASH_SOURCE[0]} $LINENO
+			cd uboot
+			for f in $(ls ${d}/uboot/*.patch |sort);do
+				gitamAfile ${f}
+			done
+			cd -
+		else
+		echo karldbg ${BASH_SOURCE[0]} $LINENO
+			if [ -d *uboot*/onenand_ipl ];then
+		echo karldbg ${BASH_SOURCE[0]} $LINENO
+				local ubootDir=$(dirname $(ls *uboot*/onenand_ipl -d))
+				cd ${ubootDir}
+				for f in $(ls ${d}/uboot/*.patch |sort);do
+					gitamAfile ${f}
+				done
+				cd -
+			fi
+		fi
+	fi
+	
 }
 
 unPatchZip 
