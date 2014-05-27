@@ -680,11 +680,6 @@ function lsd()
 	ls -d */
 }
 
-function md()
-{
-	mkdir -p "$@"
-}
-
 function mc()
 {
 	local cpu_nr=$(/bin/grep processor /proc/cpuinfo \
@@ -701,6 +696,16 @@ function mc()
 function mcd ()
 {
   mkdir -p "$@" && eval cd "\"\$$#\"";
+}
+
+function md()
+{
+	mkdir -p "$@"
+}
+
+function mddt()
+{
+	mkdir $(date +%Y%m%d)
 }
 
 function mj()
