@@ -110,6 +110,7 @@ bind -m emacs '"\C-g\C-b": "grep \"\" * --color -rHnIC2f"'
 bind -m emacs '"\C-g\C-f": "bcompare \"$(fp)\" . &"'
 bind -m emacs '"\C-g\C-h": "--hard"'
 bind -m emacs '"\C-g\C-n": "find -name "'
+bind -m emacs '"\C-g\C-[": " $()OD"'
 #bind -m emacs '"\C-]": character-search-backward'
 #bind -m emacs '"\e\C-]": character-search'
 
