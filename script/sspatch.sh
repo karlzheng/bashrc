@@ -19,7 +19,7 @@
 
 function unPatchZip()
 {
-	local d=/tmp/sspatch
+	local d=~/tmp/sspatch
 	[ ! -d ${d} ] || /bin/rm -rf ${d}
 	mkdir -p ${d}
 	local IFS=$'\n'
@@ -37,7 +37,7 @@ function gitamAfile()
 
 function makeAndroiAndKernelGitAM()
 {
-	local d=/tmp/sspatch
+	local d=~/tmp/sspatch
 	if [ -d bionic ] && [ -d packages ];then
 		for f in $(ls ${d}/android/*.patch |sort);do
 			gitamAfile ${f}
