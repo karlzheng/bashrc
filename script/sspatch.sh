@@ -78,23 +78,18 @@ function makeAndroiAndKernelGitAM()
 	fi
 	
 	if [ -d nand_spl ] && [ -d onenand_ipl ];then
-		echo karldbg ${BASH_SOURCE[0]} $LINENO
 		for f in $(/bin/ls ${d}/uboot/*.patch |sort);do
 			gitamAfile ${f}
 		done
 	else
-		echo karldbg ${BASH_SOURCE[0]} $LINENO
 		if [ -d uboot/nand_spl ] && [ -d uboot/onenand_ipl ];then
-			echo karldbg ${BASH_SOURCE[0]} $LINENO
 			cd uboot
 			for f in $(ls ${d}/uboot/*.patch |sort);do
 				gitamAfile ${f}
 			done
 			cd -
 		else
-		echo karldbg ${BASH_SOURCE[0]} $LINENO
 			if [ -d *uboot*/onenand_ipl ];then
-		echo karldbg ${BASH_SOURCE[0]} $LINENO
 				local ubootDir=$(dirname $(ls *uboot*/onenand_ipl -d))
 				cd ${ubootDir}
 				for f in $(ls ${d}/uboot/*.patch |sort);do
@@ -104,7 +99,6 @@ function makeAndroiAndKernelGitAM()
 			fi
 		fi
 	fi
-	
 }
 
 unPatchZip 
