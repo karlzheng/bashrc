@@ -505,7 +505,6 @@ function cd()
 			if [ $# -eq 1 ];then
 				local no_host_dir=$(echo $1 | \
 					sed -e 's#\w*@.*:\(.*\)#\1#')
-				no_host_dir=$(echo $1 | sed -e 's#:.*$##')
 				if [ -d "${no_host_dir/\~/${HOME}}" ];then
 					builtin cd "${no_host_dir/\~/${HOME}}"
 				else
