@@ -830,6 +830,13 @@ function repo()
 	fi
 }
 
+function repourl()
+{
+	if [ -f .repo/manifests.git/config ];then
+		cat .repo/manifests.git/config
+	fi
+}
+
 function rm()
 {
 	# set field seperator for bash
