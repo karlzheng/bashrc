@@ -1302,14 +1302,17 @@ function _fastboot_completion()
 											fi
 												;;
 										"kernel")
-											if [ -f zImage ];then
-												COMPREPLY=($( compgen -W 'zImage' -- $cur ))
-											else
-												COMPREPLY=($( compgen -W 'arch/arm/boot/zImage' -- $cur ))
-											fi
+											COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
+											local specCompreply=(zImage zImage-dtb arch/arm/boot/zImage arch/arm/boot/zImage-dtb)
+											for f in ${specCompreply[@]};
+											do
+												if [ -f ${f} ];then
+													COMPREPLY=(${f} ${COMPREPLY[*]})
+												fi
+											done
 												;;
 										*)
-												COMPREPLY=($( compgen -W 'zImage' -- $cur ))
+												COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
 												;;
 								esac
 						fi
