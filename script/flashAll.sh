@@ -8,6 +8,12 @@ function fastbootFlash()
 
 function flashImage()
 {
+	if [ -f primary_gpt_*_32G ];then
+		fastbootFlash  primary_gpt primary_gpt_*_32G
+	fi
+	if [ -f second_gpt_*_32G ];then
+		fastbootFlash  second_gpt second_gpt_*_32G
+	fi
 	if [ -f u-boot-E5430-*.bin ];then
 		fastbootFlash bootloader u-boot-E5430-*.bin
 	else
@@ -15,11 +21,8 @@ function flashImage()
 			fastbootFlash bootloader u-boot.bin
 		fi
 	fi
-	if [ -f primary_gpt_*_32G ];then
-		fastbootFlash  primary_gpt primary_gpt_*_32G
-	fi
-	if [ -f second_gpt_*_32G ];then
-		fastbootFlash  second_gpt second_gpt_*_32G
+	if [ -f logo.bin ];then
+		fastbootFlash bootlogo logo.bin 
 	fi
 	if [ -f zImage-dtb ];then
 		fastbootFlash kernel zImage-dtb
