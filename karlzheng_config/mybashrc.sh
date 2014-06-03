@@ -356,6 +356,11 @@ function g()
 	grep "$@"
 }
 
+function ga()
+{
+	git add "$@"
+}
+
 function gaa()
 {
 	git add -A
