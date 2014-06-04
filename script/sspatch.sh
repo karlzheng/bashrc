@@ -31,8 +31,8 @@ function unPatchZip()
 function gitamAfile()
 {
 	pwd
-	echo "git am $@"
-	git am $@
+	echo "git am -s $@"
+	git am -s $@
 }
 
 function makeAndroiAndKernelGitAM()
