@@ -32,13 +32,17 @@ function flashImage()
 		fi
 	fi
 	if [ -f logo.bin ];then
-		fastbootFlash bootlogo logo.bin 
+		fastbootFlash bootlogo logo.bin
 	fi
 	if [ -f zImage-dtb ];then
 		fastbootFlash kernel zImage-dtb
 	else
-		if [ -f zImage ];then
-			fastbootFlash kernel zImage
+		if [ -f kernel ];then
+			fastbootFlash kernel kernel
+		else
+			if [ -f zImage ];then
+				fastbootFlash kernel zImage
+			fi
 		fi
 	fi
 	if [ -f ramdisk-uboot.img ];then
