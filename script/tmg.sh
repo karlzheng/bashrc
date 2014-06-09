@@ -101,7 +101,7 @@ if [ -f ./mg.mk ];then
 					| grep -v cscope.out \
 					| tee -a $SEACH_RESULT_FILE
 			else
-				echo "not exist dir:$line"
+				echo "not exist dir: $line"
 			fi
 		fi
 	done < ./mg.mk

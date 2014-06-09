@@ -373,11 +373,19 @@ function gba()
 
 function gc()
 {
+	local isRepo=0
+	if [ -f .repo/manifests.git/config ];then
+		let isRepo=1
+		echo '.repo/manifests.git/config'
+		cat .repo/manifests.git/config
+	fi
 	if [ -f .git/config ];then
+		let isRepo=1
 		echo config: .git/config
 		cat .git/config
-	else
-		echo "no .git/config "
+	fi
+	if [ ${isRepo} == 0 ];then
+		echo "Seems not in a git repository dir !"
 	fi
 }
 
@@ -835,7 +843,7 @@ function repo()
 	fi
 }
 
-function repourl()
+function rurl()
 {
 	if [ -f .repo/manifests.git/config ];then
 		cat .repo/manifests.git/config

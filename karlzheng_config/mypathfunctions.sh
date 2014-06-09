@@ -49,11 +49,11 @@ function ...()
 function ac()
 {
 	if [ -f /dev/shm/${MYUSERNAME}/apwdpath ];then
-		tmp_dir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)"
-		if [ -d "${tmp_dir/\~/${HOME}}" ];then
-			builtin cd "${tmp_dir/\~/${HOME}}" && unset "tmp_dir"
+		local tmpDir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)"
+		if [ -d "${tmpDir/\~/${HOME}}" ];then
+			builtin cd "${tmpDir/\~/${HOME}}" && unset "tmpDir"
 		else
-			echo "Not exist dir: $tmpfile"
+			echo "Not exist dir: ${tmpDir}"
 		fi
 	fi
 }
