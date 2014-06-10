@@ -272,7 +272,7 @@ function lstrash()
 
 function undel()
 {
-		mv ~/.trash/$* . ;
+		mv ~/.trash/"$*" . ;
 }
 
 function bcp()
