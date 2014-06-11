@@ -4,8 +4,8 @@
 #
 #          FILE:  gtar.py
 #
-#         USAGE:  gtar.py gitLogHash1 gitLogHash2 for save changes between 
-#                 gitLogHash1 and gitLogHash2; or only type "gtar.py" for save 
+#         USAGE:  gtar.py gitLogHash1 gitLogHash2 for save changes between
+#                 gitLogHash1 and gitLogHash2; or only type "gtar.py" for save
 #                 changes between HEAD^ and HEAD
 #
 #   DESCRIPTION:  save all modified files in a tar file: gtar.tar
@@ -33,37 +33,31 @@ def processLog(fn):
 	lines = fd.readlines()
 	fd.close()
 	predir = ""
-	# ms: machine state;
-	# ms: 0 not start
-	# ms: 1 delte file
+	#
+	# sm: state machine
+	# sm: 0 not start
+	# sm: 1 got
 	ms = 0
 	fa = ""
 	fb = ""
 	for l in lines:
-		if re.search("^diff --git a/", l):
-			#print l
-			ms = 1
-			pattern = 'diff --git a/(.*)b/(.*)'
-			m = re.match(pattern, l)
-			fa = m.groups()[0]
-			fb = m.groups()[1]
+		pattern = '^A\s+(.*)'
+		m = re.match(pattern, l)
+		if m != None:
+			f = m.groups()[0]
+			modifiedFileNames.append(f)
 		else:
-			if ms > 0:
-				if re.search("deleted file mode", l):
-					deletedFileNames.append(fa)
-					ms = 0
-			if ms > 0:
-				if re.search("new file mode", l):
-					modifiedFileNames.append(fa)
-					ms = 0
-			if ms > 0:
-				if re.search("Binary files a/.*differ", l):
-					modifiedFileNames.append(fa)
-					ms = 0
-			if ms > 0:
-				if re.search("--- a/", l):
-					modifiedFileNames.append(fa)
-					ms = 0
+			pattern = '^M\s+(.*)'
+			m = re.match(pattern, l)
+			if m != None:
+				f = m.groups()[0]
+				modifiedFileNames.append(f)
+			else:
+				pattern = '^D\s+(.*)'
+				m = re.match(pattern, l)
+				if m != None:
+					f = m.groups()[0]
+					deletedFileNames.append(f)
 
 	cmdarg = "if [ -f gtar.tar ];then rm gtar.tar;fi"
 	cmds.getstatusoutput(cmdarg)
@@ -86,7 +80,8 @@ def processLog(fn):
 	fd.close()
 
 def genGitLog(h1, h2, fn):
-	cmdarg = "git diff %s %s | grep -A 5 'diff \-\-git' > %s"%(h1, h2, fn)
+	#cmdarg = "git diff %s %s | grep -A 5 'diff \-\-git' > %s"%(h1, h2, fn)
+	cmdarg = "git diff --name-status %s %s > %s"%(h1, h2, fn)
 	cmds.getstatusoutput(cmdarg)
 
 if __name__ == '__main__':
