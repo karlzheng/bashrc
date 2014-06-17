@@ -4,12 +4,12 @@
 #
 #          FILE:  rtar.py
 #
-#         USAGE:  "rtar.py gitLogHash1 gitLogHash2" for save changes between
-#                 gitLogHash1 and gitLogHash2; or only type "rtar.py" for save
-#                 changes between HEAD^ and HEAD
+#         USAGE:  run python rtar.py in repo root dir to save all changes to
+#                 /tmp/rtar.tar
 #
-#   DESCRIPTION:  save all modified files in a tar file: /tmp/rtar.tar
-#                 save deleted file name to /tmp/rm.list
+#   DESCRIPTION:  save all modified files to tar file: /tmp/rtar.tar
+#                 modified file names were saved to /tmp/mf.list
+#                 deleted file names were saved to /tmp/rm.list
 #
 #        AUTHOR: Karl Zheng
 #       COMPANY: Alibaba,inc
@@ -122,14 +122,6 @@ def getRepoesModifications(fn):
 		getRepoModification(l)
 
 if __name__ == '__main__':
-	if len(sys.argv) > 2:
-		hash2 = sys.argv[2]
-	else:
-		hash2 = "HEAD"
-	if len(sys.argv) > 1:
-		hash1 = sys.argv[1]
-	else:
-		hash1 = "HEAD^"
 	fn = "/tmp/gitdiff.log"
 	
         cmdarg = "if [ -f /tmp/mf.list ];then rm /tmp/mf.list;fi"
