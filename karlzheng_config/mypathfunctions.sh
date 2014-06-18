@@ -140,12 +140,16 @@ function cdc()
 	fi
 	if [ -d device/ ];then
 		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		: > ${enter_dir_file}
+		local tmpDir
 		if [ "x${prjn}" != "x" ];then
-			find device/ -name BoardConfig.mk | xargs dirname | grep ${prjn} | \
-				tee $enter_dir_file
+			for tmpDir in $(find device/ -name BoardConfig.mk);do
+				dirname ${tmpDir}  | grep ${prjn} | tee -a ${enter_dir_file}
+			done
 		else
-			find device/ -name BoardConfig.mk | xargs dirname | \
-				tee $enter_dir_file
+			for tmpDir in $(find device/ -name BoardConfig.mk);do
+				dirname ${tmpDir} | tee -a ${enter_dir_file}
+			done
 		fi
 		cd_dir_in_file
 		return 0;
@@ -394,56 +398,56 @@ function bash_get_keycode()
 
 function cd_dir_in_file()
 {
-		if [ $# -eq 0 ];then
-				local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-		else
-				local enter_dir_file="$1"
-		fi
-		local cnt=$(cat "$enter_dir_file" | wc -l)
-		if [ $cnt -eq 1 ];then
-			local enter_dir=$(cat "$enter_dir_file")
-			builtin cd "${enter_dir/\~/${HOME}}"
-			return ;
-		fi
-		trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
-		local  cur_pos=0;
-		while read file; do
-				local the_dirs[$cur_pos]="$file"
-				((cur_pos++))
-		done < $enter_dir_file
-		cur_pos=0;
-		while true;do
-				local enter_dir="${the_dirs[cur_pos]}"
-				printf '%-100s\r' "Enter: ${enter_dir} ?"
-				local key=$(bash_get_keycode | tr -d '\r' | tr -d '\n')
-				case "$key" in
-						"UP" | "-up")
-								((cur_pos --));
-								if [ $cur_pos -lt 0 ];then
-										let cur_pos=$cur_pos+$cnt
-								fi
-								;;
-						"DOWN"| "-down" | "SPACE")
-								((cur_pos ++));
-								if [ $cur_pos -ge $cnt ];then
-										let cur_pos=0
-								fi
-								;;
-						"CR")
-							if [ -d "$(eval echo ${enter_dir/\~/${HOME}})" ];then
-										builtin cd "${enter_dir/\~/${HOME}}"
-										break;
-								else
-										printf "No dir:%-120s\n" "${enter_dir}"
-								fi
-								;;
-						"q"|"Q")
-								printf "%-100s\r" " "
-								break;
-								;;
-				esac
-		done
-		trap - SIGINT SIGHUP SIGTERM
+	if [ $# -eq 0 ];then
+		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+	else
+		local enter_dir_file="$1"
+	fi
+	local cnt=$(cat ${enter_dir_file} | wc -l)
+	if [ $cnt -eq 1 ];then
+		local enter_dir=$(cat "$enter_dir_file")
+		builtin cd "${enter_dir/\~/${HOME}}"
+		return ;
+	fi
+	trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
+	local  cur_pos=0;
+	while read file; do
+		local the_dirs[$cur_pos]="$file"
+		((cur_pos++))
+	done < $enter_dir_file
+	cur_pos=0;
+	while true;do
+		local enter_dir="${the_dirs[cur_pos]}"
+		printf '%-100s\r' "Enter: ${enter_dir} ?"
+		local key=$(bash_get_keycode | tr -d '\r' | tr -d '\n')
+		case "$key" in
+			"UP" | "-up")
+				((cur_pos --));
+				if [ $cur_pos -lt 0 ];then
+					let cur_pos=$cur_pos+$cnt
+				fi
+				;;
+			"DOWN"| "-down" | "SPACE")
+				((cur_pos ++));
+				if [ $cur_pos -ge $cnt ];then
+					let cur_pos=0
+				fi
+				;;
+			"CR")
+				if [ -d "$(eval echo ${enter_dir/\~/${HOME}})" ];then
+					builtin cd "${enter_dir/\~/${HOME}}"
+					break;
+				else
+					printf "No dir:%-120s\n" "${enter_dir}"
+				fi
+				;;
+			"q"|"Q")
+				printf "%-100s\r" " "
+				break;
+				;;
+		esac
+	done
+	trap - SIGINT SIGHUP SIGTERM
 }
 
 function c()
