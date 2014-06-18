@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function syncInstList()
+function makeInstPackageList2New()
 {
     dpkg -l | grep ^ii |awk '{print $2}' | grep -v "^linux-generic" | \
 	grep -v "^linux-headers" | grep -v "^linux-image-" > /tmp/inst.list
@@ -13,7 +13,7 @@ function syncListedFile()
 {
     python -c "open('/tmp/syncFile.list', 'w').\
 	writelines(set(open('syncFile.list').readlines())-\
-	set(open('alreadySyncFile.list').readlines()))"
+	set(open('personalFile.list').readlines()))"
     local IFS=$'\n'
     local l
     local ol
@@ -39,6 +39,7 @@ function installConfigInNew()
 
 function ssh-copy-id_2NEWIP()
 {
+	#only copy ~/.ssh/known_hosts
 	#http://roclinux.cn/?p=2551#more-2551
 	ssh-copy-id ${NEWUSERNAME}@${NEWIP}
 }
@@ -46,6 +47,7 @@ function ssh-copy-id_2NEWIP()
 if [ "x${NEWUSERNAME}" == "x" ];then
 	export NEWUSERNAME=$(whoami)
     echo "export NEWUSERNAME=$(whoami)"
+    history -s "export NEWUSERNAME=$(whoami)"
 fi
 
 if [ "x${NEWIP}" == "x" ];then
@@ -56,7 +58,7 @@ else
     #echo 'rsync -avP .ssh ${NEWUSERNAME}@${NEWIP}:~/'
 	#rsync -avP .ssh ${NEWUSERNAME}@${NEWIP}:~/
 	ssh-copy-id_2NEWIP
-	syncInstList
+	makeInstPackageList2New
     syncListedFile
 	installConfigInNew
 fi
