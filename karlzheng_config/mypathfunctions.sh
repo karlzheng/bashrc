@@ -141,10 +141,11 @@ function cdc()
 	if [ -d device/ ];then
 		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
 		if [ "x${prjn}" != "x" ];then
-			find device/ -name device.mk | xargs dirname | grep ${prjn} | \
+			find device/ -name BoardConfig.mk | xargs dirname | grep ${prjn} | \
 				tee $enter_dir_file
 		else
-			find device/ -name device.mk | xargs dirname | tee $enter_dir_file
+			find device/ -name BoardConfig.mk | xargs dirname | \
+				tee $enter_dir_file
 		fi
 		cd_dir_in_file
 		return 0;
