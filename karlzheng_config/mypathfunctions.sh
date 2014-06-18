@@ -126,32 +126,16 @@ function cdb()
 
 function cdc()
 {
-		if [ $# -eq 0 ];then
-				if [ -d arch/arm/configs ];then
-					cd arch/arm/configs
-				else
-					if [ -d device ];then
-						local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-						if [ -d device/de/ ];then
-							find device/de/ -maxdepth 1 -type d -name "t*" \
-							| sed -n -e '{1,$p}' | tee $enter_dir_file
-						else
-							if [ -d device/meizu/ ];then
-								find device/meizu/ -maxdepth 1 -type d -name "m*" \
-								| sed -n -e '{2,$p}' | tee $enter_dir_file
-							else
-								if [ -d device/samsung/ ];then
-									find device/samsung/ -maxdepth 1 -type d -name "smdk4*" \
-									| tee $enter_dir_file
-								fi
-							fi
-						fi
-						cd_dir_in_file
-					fi
-				fi
-		else
-				cd $1
-		fi
+	if [ -d arch/arm/configs ];then
+		cd arch/arm/configs
+		return 0;
+	fi
+	if [ -d device/generic ];then
+		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		find device/ -name device.mk | xargs dirname | tee $enter_dir_file
+		cd_dir_in_file
+		return 0;
+	fi
 }
 
 function cdm()
