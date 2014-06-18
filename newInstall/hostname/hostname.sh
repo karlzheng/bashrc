@@ -20,3 +20,4 @@
 set -o nounset                              # Treat unset variables as an error
 
 echo "hostname" > /etc/hostname
+echo "hostname" >> /etc/hosts
