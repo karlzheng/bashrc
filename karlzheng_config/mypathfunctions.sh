@@ -138,7 +138,7 @@ function cdc()
 			prjn=$(cat /dev/shm/${MYUSERNAME}/androidProjectName)
 		fi
 	fi
-	if [ -d device/generic ];then
+	if [ -d device/ ];then
 		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
 		if [ "x${prjn}" != "x" ];then
 			find device/ -name device.mk | xargs dirname | grep ${prjn} | \
