@@ -1449,6 +1449,7 @@ function my_bash_login_auto_exec_func()
 			ensure_file_dir
 			unset ensure_file_dir
 			touch /dev/shm/${MYUSERNAME}/notfirstlogin
+			echo "magiccube" > /dev/shm/${MYUSERNAME}/androidProjectName
 			sbl
 		fi
 

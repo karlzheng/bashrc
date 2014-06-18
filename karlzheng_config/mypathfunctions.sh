@@ -130,9 +130,22 @@ function cdc()
 		cd arch/arm/configs
 		return 0;
 	fi
+	local prjn=""
+	if [ $# -ge 1 ];then
+		prjn=$1
+	else
+		if [ -f /dev/shm/${MYUSERNAME}/androidProjectName ];then
+			prjn=$(cat /dev/shm/${MYUSERNAME}/androidProjectName)
+		fi
+	fi
 	if [ -d device/generic ];then
 		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-		find device/ -name device.mk | xargs dirname | tee $enter_dir_file
+		if [ "x${prjn}" != "x" ];then
+			find device/ -name device.mk | xargs dirname | grep ${prjn} | \
+				tee $enter_dir_file
+		else
+			find device/ -name device.mk | xargs dirname | tee $enter_dir_file
+		fi
 		cd_dir_in_file
 		return 0;
 	fi
