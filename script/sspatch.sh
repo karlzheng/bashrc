@@ -39,17 +39,24 @@ function makeAndroiAndKernelGitAM()
 {
 	local d=~/tmp/sspatch
 	if [ -d bionic ] && [ -d packages ];then
-		for f in $(ls ${d}/android/*.patch |sort);do
-			gitamAfile ${f}
-		done
-	else
-		if [ -d */bionic ] && \
-			[ -d */packages ];then
-			local androidDir=$(dirname $(ls */bionic -d))
-			cd ${androidDir}
+		if [ -f ${d}/android/android_update.zip ];then
+			unzip -DD -d $(pwd) ${d}/android/android_update.zip
+		else
 			for f in $(ls ${d}/android/*.patch |sort);do
 				gitamAfile ${f}
 			done
+		fi
+	else
+		if [ -d */bionic ] && [ -d */packages ];then
+			local androidDir=$(dirname $(ls */bionic -d))
+			cd ${androidDir}
+			if [ -f ${d}/android/android_update.zip ];then
+				unzip -DD -d $(pwd) ${d}/android/android_update.zip
+			else
+				for f in $(ls ${d}/android/*.patch |sort);do
+					gitamAfile ${f}
+				done
+			fi
 			cd -
 		fi
 	fi
