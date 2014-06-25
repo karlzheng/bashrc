@@ -19,10 +19,10 @@
 #	   REVISION:  ---
 #===============================================================================
 
-if [ "$SHELL" != "/bin/bash" ];then
-		echo "the SHELL is not bash! exit!!"
-		echo "chsh -s /bin/bash"
-		chsh -s /bin/bash
+if [ "${SHELL}" != "/bin/bash" ];then
+		#echo "the SHELL is not bash! exit!!"
+		echo 'use "chsh -s /bin/bash" to change ${SHELL}'
+		#chsh -s /bin/bash
 fi
 
 unset MAILCHECK
