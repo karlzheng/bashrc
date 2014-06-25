@@ -184,7 +184,8 @@ function cds()
 		touch ~/server_path.mk
 		pwd > ~/server_path.mk
 	else
-		local devlist=(dev1/2t/home/karlzheng dev2/sztv/changliang)
+		local devlist=(dev1/2t/home/karlzheng dev2/sztv/changliang \
+			dev3/home/karlzheng)
 		local dev
 		for dev in ${devlist[@]}; do
 			local file=${HOME}/${dev}/server_path.mk
