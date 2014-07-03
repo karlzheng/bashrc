@@ -632,7 +632,11 @@ function he()
 
 function h()
 {
-	history|tail -n 35
+	if [ $# -eq 0 ];then
+		history | tail -n 40
+	else
+		history "$@"
+	fi
 }
 
 function hi()
@@ -642,6 +646,11 @@ function hi()
 
 function hn()
 {
+	history -n
+}
+
+function hp()
+{
 	if [ -f ~/person_tools/headneck.jpg ];then
 		eog -f ~/person_tools/headneck.jpg && disown &
 	fi
@@ -649,7 +658,7 @@ function hn()
 
 function ht()
 {
-	history |tail -n 10
+	history | tail -n 10
 }
 
 function k()
