@@ -928,7 +928,12 @@ function sf()
 {
 	if [ $# -ge 1 ];then
 		if [ -f $1 ];then
-			echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
+			echo ${1} | grep '^\s*/' 2>&1 > /dev/null
+			if [ $? == 0 ];then
+				echo "$1" > /dev/shm/${MYUSERNAME}/absfn
+			else
+				echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
+			fi
 		fi
 	else
 		pwd > /dev/shm/${MYUSERNAME}/absfn
