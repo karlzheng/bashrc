@@ -42,9 +42,13 @@ function makeAndroiAndKernelGitAM()
 		if [ -f ${d}/android/android_update.zip ];then
 			unzip -DD -d $(pwd) ${d}/android/android_update.zip
 		else
-			for f in $(ls ${d}/android/*.patch |sort);do
-				gitamAfile ${f}
-			done
+			if [ -f ${d}/android/gtar.tar ];then
+				tar xmf ${d}/android/gtar.tar
+			else
+				for f in $(ls ${d}/android/*.patch |sort);do
+					gitamAfile ${f}
+				done
+			fi
 		fi
 	else
 		if [ -d */bionic ] && [ -d */packages ];then
