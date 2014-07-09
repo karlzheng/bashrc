@@ -142,7 +142,6 @@ alias lsr='ls -lasr '
 alias lsr='ls -lasr '
 alias lt='ls -lat '
 alias ltr='ls -latr '
-alias m='mount '
 #alias mt3='mount -t ext3 '
 #alias mtnfs=' mount -t nfs '
 #alias mto='mount -o loop '
@@ -397,6 +396,19 @@ function gci()
 function gd()
 {
 	git diff "$@"
+}
+
+function gda()
+{
+	if [ $# -eq 0 ];then
+		git diff HEAD^ HEAD
+	else
+		if [ $# -eq 1 ];then
+			git diff $1^ $1
+		else
+			git diff "$@"
+		fi
+	fi
 }
 
 function gdp()
@@ -701,6 +713,12 @@ function lsd()
 	#ls -l | awk '/^d/{print $NF}'
 	local IFS=":"
 	ls -d */
+}
+
+function m()
+{
+	mount "$@"
+	return 0
 }
 
 function mc()
