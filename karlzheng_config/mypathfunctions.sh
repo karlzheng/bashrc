@@ -518,7 +518,20 @@ function cd()
 						cd "$3"
 					fi
 				else
-					builtin cd "$@"
+					if [ $# -eq 4 ];then
+						if [ $2 == "is" -a $3 == "hashed" ];then
+							local td=$(echo ${a#(*})
+							local td=$(echo ${td%*)})
+							echo "cd ${td}"
+							if [ -d "${td}" ];then
+								builtin cd "${td}"
+							else
+								builtin cd $(dirname "${td}")
+							fi
+						fi
+					else
+						builtin cd "$@"
+					fi
 				fi
 			fi
 	fi
