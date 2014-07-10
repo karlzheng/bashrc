@@ -7,6 +7,10 @@ do
     if [ $? == 0 ];then 
         echo "unmount:"$imgdir
         sudo umount $imgdir
+        ls -d $imgdir/*
+		if [ $? != 0 ];then
+			rmdir $imgdir
+		fi
     fi
     if [ -e "/dev/mapper/$imgdir" ];then
         echo "cryptsetup remove:/dev/mapper/"$imgdir
