@@ -7,7 +7,7 @@ do
     if [ $? == 0 ];then 
         echo "unmount:"$imgdir
         sudo umount $imgdir
-        ls -d $imgdir/*
+        ls -d $imgdir/* 1>/dev/null 2>&1
 		if [ $? != 0 ];then
 			rmdir $imgdir
 		fi
