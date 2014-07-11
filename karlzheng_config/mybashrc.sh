@@ -904,6 +904,13 @@ function rm()
 	done
 }
 
+function rs()
+{
+	if [ -d .repo ];then
+		repo status "$@"
+	fi
+}
+
 function sai()
 {
 	sudo apt-get install "$@"
