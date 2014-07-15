@@ -166,13 +166,22 @@ function cdm()
 	fi
 }
 
+function cdo()
+{
+	export TIME_STYLE=long-iso
+	local old_dir=$(echo "$(ls -ltr | grep "^d" | awk '{print $8}' |\
+		grep -E -v '^\.' | sed -n '1,1p')" | tac )
+	echo cd ${old_dir}
+	cd ${old_dir}
+}
+
 function cdr()
 {
 	export TIME_STYLE=long-iso
-	local recent_dirs=$(echo "$(ls -lt | grep "^d" | awk '{print $8}' |\
+	local recent_dir=$(echo "$(ls -lt | grep "^d" | awk '{print $8}' |\
 		grep -E -v '^\.' | sed -n '1,1p')" | tac )
-	echo cd ${recent_dirs}
-	cd ${recent_dirs}
+	echo cd ${recent_dir}
+	cd ${recent_dir}
 }
 
 function cds()
