@@ -317,6 +317,11 @@ function ds()
 	dirs "$@"
 }
 
+function dsh()
+{
+	du -sh
+}
+
 function dt()
 {
 	date +%Y%m%d
