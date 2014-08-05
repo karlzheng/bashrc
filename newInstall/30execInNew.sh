@@ -22,11 +22,11 @@ if __name__ == '__main__':
 	main(sys.argv)
 EEOOFF
 
-while read l;do
+for l in `cat toInst.list`;do
     l=$(echo ${l} | tr -d '\r'|tr -d '\n')
     echo "sudo apt-get install -y ${l}"
     sudo apt-get install -y ${l}
-done < toInst.list
+done
 
 #rm /tmp/org.list
 #rm /tmp/toInst.list

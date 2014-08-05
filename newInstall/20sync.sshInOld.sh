@@ -4,9 +4,8 @@ function makeInstPackageList2New()
 {
     dpkg -l | grep ^ii |awk '{print $2}' | grep -v "^linux-generic" | \
 	grep -v "^linux-headers" | grep -v "^linux-image-" > /tmp/inst.list
-    rsync -avP ~/inst.list ${NEWUSERNAME}@${NEWIP}:/tmp/
-    rsync -avP ~/inst.list ${NEWUSERNAME}@${NEWIP}:~/
-    rm /tmp/inst.list
+    rsync -avP /tmp/inst.list ${NEWUSERNAME}@${NEWIP}:/tmp/
+    rsync -avP /tmp/inst.list ${NEWUSERNAME}@${NEWIP}:~/
 }
 
 function syncListedFile()
