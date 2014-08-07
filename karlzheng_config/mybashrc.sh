@@ -1228,6 +1228,11 @@ function vp()
 	fi
 }
 
+function wi()
+{
+	whoami "$@"
+}
+
 function wl()
 {
 	mkdir -p ~/tmp/log/
