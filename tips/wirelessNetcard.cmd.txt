@@ -1,0 +1,6 @@
+la /etc/network/interfaces 
+cat /etc/network/interfaces
+rfkill list
+rfkill unblock all
+ifconfig wlan0 up
+sudo ifconfig wlan0 up
