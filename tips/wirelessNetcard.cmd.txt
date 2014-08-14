@@ -1,6 +1,10 @@
-la /etc/network/interfaces 
+echo "ls -l /etc/network/interfaces"
+ls -l /etc/network/interfaces 
+echo "cat /etc/network/interfaces"
 cat /etc/network/interfaces
+echo "rfkill list"
 rfkill list
+echo "rfkill unblock all"
 rfkill unblock all
-ifconfig wlan0 up
+echo "sudo ifconfig wlan0 up"
 sudo ifconfig wlan0 up
