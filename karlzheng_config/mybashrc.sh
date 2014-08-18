@@ -169,6 +169,11 @@ function aa()
 	ack-grep -H -a --nogroup "$@"
 }
 
+function a-s()
+{
+	apt-cache search "$@"
+}
+
 function adblistpackages()
 {
 	adb shell pm list packages -f "$@"
