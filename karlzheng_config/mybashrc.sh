@@ -78,11 +78,6 @@ export PAGER="`which less` -s"
 export PS4='+[$LINENO]'
 export SVN_EDITOR=/usr/bin/vim
 
-export d=~/桌面/
-export desktop=~/桌面/
-export dl=~/下载/
-export imgout=out/target/product/
-
 #add other info here just for android
 #export ANDROID_PRODUCT_OUT=out/target/product/
 #export ANDROID_SWT=/home/${MYUSERNAME}/svn/app_group_android/Eclair/out/host/linux-x86/framework
@@ -1470,110 +1465,120 @@ complete -W 'xconfig clean distclean zImage' mj
 
 function my_bash_login_auto_exec_func()
 {
-		export DT=$(date +%Y%m%d)
-		if [ $(locale -a | grep zh_CN) ];then
-			export LANG="zh_CN.UTF-8"
-			export LANGUAGE="zh_CN.UTF-8"
-		fi
-		if [ -f /dev/shm/${MYUSERNAME}/notfirstlogin ];then
-			export isfirstlogin=0
-		else
-			export isfirstlogin=1
-		fi
+	export DT=$(date +%Y%m%d)
+	if [ -d ~/Desktop ];then
+		export d=~/Desktop/
+	else
+		export d=~/桌面/
+	fi
+	if [ -d ~/Downloads ];then
+		export dl=~/Downloads/
+	else
+		export dl=~/下载/
+	fi
+	if [ $(locale -a | grep zh_CN) ];then
+		export LANG="zh_CN.UTF-8"
+		export LANGUAGE="zh_CN.UTF-8"
+	fi
+	if [ -f /dev/shm/${MYUSERNAME}/notfirstlogin ];then
+		export isfirstlogin=0
+	else
+		export isfirstlogin=1
+	fi
 
-		if [ "${isfirstlogin}" == 1 ];then
-			function ensure_file_dir()
-			{
-				[ -d ~/.trash ] || mkdir ~/.trash
-				[ -d ~/dev1 ] || mkdir ~/dev1
-				[ -d ~/dev2 ] || mkdir ~/dev2
-				[ -d ~/tmp ] || mkdir ~/tmp
-				[ -d ~/tmp/log ] || mkdir ~/tmp/log
-				[ -d ~/tmp/t ] || mkdir ~/tmp/t
-				[ -d ~/tmp/tmp ] || mkdir ~/tmp/tmp
-				[ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
-				[ -d /tmp/t ] || mkdir /tmp/t
-				[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
-			}
-			ensure_file_dir
-			unset ensure_file_dir
-			touch /dev/shm/${MYUSERNAME}/notfirstlogin
-			echo "magiccube" > /dev/shm/${MYUSERNAME}/androidProjectName
-			sbl
-		fi
+	if [ "${isfirstlogin}" == 1 ];then
+		function ensure_file_dir()
+		{
+			[ -d ~/.trash ] || mkdir ~/.trash
+			[ -d ~/dev1 ] || mkdir ~/dev1
+			[ -d ~/dev2 ] || mkdir ~/dev2
+			[ -d ~/tmp ] || mkdir ~/tmp
+			[ -d ~/tmp/log ] || mkdir ~/tmp/log
+			[ -d ~/tmp/t ] || mkdir ~/tmp/t
+			[ -d ~/tmp/tmp ] || mkdir ~/tmp/tmp
+			[ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
+			[ -d /tmp/t ] || mkdir /tmp/t
+			[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
+		}
+		ensure_file_dir
+		unset ensure_file_dir
+		touch /dev/shm/${MYUSERNAME}/notfirstlogin
+		echo "magiccube" > /dev/shm/${MYUSERNAME}/androidProjectName
+		sbl
+	fi
 
-		local path_list=(
-				~/person_tools/
-				~/bashrc/script/
-				~/software/bin
-				~/software/arm-2009q3/bin/
-				~/software/arm-eabi-4.6/bin
-				~/software/android-sdk-linux_86/platform-tools
-				~/software/android-sdk-linux_86/tools
-				~/software/android-ndk-r8c
-				~/bk/sw/adt/sdk/platform-tools
-				~/bk/sw/gradle-1.6/bin
-				~/bk/sw/adt/sdk/tools
-				~/bin
-				~/bin/bin
-				~/software/linaro-arm-linux-gnueabi-4.6.3/bin
-				~/software/rbox_Linux_Upgrade_Tool_v1.16
-		${JAVA_HOME}/bin
-		);
-		local mypath=""
-		for p in ${path_list[@]};do
-				mypath=$mypath:"$p"
-		done
-		export PATH="$mypath":$PATH
-		local path_list=(
-		${HOME}/bashrc/pythonlib
-		);
-		local mypath=""
-		for p in ${path_list[@]};do
-				mypath=$mypath:"$p"
-		done
-		export PYTHONPATH="$mypath":$PYTHONPATH
-		append_daily_path
-		unset append_daily_path
+	local path_list=(
+	~/person_tools/
+	~/bashrc/script/
+	~/software/bin
+	~/software/arm-2009q3/bin/
+	~/software/arm-eabi-4.6/bin
+	~/software/android-sdk-linux_86/platform-tools
+	~/software/android-sdk-linux_86/tools
+	~/software/android-ndk-r8c
+	~/bk/sw/adt/sdk/platform-tools
+	~/bk/sw/gradle-1.6/bin
+	~/bk/sw/adt/sdk/tools
+	~/bin
+	~/bin/bin
+	~/software/linaro-arm-linux-gnueabi-4.6.3/bin
+	~/software/rbox_Linux_Upgrade_Tool_v1.16
+	${JAVA_HOME}/bin
+	);
+	local mypath=""
+	for p in ${path_list[@]};do
+		mypath=$mypath:"$p"
+	done
+	export PATH="$mypath":$PATH
+	local path_list=(
+	${HOME}/bashrc/pythonlib
+	);
+	local mypath=""
+	for p in ${path_list[@]};do
+		mypath=$mypath:"$p"
+	done
+	export PYTHONPATH="$mypath":$PYTHONPATH
+	append_daily_path
+	unset append_daily_path
 
-		if [ "$(pwd)" == "${HOME}" ];then
-				ac
+	if [ "$(pwd)" == "${HOME}" ];then
+		ac
+	fi
+	if [ -d "/rambuild" ];then
+		if [ ! -d "/rambuild/ramdisk" ];then
+			mkdir "/rambuild/ramdisk"
 		fi
-		if [ -d "/rambuild" ];then
-			if [ ! -d "/rambuild/ramdisk" ];then
-				mkdir "/rambuild/ramdisk"
-			fi
-			if [ ! -d "${HOME}/ramdisk" ];then
-				ln -s "/rambuild/ramdisk" "${HOME}/ramdisk"
-			fi
+		if [ ! -d "${HOME}/ramdisk" ];then
+			ln -s "/rambuild/ramdisk" "${HOME}/ramdisk"
 		fi
+	fi
 
-		if [ $MYUSERNAME != $MYNICKNAME ];then
-				export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
-				export USE_CACHE=1
-				if [ -d $HOME/ramdisk/ccache ];then
-						mkdir -p $HOME/ramdisk/ccache
-						CCACHE_DIR=$HOME/ramdisk/ccache
-				fi
-				mkdir -p ${HOME}/ccache
-				CCACHE_DIR=${HOME}/ccache
-				#ccache -M 50G
+	if [ $MYUSERNAME != $MYNICKNAME ];then
+		export PATH=$PATH:/home/$MYUSERNAME/software/arm-2010q1/bin:
+		export USE_CACHE=1
+		if [ -d $HOME/ramdisk/ccache ];then
+			mkdir -p $HOME/ramdisk/ccache
+			CCACHE_DIR=$HOME/ramdisk/ccache
 		fi
+		mkdir -p ${HOME}/ccache
+		CCACHE_DIR=${HOME}/ccache
+		#ccache -M 50G
+	fi
 
-		if [ -f .git/config ];then
-			git config http.postBuffer 524288000
-		fi
+	if [ -f .git/config ];then
+		git config http.postBuffer 524288000
+	fi
 
-		#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
-		#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
-		#export JAVA_HOME=/usr/lib/jvm/java-6-sun/
-		#export ANDROID_JAVA_HOME=$JAVA_HOME
-		if [ -d ${HOME}/bk/sw/android-ndk-r9c ];then
-			export NDK_ROOT=${HOME}/bk/sw/android-ndk-r9c/
-		fi
-		if [ -d ${HOME}/bk/sw/adt/sdk ];then
-			export ANDROID_SDK_ROOT=${HOME}/bk/sw/adt/sdk/
-		fi
+	#export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun
+	#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
+	#export JAVA_HOME=/usr/lib/jvm/java-6-sun/
+	#export ANDROID_JAVA_HOME=$JAVA_HOME
+	if [ -d ${HOME}/bk/sw/android-ndk-r9c ];then
+		export NDK_ROOT=${HOME}/bk/sw/android-ndk-r9c/
+	fi
+	if [ -d ${HOME}/bk/sw/adt/sdk ];then
+		export ANDROID_SDK_ROOT=${HOME}/bk/sw/adt/sdk/
+	fi
 
 }
 
