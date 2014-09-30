@@ -47,11 +47,10 @@ export MYNICKNAME="karlzheng"
 export MYUSERNAME=$(whoami)
 
 #export ANDROID_LOG_TAGS='Sensors:V *:S'
-export ARCH=arm
+#export ARCH=arm
 #http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
 export BROWSER="$PAGER"
-#export CROSS_COMPILE=arm-none-linux-gnueabi-
-export CROSS_COMPILE=arm-linux-gnueabi-
+#export CROSS_COMPILE=arm-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
 export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
@@ -1016,7 +1015,7 @@ function sproxy()
 	ssh -fNg -D 7001 sztv
 }
 
-function swap()
+function swapFileName()
 {
   mv $1 tmp.$$
   mv $2 $1
