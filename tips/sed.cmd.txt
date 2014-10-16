@@ -1,0 +1,2 @@
+# remove blank char.
+'s#[[:blank:]]\+$##'
