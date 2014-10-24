@@ -610,7 +610,7 @@ function cr()
 	is_project_root_dir
 	while [ $is_root_dir != 1 -a "$PWD" != "/" ];
 	do
-		cd .. > /dev/null;
+		builtin cd .. > /dev/null;
 		T=`PWD= /bin/pwd`;
 		is_project_root_dir
 	done;
