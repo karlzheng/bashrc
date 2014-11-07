@@ -1227,6 +1227,13 @@ function vp()
 	fi
 }
 
+function vs()
+{
+	if [ -f /dev/shm/$(whoami)/edit.vim ];then
+		vi -c S1
+	fi
+}
+
 function wi()
 {
 	whoami "$@"
