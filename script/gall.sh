@@ -15,6 +15,9 @@ fi
 
 git status -u > $GIT_STATUS_LOG_FILE
 
+# remove the '#' char at line begin.
+sed -i -e 's/^#\(.*\)/\1/' $GIT_STATUS_LOG_FILE
+
 : > $GIT_DIFF_FILES
 
 sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep "both modified:" | awk '{print $3}' \
