@@ -17,16 +17,16 @@ git status > $GIT_STATUS_LOG_FILE
 
 : >> $GIT_DIFF_FILES
 
-sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep "both modified:" | awk '{print $4}' \
+sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep "both modified:" | awk '{print $3}' \
     | grep -Ev '^$' >> $GIT_DIFF_FILES
-sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep modified: | awk '{print $3}' \
+sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep modified: | awk '{print $2}' \
     | grep -Ev '^$' >> $GIT_DIFF_FILES
-sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep "修改：" | awk '{print $3}' \
+sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep "修改：" | awk '{print $2}' \
     | grep -Ev '^$' >> $GIT_DIFF_FILES
-sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep "new file:" | awk '{print $4}' \
+sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep "new file:" | awk '{print $3}' \
     | grep -Ev '^$' >> $GIT_DIFF_FILES
 sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep -v "new file:" | grep -v modified: \
-    | grep -v "deleted:" | awk '{print $2}' | grep -Ev '^$' >> $GIT_DIFF_FILES
+    | grep -v "deleted:" | awk '{print $1}' | grep -Ev '^$' >> $GIT_DIFF_FILES
 
 echo -e "save uncommit files:\n"
 cat $GIT_DIFF_FILES
