@@ -47,4 +47,4 @@ wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 EOF
 
-sudo hostapd -d /dev/shm/hostapd.conf > /dev/shm/hostapd.log
+sudo hostapd -dd /dev/shm/hostapd.conf > /dev/shm/hostapd.log
