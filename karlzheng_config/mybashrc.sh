@@ -326,6 +326,18 @@ function dt()
 	date +%Y%m%d
 }
 
+function e()
+{
+	echo "$@"
+}
+
+function ep()
+{
+	echo 'export PATH= ${PATH}'
+	echo 'echo ${PATH} :'
+	echo "${PATH}"
+}
+
 function ey()
 {
 	local c
