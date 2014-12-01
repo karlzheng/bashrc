@@ -1157,6 +1157,11 @@ function vc()
    fi
 }
 
+function vcg()
+{
+	vi -c CG
+}
+
 function vd()
 {
 	vimdiff "$@"
