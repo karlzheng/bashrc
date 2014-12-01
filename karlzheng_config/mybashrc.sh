@@ -373,7 +373,19 @@ function g()
 
 function ga()
 {
-	git add "$@"
+	local f="$1"
+	if [ $# -eq 1 ];then
+		if [ ${1:0:2} == 'a/' ];then
+			f=$(echo "${1:2}")
+		else
+			if [ ${1:0:2} == 'b/' ];then
+				f=$(echo "${1:2}")
+			fi
+		fi
+	fi
+	if [ -e ${f} ];then
+		git add ${f}
+	fi
 }
 
 function gaa()
@@ -409,6 +421,11 @@ function gci()
 	git commit -s "$@"
 }
 
+function gcl()
+{
+	git clone "$@"
+}
+
 function gd()
 {
 	git diff "$@"
@@ -430,6 +447,11 @@ function gda()
 function gdp()
 {
 	git diff -p -U100000 --raw "$@"
+}
+
+function gi()
+{
+	grep -i "$@"
 }
 
 function gt()
