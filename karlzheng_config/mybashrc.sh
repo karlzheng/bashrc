@@ -1157,11 +1157,6 @@ function vc()
    fi
 }
 
-function vcg()
-{
-	vi -c CG
-}
-
 function vd()
 {
 	vimdiff "$@"
@@ -1176,6 +1171,11 @@ function vf()
 	else
 		pwd > /dev/shm/$(whoami)/vimEditFn
 	fi
+}
+
+function vg()
+{
+	vi -c CG
 }
 
 function vl()
