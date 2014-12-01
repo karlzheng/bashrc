@@ -382,9 +382,11 @@ function ga()
 				f=$(echo "${1:2}")
 			fi
 		fi
-	fi
-	if [ -e ${f} ];then
-		git add ${f}
+		if [ -e ${f} ];then
+			git add ${f}
+		fi
+	else
+		git add "$@"
 	fi
 }
 
