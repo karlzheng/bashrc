@@ -128,7 +128,7 @@ alias la='ls -latr'
 alias ll='ls -l '
 alias l='ls -CF '
 alias lm='ls arch/arm/configs/m*'
-alias lr='ls -latr'
+#alias lr='ls -latr'
 alias LS='ls'
 alias ls='ls --color=tty -a '
 alias lS='ls -laSr '
@@ -745,6 +745,11 @@ function lac()
 	   ls $1
 	 fi
 	 return 0
+}
+
+function lr()
+{
+	ls -R
 }
 
 function lsd()
