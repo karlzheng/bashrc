@@ -251,7 +251,7 @@ function ctrash()
 		sync;
 }
 
-function cux()
+function cx()
 {
 	echo "Are you really want to chmod u+x $@ ?"
 	read -p "y|n" c
