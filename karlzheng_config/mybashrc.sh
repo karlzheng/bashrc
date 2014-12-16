@@ -251,6 +251,18 @@ function ctrash()
 		sync;
 }
 
+function cux()
+{
+	echo "Are you really want to chmod u+x $@ ?"
+	read -p "y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		echo "chmod u+x $@"
+		chmod u+x "$@"
+	else
+		echo "Cancle chmod u+x $@"
+	fi
+}
+
 function del_carried_return()
 {
 		find -name "*.h" -o -name "*.c" |xargs sed -i -e "s#\r\n#\n#gc"
