@@ -395,6 +395,11 @@ function gaa()
 	git add -A
 }
 
+function gau()
+{
+	git add -u
+}
+
 function gba()
 {
 	git branch -a
