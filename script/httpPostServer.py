@@ -5,6 +5,7 @@
 #          FILE:  httpPostServer.py
 # 
 #         USAGE:  ./httpPostServer.py
+#                 curl http://127.0.0.1/ -F f=@test.txt
 # 
 #   DESCRIPTION:  
 # 
