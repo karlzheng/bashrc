@@ -730,6 +730,11 @@ function ht()
 	history | tail -n 10
 }
 
+function ic()
+{
+	ifconfig "$@"
+}
+
 function k()
 {
 	 for i in $(jobs | awk '{print $1}' | sed -e 's#\[\(.*\)\].*#\1#'); do
