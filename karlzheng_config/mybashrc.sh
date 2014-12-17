@@ -1073,6 +1073,16 @@ function sproxy()
 	ssh -fNg -D 7001 sztv
 }
 
+function sudopath()
+{
+	echo "Are you really want exec: "
+	echo "sudo env PATH=${HOME}/bashrc/script/:$PATH $@"
+	read -p "y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		sudo env PATH=${HOME}/bashrc/script/:$PATH "$@"
+	fi
+}
+
 function swapFileName()
 {
   mv $1 tmp.$$
