@@ -19,7 +19,7 @@
 
 #set -o nounset                              # Treat unset variables as an error
 
-find *.c   -exec sed -i -e 's#[[:blank:]]+$##' {} ;
-find *.h   -exec sed -i -e 's#[[:blank:]]+$##' {} ;
-find *.sh  -exec sed -i -e 's#[[:blank:]]+$##' {} ;
-find *.lua -exec sed -i -e 's#[[:blank:]]+$##' {} ;
+find -name "*.c"   -exec sed -i -e 's#[[:blank:]]\+$##' {} \;
+find -name "*.h"   -exec sed -i -e 's#[[:blank:]]\+$##' {} \;
+find -name "*.sh"  -exec sed -i -e 's#[[:blank:]]\+$##' {} \;
+find -name "*.lua" -exec sed -i -e 's#[[:blank:]]\+$##' {} \;
