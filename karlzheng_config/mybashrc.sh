@@ -989,6 +989,7 @@ function sbl()
 	if [ -e ~/tmp/bash_history ];then
 		/bin/cp ~/tmp/bash_history ~/tmp/bash_history.bak
 	fi
+	history >> ~/tmp/bash_history
 	cat ~/.bash_history >> ~/tmp/bash_history
 	sort ~/tmp/bash_history > /tmp/bash_history
 	cat /tmp/bash_history | awk '!a[$0]++' > ~/tmp/bash_history
