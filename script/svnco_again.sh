@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  svnco.sh
-# 
-#         USAGE:  ./svnco.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./svnco.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

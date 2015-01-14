@@ -7,7 +7,7 @@ a=`echo $a|tr -d '\r\n'`
 #echo $a |hexdump
 #let ver+=1
 #a=320
-echo $a 
+echo $a
 #b=`expr $a + 1`
 let b=$a+1
 

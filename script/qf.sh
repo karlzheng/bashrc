@@ -1,12 +1,12 @@
-#!/bin/bash 
+#!/bin/bash
 #===============================================================================
 #
 #          FILE:  mgrep.sh
-# 
-#         USAGE:  ./mgrep.sh 
-# 
+#
+#         USAGE:  ./mgrep.sh
+#
 #   DESCRIPTION:  mgrep = grep in multi dirs
-# 
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

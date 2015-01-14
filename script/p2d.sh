@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  patch2dir.sh
-# 
+#
 #         USAGE:  ./patch2dir.sh file.patch
-# 
-#   DESCRIPTION:  
-# 
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---
@@ -53,12 +53,12 @@ python - "$file" << EEOOFF
 #===============================================================================
 #
 #          FILE:  patch.py
-# 
+#
 #         USAGE:  ./patch.py file.patch
-# 
-#   DESCRIPTION:  
-# 
-#        AUTHOR: Karl Zheng 
+#
+#   DESCRIPTION:
+#
+#        AUTHOR: Karl Zheng
 #       COMPANY: Alibaba
 #       CREATED: 2011年10月18日 15时25分15秒 CST
 #      REVISION:  ---
@@ -150,7 +150,7 @@ def process_ln(ln):
 
 	#os.system("touch --date='next second' '"+file2+"'")
 	os.system("touch --date='+1 min' '"+file2+"'")
-	    
+
     return True
 
 def main(argv):

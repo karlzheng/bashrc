@@ -4,7 +4,7 @@ CONF_SUB_DIR="bashrc/karlzheng_config"
 CONF_DIR="${HOME}/${CONF_SUB_DIR}"
 
 function cp_shell_script()
-{ 
+{
     mkdir -p "$CONF_DIR"
     local filelist=(
     adb.bash_complete.sh
@@ -35,9 +35,9 @@ function add_dot_bashrc_call()
 function add_vim_config()
 {
     if [ ! -f ${HOME}/.vimrc -a -f .vimrc ];then
-	cp .vimrc ${HOME}/.vimrc 
+	cp .vimrc ${HOME}/.vimrc
     fi
-    
+
     if [ ! -d ${HOME}/.vim -a -d .vim ];then
 	cp .vim ${HOME}/.vim -a
     fi

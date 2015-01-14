@@ -31,5 +31,5 @@ CSCOPE=/usr/bin/cscope
 
 	# generate tag file
 	${CTAGS} -f${PRJ_MOD_TAG_FILE} -L${MOD_FILES}
-	${CSCOPE} -bq -f${PRJ_MOD_CSCOPE_FILE} -i${MOD_FILES} 
+	${CSCOPE} -bq -f${PRJ_MOD_CSCOPE_FILE} -i${MOD_FILES}
 #fi

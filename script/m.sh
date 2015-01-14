@@ -1,12 +1,12 @@
-#!/bin/bash 
+#!/bin/bash
 #===============================================================================
 #
 #          FILE:  mg.sh
-# 
-#         USAGE:  ./mg.sh 
-# 
+#
+#         USAGE:  ./mg.sh
+#
 #   DESCRIPTION:  mg = grep in multi dirs
-# 
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---
@@ -38,11 +38,11 @@ function get_root_dir()
 	fi
 	return $is_root_dir;
     }
-    
+
     if [ -n $OLDPWD ];then
 	local SAVE_OLDPWD="$OLDPWD"
     fi
-    
+
     PWD=$(/bin/pwd);
     local HERE="$PWD";
     local T="";

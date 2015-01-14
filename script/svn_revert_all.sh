@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  svn_revert_all.sh
-# 
-#         USAGE:  ./svn_revert_all.sh 
-# 
-#   DESCRIPTION:  do the "svn revert " command to all the modified files 
-# 
+#
+#         USAGE:  ./svn_revert_all.sh
+#
+#   DESCRIPTION:  do the "svn revert " command to all the modified files
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

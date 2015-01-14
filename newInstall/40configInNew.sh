@@ -26,5 +26,5 @@ fi
 
 if [ -f /etc/dictd/dict.conf ];then
 	sudo cp /etc/dictd/dict.conf /etc/dictd/dict.conf.org
-	sudo cp dictd/dict.conf /etc/dictd/dict.conf 
+	sudo cp dictd/dict.conf /etc/dictd/dict.conf
 fi

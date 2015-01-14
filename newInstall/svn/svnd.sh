@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  svnd.sh
-# 
+#
 #         USAGE:  cp this file to /etc/init.d/svnd.sh
-# 
-#   DESCRIPTION:  
-# 
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

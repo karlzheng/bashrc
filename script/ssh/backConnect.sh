@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  backConnect.sh
-# 
-#         USAGE:  ./backConnect.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./backConnect.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

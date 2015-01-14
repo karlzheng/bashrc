@@ -1,10 +1,10 @@
-#!/bin/bash 
+#!/bin/bash
 
 for img in $(dir *.img);
 do
     imgdir=${img%%.*}
     mount |grep "$imgdir" | grep "$(basename $(pwd))"
-    if [ $? == 0 ];then 
+    if [ $? == 0 ];then
         echo "unmount:"$imgdir
         sudo umount $imgdir
         ls -d $imgdir/* 1>/dev/null 2>&1

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 function fastbootFlash()
 {
@@ -22,7 +22,7 @@ function flashImage()
 		fi
 	fi
 	if [ -f logo.bin ];then
-		fastbootFlash bootlogo logo.bin 
+		fastbootFlash bootlogo logo.bin
 	fi
 	if [ -f zImage-dtb ];then
 		fastbootFlash kernel zImage-dtb

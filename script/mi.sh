@@ -1,12 +1,12 @@
-#!/bin/bash 
+#!/bin/bash
 #===============================================================================
 #
 #          FILE:  mig.sh
-# 
-#         USAGE:  ./mig.sh 
-# 
+#
+#         USAGE:  ./mig.sh
+#
 #   DESCRIPTION:  mig = multi dirs ignore-case grep
-# 
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---
@@ -38,11 +38,11 @@ function get_root_dir()
 	fi
 	return $is_root_dir;
     }
-    
+
     if [ -n $OLDPWD ];then
 	local SAVE_OLDPWD="$OLDPWD"
     fi
-    
+
     PWD=$(/bin/pwd);
     local HERE="$PWD";
     local T="";

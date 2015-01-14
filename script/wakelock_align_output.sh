@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  1.sh
-# 
-#         USAGE:  ./1.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./1.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

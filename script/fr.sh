@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 for fn in $(cat /tmp/ff); do
     #echo ${fn};

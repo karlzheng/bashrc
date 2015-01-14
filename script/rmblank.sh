@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  rmBlank.sh
-# 
-#         USAGE:  ./rmBlank.sh 
-# 
-#   DESCRIPTION:  rm line tail blank 
-# 
+#
+#         USAGE:  ./rmBlank.sh
+#
+#   DESCRIPTION:  rm line tail blank
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

@@ -1,4 +1,4 @@
-#!/bin/bash - 
+#!/bin/bash -
 
 if [ -z "${SMBPREDIR}" ];then
 	echo "pls set SMBPREDIR var"

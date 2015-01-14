@@ -2,11 +2,11 @@
 #===============================================================================
 #
 #          FILE:  adb.sh
-# 
-#         USAGE:  ./adb.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./adb.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

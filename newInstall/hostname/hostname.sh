@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  hostname.sh
-# 
-#         USAGE:  ./hostname.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./hostname.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

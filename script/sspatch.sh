@@ -2,11 +2,11 @@
 #===============================================================================
 #
 #          FILE:  sspatch.sh
-# 
+#
 #         USAGE:  ./sspatch.sh
-# 
+#
 #   DESCRIPTION:  use git am to apply Samsung patch zip file
-# 
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---
@@ -68,7 +68,7 @@ function makeAndroiAndKernelGitAM()
 			cd -
 		fi
 	fi
-	
+
 	if [ -d android ] && [ -d drivers ];then
 		for f in $(ls ${d}/kernel/*.patch |sort);do
 			gitamAfile ${f}
@@ -91,7 +91,7 @@ function makeAndroiAndKernelGitAM()
 			fi
 		fi
 	fi
-	
+
 	if [ -d nand_spl ] && [ -d onenand_ipl ];then
 		for f in $(/bin/ls ${d}/uboot/*.patch |sort);do
 			gitamAfile ${f}
@@ -116,5 +116,5 @@ function makeAndroiAndKernelGitAM()
 	fi
 }
 
-unPatchZip 
+unPatchZip
 makeAndroiAndKernelGitAM

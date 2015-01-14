@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  af.sh
-# 
+#
 #         USAGE:  ./af.sh < file.c
-# 
-#   DESCRIPTION:  
-# 
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---
@@ -33,13 +33,13 @@ python - /tmp/$filename.txt << EEOOFF
 #===============================================================================
 #
 #          FILE:  wakelock_align_output.py
-# 
+#
 #         USAGE:  1. execute: adb shell cat /proc/wake_lock > wake_lock.log
 #                 2. execute: python wakelock_align_output.py wake_lock.log
-# 
-#   DESCRIPTION:  
-# 
-#        AUTHOR: Karl Zheng 
+#
+#   DESCRIPTION:
+#
+#        AUTHOR: Karl Zheng
 #       COMPANY: Alibaba
 #       CREATED: 2011年10月18日 15时25分15秒 CST
 #      REVISION:  ---
@@ -74,7 +74,7 @@ def main(argv):
 		i = 0
 		while i < len(words):
 			if (wordlen[i] < len(words[i].strip())):
-				wordlen[i] = len(words[i].strip()) 
+				wordlen[i] = len(words[i].strip())
 			i += 1
 
 	for l in lines:

@@ -21,12 +21,12 @@ if [ -f modify.files ];then
 fi
 
 date
-lookuptags.sh $1 
+lookuptags.sh $1
 
 date
-gencscopetags.sh 
+gencscopetags.sh
 
 date
-gentags.sh $1 
+gentags.sh $1
 date
 

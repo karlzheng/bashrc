@@ -24,12 +24,12 @@ int main(int argc, char* argv[])
 		perror("fopen");
 		return 0;
 	}
-	
+
   if((fp_out = fopen("part.bin", "wb")) == NULL) {
 		perror("fopen part.bin for output!");
 		return 0;
 	}
-   
+
   if (fseek(fp_in, start, 0) == -1) {
 		printf("fseek to file postion:%d error!", start);
 		return 0;
@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
           break;
       }
   }
-	
+
 	fclose(fp_in);
 	fclose(fp_out);
 

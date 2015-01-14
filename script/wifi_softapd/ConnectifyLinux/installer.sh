@@ -12,7 +12,7 @@ echo "Checking if the wireless driver is supported ....";
 
 wireless_driver=`lspci -k | grep -A 3 -i network | grep -oP "(ath5k|ath9k|ath9k_htc|b43|b43legacy|brcmsmac|carl9170|libertas_tf|mac80211_hwsim|mwl8k|p54pci|p54spi|p54usb|rt61pci|rt73usb|rt2400pci|rt2500pci|rt2500usb|rt2800pci|rt2800usb|wil6210|wl12xx|zd1211rw)"`;
 
-echo "Driver Found : $wireless_driver"; 
+echo "Driver Found : $wireless_driver";
 if [ "$wireless_driver" == "" ];
 then
 	echo "Unsupported Driver.";

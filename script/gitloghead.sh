@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  sgmf.sh
-# 
-#         USAGE:  ./sgmf.sh 
-# 
+#
+#         USAGE:  ./sgmf.sh
+#
 #   DESCRIPTION:  sgmf = svn get modified files
-# 
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

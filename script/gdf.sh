@@ -1,4 +1,4 @@
-#!/bin/bash - 
+#!/bin/bash -
 
 GIT_STATUS_LOG_FILE=gitstatus.log
 GIT_DIFF_FILES=difffiles.log

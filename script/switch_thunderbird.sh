@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  switch.sh
-# 
-#         USAGE:  ./switch.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./switch.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

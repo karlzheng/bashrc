@@ -12,15 +12,15 @@ function r()
 			fn=ramdisk.img.ub
 		fi
 	fi
-	
+
 	read -p "Choose:" CHOOSE
 
 	if [ "${CHOOSE}" == "1" ];then
 		echo "inflate()"
-		if [ -d root ];then 
+		if [ -d root ];then
 			echo "exist root dir!!"
 			echo "mv root root_old"
-			if [ -d root_old ];then 
+			if [ -d root_old ];then
 				/bin/rm -rf root_old
 			fi
 			/bin/mv root root_old
@@ -36,7 +36,7 @@ function r()
 		#chmod 777 -R ./
 	elif [ "2" = "${CHOOSE}" ];then
 		echo "create()"
-		if [ ! -d root ];then 
+		if [ ! -d root ];then
 			echo "no a dir name root in sub dir"
 			exit 1
 		fi

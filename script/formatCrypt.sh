@@ -2,7 +2,7 @@
 
 #set -x
 #time sudo dd if=/dev/zero of=svn.img bs=1M count=35000
-        
+
 function is_loopi_mounted()
 {
     mounted_dev=$(sudo losetup -a |awk -F: '{print $1}')

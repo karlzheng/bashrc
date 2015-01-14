@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  svnuntar.sh
-# 
-#         USAGE:  ./svnuntar.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./svnuntar.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---

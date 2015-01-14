@@ -16,7 +16,7 @@ function runBuild()
 		echo "system.img has been put at ${imgDir}. Exit."
 		return;
 	fi
-	
+
 	export PS1="PS1"
 	source ${HOME}/.bashrc
 	export CROSS_COMPILE=arm-linux-gnueabi-
