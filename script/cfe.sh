@@ -65,7 +65,7 @@ function flash_trx_img()
 	echo "Are you really want to download file: ${dlf} ?"
 	read -p "y|n" c
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
-		wget "http://192.168.1.1/cgi-bin/luci/bs/token" -O /dev/null
+		curl "http://192.168.1.1/cgi-bin/luci/bs/token" |grep token
 		if [ $? == 0 ];then
 			downloadfw_by_openwrt
 		else
