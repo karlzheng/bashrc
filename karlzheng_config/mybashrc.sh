@@ -473,6 +473,15 @@ function gi()
 	grep -i "$@"
 }
 
+function gka()
+{
+	if [ -d .git ];then
+		gitk --all &
+	else
+		echo "Not in a git repository!"
+	fi
+}
+
 function gt()
 {
 	if [ -f /tmp/file.tar ];then
