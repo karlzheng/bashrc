@@ -27,7 +27,7 @@ function flash_trx_img()
 		local fn=openwrt-bcm53xx-squashfs-bcm4708-netgear-r6250.trx
 		local buildDirFn=build_dir/target-arm-openwrt-linux-uclibcgnueabi/linux-bcm53xx/${fn}
 		dlf=${fn}
-		if [ ! -f {fn} ];then
+		if [ ! -f ${fn} ];then
 			if [ -f ${buildDirFn} ];then
 				dlf=${buildDirFn}
 			else
