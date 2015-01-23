@@ -710,6 +710,11 @@ function he()
 
 function h()
 {
+	history "$@"
+}
+
+function hi()
+{
 	if [ $# -eq 0 ];then
 		history | tail -n 40
 	else
@@ -717,14 +722,9 @@ function h()
 	fi
 }
 
-function hi()
-{
-	history
-}
-
 function hn()
 {
-	history -n
+	history -n "$@"
 }
 
 function hp()
@@ -985,6 +985,11 @@ function rs()
 	if [ -d .repo ];then
 		repo status "$@"
 	fi
+}
+
+function s()
+{
+	ssh "$@"
 }
 
 function sai()
