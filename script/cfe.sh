@@ -24,7 +24,7 @@ function flash_trx_img()
 	local dlf=""
 	function find_img_file()
 	{
-		local fn=openwrt-bcm53xx-squashfs-bcm4708-netgear-r6250.trx
+		local fn=openwrt-bcm53xx-bcm4709-meizu-r10-squashfs.trx
 		local buildDirFn=build_dir/target-arm-openwrt-linux-uclibcgnueabi/linux-bcm53xx/${fn}
 		dlf=${fn}
 		if [ ! -f ${fn} ];then
@@ -51,8 +51,16 @@ function flash_trx_img()
 		curl "http://192.168.1.1/cgi-bin/luci/bs/token" 2>/dev/null > ${sf}
 		local token=$(cat ${sf} | json_xs -t yaml |grep token |awk '{print $2}')
 		local sysauth=$(cat ${sf} | json_xs -t yaml |grep sysauth |awk '{print $2}')
-		echo curl -b "sysauth=${sysauth}; sysauth=" -F f=@${dlf} "http://192.168.1.1/cgi-bin/luci/;stok=${token}/api/localupgrade"
-		curl -b "sysauth=${sysauth}; sysauth=" -F f=@${dlf} "http://192.168.1.1/cgi-bin/luci/;stok=${token}/api/localupgrade"
+		local clean_param=""
+		if [ $# -gt 0 ];then
+			if [ $1 == "clean" ];then
+				#clean_param='-F "clean=1"'
+				clean_param='-F clean=1'
+				echo clean_param="${clean_param}"
+			fi
+		fi
+		echo curl -b "sysauth=${sysauth}; sysauth=" ${clean_param} -F f=@${dlf} "http://192.168.1.1/cgi-bin/luci/;stok=${token}/api/localupgrade"
+		curl -b "sysauth=${sysauth}; sysauth=" ${clean_param} -F f=@${dlf} "http://192.168.1.1/cgi-bin/luci/;stok=${token}/api/localupgrade"
 	}
 
 	find_img_file
@@ -62,12 +70,18 @@ function flash_trx_img()
 		exit 1;
 	fi
 
-	echo "Are you really want to download file: ${dlf} ?"
+	type xclip
+	if [ $? == 0 ];then
+		echo -n ${dlf} | xclip
+	fi
+	echo "Are you really want to download file: "
+	echo "${dlf} "
+	echo "?"
 	read -p "y|n" c
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
-		curl "http://192.168.1.1/cgi-bin/luci/bs/token" |grep token
+		curl -m 5 "http://192.168.1.1/cgi-bin/luci/bs/token" |grep token
 		if [ $? == 0 ];then
-			downloadfw_by_openwrt
+			downloadfw_by_openwrt "$@"
 		else
 			downloadfw_by_cfe
 		fi
@@ -76,4 +90,4 @@ function flash_trx_img()
 	fi
 }
 
-flash_trx_img
+flash_trx_img "$@"
