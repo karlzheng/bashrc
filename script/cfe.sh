@@ -21,13 +21,6 @@
 
 function flash_trx_img()
 {
-	local flaship="192.168.233.1"
-	ping -W 2 -c 1 ${flaship}
-
-	if [ $? != 0 ];then
-		flaship = "192.168.1.1"
-	fi
-
 	function find_img_file()
 	{
 		local fn=openwrt-bcm53xx-bcm4709-meizu-r10-squashfs.trx
@@ -40,7 +33,21 @@ function flash_trx_img()
 				dlf=`find -name ${fn} | head -n 1`
 			fi
 		fi
+		echo "dlf:"
+		echo "${dlf} "
+		type xclip
+		if [ $? == 0 ];then
+			echo -n ${dlf} | xclip
+		fi
 	}
+
+	find_img_file
+	local flaship="192.168.233.1"
+	ping -W 2 -c 1 ${flaship}
+
+	if [ $? != 0 ];then
+		flaship="192.168.1.1"
+	fi
 
 	function downloadfw_by_cfe()
 	{
@@ -69,17 +76,11 @@ function flash_trx_img()
 		curl -b "sysauth=${sysauth}; sysauth=" ${clean_param} -F f=@${dlf} "http://${flaship}/cgi-bin/luci/;stok=${token}/api/localupgrade"
 	}
 
-	find_img_file
-
 	if [ "x${dlf}" == "x" ];then
 		echo "Not found firmware image in cur dir."
 		exit 1;
 	fi
 
-	type xclip
-	if [ $? == 0 ];then
-		echo -n ${dlf} | xclip
-	fi
 	echo "Are you really want to download file: "
 	echo "${dlf} "
 	echo "?"
