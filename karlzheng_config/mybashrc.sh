@@ -878,6 +878,11 @@ function nq()
 	fi
 }
 
+function ns()
+{
+	netstat "$@"
+}
+
 function p()
 {
 	pushd +1
