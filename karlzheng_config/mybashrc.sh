@@ -345,8 +345,13 @@ function e()
 
 function ep()
 {
-	echo 'export PATH= ${PATH}'
-	echo 'echo ${PATH} :'
+	if [ $# -ge 1 ];then
+		echo 'Origin PATH:'
+		echo "${PATH}"
+		echo 'set: export PATH= ${PATH}'
+		export PATH="$@":${PATH}:
+	fi
+	echo 'export PATH= ${PATH} :'
 	echo "${PATH}"
 }
 
