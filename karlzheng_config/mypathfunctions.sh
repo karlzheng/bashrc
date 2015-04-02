@@ -776,14 +776,14 @@ function dlb()
 
 function ajavapath()
 {
-	local JAVA_BIN_PATH="$(readlink -f $(which java))"
-	if [ -f java ];then
-		JAVA_BIN_PATH="$(pwd)"
-	else
-		if [ -f bin/java ];then
-			JAVA_BIN_PATH="$(pwd)/bin"
-		fi
-	fi
+	local JAVA_BIN_PATH="$(dirname $(readlink -f $(which java)))"
+	#if [ -f java ];then
+		#JAVA_BIN_PATH="$(pwd)"
+	#else
+		#if [ -f bin/java ];then
+			#JAVA_BIN_PATH="$(pwd)/bin"
+		#fi
+	#fi
 	if [ "x${JAVA_BIN_PATH}" != "x" ];then
 		local JAVA_PATH="${JAVA_BIN_PATH}/../"
 		export PATH=${JAVA_PATH}:${PATH}:
