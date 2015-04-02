@@ -60,8 +60,6 @@ export HISTSIZE=5000000
 export HISTCONTROL="erasedups:ignoreboth"
 export HISTFILESIZE=5000000
 export HISTIGNORE="c:h:history:ha:hd:he:hi:la:ls:sb"
-#export JAVA_HOME=${HOME}/bk/sw/jdk1.7.0_25/
-export JAVA_HOME=${HOME}/bk/sw/jdk1.6.0_45/
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:
 export LESS_TERMCAP_mb=$'\E[01;34m'
 export LESS_TERMCAP_md=$'\E[01;34m'
@@ -1679,7 +1677,6 @@ function my_bash_login_auto_exec_func()
 		CCACHE_DIR=${HOME}/ccache
 		#ccache -M 50G
 	fi
-
 	if [ -f .git/config ];then
 		git config http.postBuffer 524288000
 	fi
@@ -1688,13 +1685,15 @@ function my_bash_login_auto_exec_func()
 	#export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/
 	#export JAVA_HOME=/usr/lib/jvm/java-6-sun/
 	#export ANDROID_JAVA_HOME=$JAVA_HOME
+
+	#export JAVA_HOME=${HOME}/bk/sw/jdk1.6.0_45/
 	if [ -d ${HOME}/bk/sw/android-ndk-r9c ];then
 		export NDK_ROOT=${HOME}/bk/sw/android-ndk-r9c/
 	fi
 	if [ -d ${HOME}/bk/sw/adt/sdk ];then
 		export ANDROID_SDK_ROOT=${HOME}/bk/sw/adt/sdk/
 	fi
-
+	ajavapath
 }
 
 #bash command:
