@@ -1336,6 +1336,11 @@ function vs()
 	fi
 }
 
+function wh()
+{
+	which"$@"
+}
+
 function wi()
 {
 	whoami "$@"
