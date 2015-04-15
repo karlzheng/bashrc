@@ -1581,9 +1581,23 @@ complete -W 'arch/arm/configs' lac
 complete -W 'xconfig clean distclean' make
 complete -W 'xconfig clean distclean zImage' mj
 
+function archfunc.sh()
+{
+	local af="/dev/shm/${MYUSERNAME}/arch"
+	if [ -f ${af} ];then
+		export ARCH=$(cat ${af})
+	else
+		local af="${HOME}/person_tools/arch"
+		if [ -f ${af} ];then
+			export ARCH=$(cat ${af})
+		fi
+	fi
+}
+
 function my_bash_login_auto_exec_func()
 {
 	export DT=$(date +%Y%m%d)
+	archfunc.sh
 	if [ -d ~/Desktop ];then
 		export d=~/Desktop/
 	else
