@@ -341,6 +341,17 @@ function e()
 	echo "$@"
 }
 
+function ea()
+{
+	if [ $# -lt 1 ];then
+		echo "export ARCH=arm"
+		export ARCH=arm
+	else
+		echo export ARCH=$1
+		export ARCH=$1
+	fi
+}
+
 function ep()
 {
 	if [ $# -ge 1 ];then
@@ -1597,7 +1608,7 @@ function archfunc.sh()
 function my_bash_login_auto_exec_func()
 {
 	export DT=$(date +%Y%m%d)
-	archfunc.sh
+	#archfunc.sh
 	if [ -d ~/Desktop ];then
 		export d=~/Desktop/
 	else
