@@ -1301,6 +1301,12 @@ function vm()
 	fi
 }
 
+function vm.sh()
+{
+	m.sh "$@"
+	vg
+}
+
 function vmdis()
 {
 		local tmpfile="/tmp/vmdis.c"
