@@ -1027,7 +1027,7 @@ function sbl()
 	cat ~/.bash_history >> ~/tmp/bash_history
 	sort ~/tmp/bash_history > /tmp/bash_history
 	cat /tmp/bash_history | awk '!a[$0]++' > ~/tmp/bash_history
-	rm /tmp/bash_history
+	/bin/rm /tmp/bash_history
 }
 
 function sdu ()
@@ -1148,10 +1148,9 @@ function tfind()
 
 function unap()
 {
-		if [ -d /dev/shm/${MYUSERNAME} -a \
-				-f /dev/shm/${MYUSERNAME}/apwdpath ];then
-				rm /dev/shm/${MYUSERNAME}/apwdpath
-		fi
+	if [ -d /dev/shm/${MYUSERNAME} -a -f /dev/shm/${MYUSERNAME}/apwdpath ];then
+		/bin/rm /dev/shm/${MYUSERNAME}/apwdpath
+	fi
 }
 
 function v()
@@ -1355,7 +1354,7 @@ function vs()
 
 function wh()
 {
-	which"$@"
+	which "$@"
 }
 
 function wi()
