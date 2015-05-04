@@ -175,15 +175,6 @@ function cdo()
 	cd ${old_dir}
 }
 
-function cdr()
-{
-	export TIME_STYLE=long-iso
-	local recent_dir=$(echo "$(ls -lt | grep "^d" | awk '{print $8}' |\
-		grep -E -v '^\.' | sed -n '1,1p')" | tac )
-	echo cd ${recent_dir}
-	cd ${recent_dir}
-}
-
 function cds()
 {
 	local sDev=dev1
@@ -804,4 +795,13 @@ function pa()
 		else
 				echo "$(pwd) has already in ${HOME}/pwd.mk"
 		fi
+}
+
+function ed()
+{
+	export TIME_STYLE=long-iso
+	local recent_dir=$(echo "$(ls -lt | grep "^d" | awk '{print $8}' |\
+		grep -E -v '^\.' | sed -n '1,1p')" | tac )
+	echo cd ${recent_dir}
+	cd ${recent_dir}
 }
