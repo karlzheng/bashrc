@@ -1,12 +1,12 @@
-#!/bin/bash - 
+#!/bin/bash -
 #===============================================================================
 #
 #          FILE:  ssh_sock_proxy.sh
-# 
-#         USAGE:  ./ssh_sock_proxy.sh 
-# 
-#   DESCRIPTION:  
-# 
+#
+#         USAGE:  ./ssh_sock_proxy.sh
+#
+#   DESCRIPTION:
+#
 #       OPTIONS:  ---
 #  REQUIREMENTS:  ---
 #          BUGS:  ---
@@ -18,4 +18,4 @@
 #===============================================================================
 
 #http://straightedgelinux.com/blog/howto/socks.html
-ssh -Nn -D 1080 klaatu@home.linuxserver.com 
+ssh -Nn -D 1080 klaatu@home.linuxserver.com

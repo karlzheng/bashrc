@@ -776,9 +776,9 @@ function ajavapath()
 		#fi
 	#fi
 	if [ "x${JAVA_BIN_PATH}" != "x" ];then
-		local JAVA_PATH="${JAVA_BIN_PATH}/"
+		local JAVA_PATH="${JAVA_BIN_PATH}"
 		export PATH=${JAVA_PATH}:${PATH}:
-		export JAVA_HOME=${JAVA_PATH}
+		export JAVA_HOME="${JAVA_PATH}/"
 	fi
 }
 
