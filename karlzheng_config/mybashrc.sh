@@ -746,6 +746,9 @@ function hp()
 	if [ -f ~/person_tools/headneck.jpg ];then
 		eog -f ~/person_tools/headneck.jpg && disown &
 	fi
+	if [ -f ~/person_tools/programmer.png ];then
+		eog -f ~/person_tools/programmer.png && disown &
+	fi
 }
 
 function ht()
