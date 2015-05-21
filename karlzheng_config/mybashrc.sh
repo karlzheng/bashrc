@@ -1345,6 +1345,16 @@ function vp()
 	fi
 }
 
+function vpndown()
+{
+	nmcli con down id "$@"
+}
+
+function vpnup()
+{
+	nmcli con up id "$@"
+}
+
 function vs()
 {
 	if [ -f /dev/shm/$(whoami)/edit.vim ];then
