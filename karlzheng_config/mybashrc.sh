@@ -1458,7 +1458,7 @@ function _fastboot_completion()
 				if [ $COMP_CWORD -eq 2 ];then
 					case "$prev" in
 						"flash")
-							COMPREPLY=($( compgen -W 'kernel bootloader \
+							COMPREPLY=($( compgen -W 'kernel boot bootloader \
 								ramdisk system userdata' -- $cur ))
 							;;
 						"erase")
@@ -1481,6 +1481,13 @@ function _fastboot_completion()
 										"ramdisk")
 											if [ -f ramdisk-uboot.img ];then
 												COMPREPLY=($( compgen -W 'ramdisk-uboot.img' -- $cur ))
+											else
+												COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
+											fi
+												;;
+										"boot")
+											if [ -f boot.img ];then
+												COMPREPLY=($( compgen -W ' boot.img' -- $cur ))
 											else
 												COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
 											fi

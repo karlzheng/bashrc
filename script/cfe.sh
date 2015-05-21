@@ -33,8 +33,20 @@ function flash_trx_img()
 				dlf=`find -name ${fn} | head -n 1`
 			fi
 		fi
-		echo "dlf:"
-		echo "${dlf} "
+		if [ -f "${dlf}" ];then
+			echo "dlf:"
+			echo "${dlf} "
+		else
+			fn=openwrt-ramips-mt7628-mt7628-squashfs-sysupgrade.bin
+			buildDirFn=build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/linux-ramips_mt7628/${fn}
+			if [ ! -f ${fn} ];then
+				if [ -f ${buildDirFn} ];then
+					dlf=${buildDirFn}
+				else
+					dlf=`find -name ${fn} | head -n 1`
+				fi
+			fi
+		fi
 		type xclip
 		if [ $? == 0 ];then
 			echo -n ${dlf} | xclip
@@ -44,10 +56,15 @@ function flash_trx_img()
 	find_img_file
 	local flaship="192.168.233.1"
 	ping -W 2 -c 1 ${flaship}
-
 	if [ $? != 0 ];then
-		flaship="192.168.1.1"
+		ping -W 2 -c 1 "192.168.232.1"
+		if [ $? != 0 ];then
+			flaship="192.168.1.1"
+		else
+			flaship="192.168.232.1"
+		fi
 	fi
+	echo "flaship: ${flaship}"
 
 	function downloadfw_by_cfe()
 	{
