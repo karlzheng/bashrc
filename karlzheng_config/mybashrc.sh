@@ -1348,12 +1348,12 @@ function vp()
 	fi
 }
 
-function vpndown()
+function ncdown()
 {
 	nmcli con down id "$@"
 }
 
-function vpnup()
+function ncup()
 {
 	nmcli con up id "$@"
 }
