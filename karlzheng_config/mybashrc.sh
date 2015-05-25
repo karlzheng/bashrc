@@ -1149,6 +1149,11 @@ function tfind()
 		find . -exec grep -Hn "$@" {} +
 }
 
+function uzl()
+{
+	unzip -l "$@"
+}
+
 function unap()
 {
 	if [ -d /dev/shm/${MYUSERNAME} -a -f /dev/shm/${MYUSERNAME}/apwdpath ];then
@@ -1406,7 +1411,8 @@ function wln()
 }
 
 #alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 /dev/shm/${MYUSERNAME}path); cd $${MYUSERNAME}path'
-function _mcd_complete() {
+function _mcd_complete()
+{
 	 COMPREPLY=()
 	 local cur=${COMP_WORDS[COMP_CWORD]};
 	 local com=${COMP_WORDS[COMP_CWORD-1]};
@@ -1602,6 +1608,14 @@ function _ksvn_complete()
 }
 #complete -W 'svn://172.16.11.122/svn_src' 'https://172.16.1.21/svn/IceCreamSandwich' ksvn
 
+function _unzip_l_complete()
+{
+	#local cw=$(ls *.zip)
+	#COMPREPLY=($(compgen -W '${cw[@]}' -- $cur))
+	COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
+	return 0
+}
+
 if [ $MYUSERNAME == $MYNICKNAME ];then
 		complete -o default -F _longopt vi
 fi
@@ -1613,6 +1627,7 @@ complete -F	_ksvn_complete ksvn
 complete -F	_fastboot_completion fastboot
 complete -F	_mj_complete mj
 complete -F	_mc_complete mc
+complete -F	_unzip_l_complete uzl
 complete -W 'arch/arm/configs' lac
 complete -W 'xconfig clean distclean' make
 complete -W 'xconfig clean distclean zImage' mj
