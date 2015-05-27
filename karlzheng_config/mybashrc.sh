@@ -242,6 +242,13 @@ function brm()
 	fi
 }
 
+function cl()
+{
+	if [ -e ~/tmp/bash_history ];then
+		cat ~/tmp/bash_history "$@"
+	fi
+}
+
 function ctrash()
 {
 		/bin/rm -rf ~/.trash;
