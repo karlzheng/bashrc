@@ -1360,6 +1360,14 @@ function vp()
 	fi
 }
 
+function vt()
+{
+	local f=${HOME}/tmp/tee.log
+	if [ -e ${f} ];then
+		vim ${f}
+	fi
+}
+
 function ncdown()
 {
 	nmcli con down id "$@"
