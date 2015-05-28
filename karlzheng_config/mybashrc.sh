@@ -1071,6 +1071,14 @@ function sf()
 			else
 				echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
 			fi
+		else
+			if [ -d "$1" ];then
+				if [ -d "$(pwd)/$1" ];then
+					echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
+				else
+					echo "$1" > /dev/shm/${MYUSERNAME}/absfn
+				fi
+			fi
 		fi
 	else
 		pwd > /dev/shm/${MYUSERNAME}/absfn
