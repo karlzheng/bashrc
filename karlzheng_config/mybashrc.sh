@@ -304,14 +304,14 @@ function d()
 	fi
 }
 
-function dfd()
+function dud()
 {
 	local IFS=$'\n'
-	: > /dev/shm/dfd.tmp.log
+	: > /dev/shm/dud.tmp.log
 	for i in $(lsd);do
-		du -sh "$i" >> /dev/shm/dfd.tmp.log
+		du -sh "$i" >> /dev/shm/dud.tmp.log
 	done
-	cat /dev/shm/dfd.tmp.log | sort -h
+	cat /dev/shm/dud.tmp.log | sort -h
 }
 
 function diff()
