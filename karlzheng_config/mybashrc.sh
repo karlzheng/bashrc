@@ -43,6 +43,8 @@ stty -ixon
 export GTAGSFORCECPP=
 export LC_MESSAGES="C"
 
+export MINICOM=" -C /tmp/minicom.log "
+
 export MYNICKNAME="karlzheng"
 export MYUSERNAME=$(whoami)
 
@@ -496,10 +498,10 @@ function gi()
 
 function gka()
 {
-	if [ -d .git ];then
-		gitk --all &
+	if [ $# -ge 1 ];then
+		gitk --all "$@" &
 	else
-		echo "Not in a git repository!"
+		gitk --all . &
 	fi
 }
 
