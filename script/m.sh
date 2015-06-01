@@ -88,6 +88,7 @@ if [ -f ./mg.mk ];then
 			if [ -d "$line" ];then
 				find "$line" \
 					! -type d \
+					-a ! -type l \
 					-not -regex '.*.cmd' \
 					-not -regex '.*.svn-base' \
 					-not -regex  '.*\.svn.*' \
@@ -112,6 +113,7 @@ if [ -f ./mg.mk ];then
 else
 	find . \
 		! -type d \
+		-a ! -type l \
 		-not -regex '.*.cmd' \
 		-not -regex '.*.svn-base' \
 		-not -regex  '.*\.svn.*' \
