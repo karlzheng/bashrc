@@ -1110,7 +1110,7 @@ function sfile ()
 	fi
 }
 
-function sp()
+function sp.old()
 {
 		if [ ! -f /dev/shm/${MYUSERNAME}/cur_pos ];
 		then echo "1" > /dev/shm/${MYUSERNAME}/cur_pos;
@@ -1127,6 +1127,7 @@ function sp()
 		builtin cd "$enter_dir"
 		ap
 }
+
 
 function sproxy()
 {
@@ -1591,5 +1592,8 @@ fi
 my_bash_login_auto_exec_func
 
 if [ -d ~/person_tools/ ];then
-	buildServerConnectAndMount
+	type buildServerConnectAndMount >/dev/null 2>&1
+	if [ $? == 0 ];then
+		buildServerConnectAndMount
+	fi
 fi
