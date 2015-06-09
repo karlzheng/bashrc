@@ -1151,20 +1151,26 @@ function swapFileName()
   mv tmp.$$ $2
 }
 
-
 function t()
 {
 	touch "$@"
 }
 
-function tp()
-{
-	type "$@"
-}
-
 function tfind()
 {
 		find . -exec grep -Hn "$@" {} +
+}
+
+function tftps()
+{
+	if [ -e "${HOME}/bashrc/pythonlib/python-tx-tftp/examples/server.py" ];then
+		sudo python ${HOME}/bashrc/pythonlib/python-tx-tftp/examples/server.py
+	fi
+}
+
+function tp()
+{
+	type "$@"
 }
 
 function uzl()
