@@ -42,6 +42,8 @@ function flash_trx_img()
 				else
 					dlf=`find -name ${fn} | head -n 1`
 				fi
+			else
+				dlf=${fn}
 			fi
 		fi
 		echo "dlf:"

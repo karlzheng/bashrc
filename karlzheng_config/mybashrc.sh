@@ -1379,6 +1379,11 @@ function vt()
 	fi
 }
 
+function vv()
+{
+	dd bs=10 count=100 >> /tmp/vv
+}
+
 function ncdown()
 {
 	nmcli con down id "$@"
