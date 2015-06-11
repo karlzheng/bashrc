@@ -1387,8 +1387,6 @@ function vt()
 
 function vv()
 {
-	echo "$#"
-	return
 	local fn=/tmp/$(basename $0).tmp
 	: > ${fn}
 	local lines
