@@ -1387,7 +1387,24 @@ function vt()
 
 function vv()
 {
-	dd bs=10 count=100 >> /tmp/vv
+	echo "$#"
+	return
+	local fn=/tmp/$(basename $0).tmp
+	: > ${fn}
+	local lines
+	for l in $(echo "$@");do
+		echo "$l" >> ${fn}
+	done
+	if [ $(cat ${fn} | wc -l) == 1 ];then
+		v $(cat ${fn})
+	else
+		v ${fn}
+	fi
+	#echo "$@" | dd bs=10 count=100 >> /vv
+	#while read line
+	#do
+		#echo "$line" >> ${fn}
+	#done
 }
 
 function ncdown()
