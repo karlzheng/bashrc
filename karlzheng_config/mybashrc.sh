@@ -1065,7 +1065,7 @@ function sdu ()
 
 function sf()
 {
-	if [ $# -ge 1 ];then
+	if [ $# -eq 1 ];then
 		if [ -f $1 ];then
 			echo ${1} | grep '^\s*/' 2>&1 > /dev/null
 			if [ $? == 0 ];then
@@ -1083,7 +1083,12 @@ function sf()
 			fi
 		fi
 	else
-		pwd > /dev/shm/${MYUSERNAME}/absfn
+		#pwd > /dev/shm/${MYUSERNAME}/absfn
+		: > /dev/shm/${MYUSERNAME}/absfn
+		while [ "x$1" != x ];do
+			echo "$(pwd)/$1" >> /dev/shm/${MYUSERNAME}/absfn
+			shift
+		done
 	fi
 }
 
