@@ -1083,12 +1083,15 @@ function sf()
 			fi
 		fi
 	else
-		#pwd > /dev/shm/${MYUSERNAME}/absfn
-		: > /dev/shm/${MYUSERNAME}/absfn
-		while [ "x$1" != x ];do
-			echo "$(pwd)/$1" >> /dev/shm/${MYUSERNAME}/absfn
-			shift
-		done
+		if [ $# -gt 1 ];then
+			: > /dev/shm/${MYUSERNAME}/absfn
+			while [ "x$1" != x ];do
+				echo "$(pwd)/$1" >> /dev/shm/${MYUSERNAME}/absfn
+				shift
+			done
+		else
+			pwd > /dev/shm/${MYUSERNAME}/absfn
+		fi
 	fi
 }
 
