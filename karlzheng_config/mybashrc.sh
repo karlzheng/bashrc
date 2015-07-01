@@ -1275,13 +1275,11 @@ function vd()
 
 function vf()
 {
-	if [ $# -ge 1 ];then
-		if [ -f $1 ];then
-			echo "$(pwd)/$1" > /dev/shm/$(whoami)/vimEditFn
-		fi
-	else
-		pwd > /dev/shm/$(whoami)/vimEditFn
-	fi
+	: > /dev/shm/${MYUSERNAME}/absfn
+	for f in $(find -iname "$@");do
+		echo "$(pwd)/${f}" >> /dev/shm/${MYUSERNAME}/absfn
+	done
+	vi -c EditAbsoluteFilePath
 }
 
 function vg()
