@@ -292,6 +292,15 @@ function undel()
 		mv ~/.trash/"$*" . ;
 }
 
+function ba()
+{
+	local fn=/dev/shm/bcFn1
+	if [ $# -eq 1 ];then
+		: > ${fn}
+		echo "$(pwd)/$1" > ${fn}
+	fi
+}
+
 function bcp()
 {
 	/bin/cp "$@"
