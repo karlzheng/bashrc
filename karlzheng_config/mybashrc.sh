@@ -1633,7 +1633,7 @@ fi
 my_bash_login_auto_exec_func
 
 if [ -d ~/person_tools/ ];then
-	type buildServerConnectAndMount >/dev/null 2>&1
+	which buildServerConnectAndMount >/dev/null 2>&1
 	if [ $? == 0 ];then
 		buildServerConnectAndMount
 	fi
