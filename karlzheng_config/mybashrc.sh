@@ -382,6 +382,18 @@ function ep()
 	echo "${PATH}"
 }
 
+function et()
+{
+	local f=${HOME}/tmp/tee.log
+	echo ""
+	cat ${f}
+	echo ""
+	read -p "exec ${f} y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		source ${f}
+	fi
+}
+
 function ey()
 {
 	local c
