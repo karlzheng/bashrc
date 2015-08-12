@@ -363,6 +363,7 @@ function ea()
 {
 	if [ $# -lt 1 ];then
 		echo "export ARCH=arm"
+		#export ARCH=mips
 		export ARCH=arm
 	else
 		echo export ARCH=$1
