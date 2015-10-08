@@ -4,15 +4,15 @@
 
 # 2. conf repo:
 #add user and passwd in:
-#conf/authz
-#conf/passwd
+# conf/authz
+# conf/passwd
 
 #vi conf/svnserve.conf
-#add:
-#anon-access = none
-#auth-access = write
-#password-db = passwd
-#authz-db = authz
+# add in [general] :
+anon-access = none
+auth-access = write
+password-db = passwd
+authz-db = authz
 
 #3. make it boot with system
 
