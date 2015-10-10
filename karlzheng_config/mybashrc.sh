@@ -936,6 +936,11 @@ function p()
 	pushd +1
 }
 
+function pf()
+{
+	ps -ef "$@"
+}
+
 function pu()
 {
 	if [ $# -ge 1 ];then
