@@ -31,13 +31,17 @@ __version__ = "0.1"
 
 __all__ = ["RangeHTTPRequestHandler"]
 
+from BaseHTTPServer import BaseHTTPRequestHandler
+from BaseHTTPServer import HTTPServer
+from SocketServer import ThreadingMixIn
+import BaseHTTPServer
+import cgi
+import mimetypes
 import os
 import posixpath
-import BaseHTTPServer
-import urllib
-import cgi
 import shutil
-import mimetypes
+import urllib
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -264,11 +268,18 @@ class RangeHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         '.ogg': 'video/ogg',
         })
 
+#def test(HandlerClass = RangeHTTPRequestHandler,
+         #ServerClass = BaseHTTPServer.HTTPServer):
+    #BaseHTTPServer.test(HandlerClass, ServerClass)
 
-def test(HandlerClass = RangeHTTPRequestHandler,
-         ServerClass = BaseHTTPServer.HTTPServer):
-    BaseHTTPServer.test(HandlerClass, ServerClass)
+#if __name__ == '__main__':
+    #test()
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+   """Handle requests in a separate thread."""
 
 if __name__ == '__main__':
-    test()
+    #server = HTTPServer(('localhost', 8000), RangeHTTPRequestHandler)
+    server = ThreadedHTTPServer(('localhost', 8000), RangeHTTPRequestHandler)
+    print 'Starting server on port 8000 , use <Ctrl-C> to stop'
+    server.serve_forever()
