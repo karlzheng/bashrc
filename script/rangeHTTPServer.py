@@ -280,6 +280,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 if __name__ == '__main__':
     #server = HTTPServer(('localhost', 8000), RangeHTTPRequestHandler)
-    server = ThreadedHTTPServer(('localhost', 8000), RangeHTTPRequestHandler)
+    #server = ThreadedHTTPServer(('localhost', 8000), RangeHTTPRequestHandler)
+    server = ThreadedHTTPServer(('0.0.0.0', 8000), RangeHTTPRequestHandler)
     print 'Starting server on port 8000 , use <Ctrl-C> to stop'
     server.serve_forever()
