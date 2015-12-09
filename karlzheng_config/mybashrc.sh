@@ -862,7 +862,7 @@ function mcd ()
 function mcddt()
 {
 	local dt=$(date +%Y%m%d)
-	mkdir ${dt}
+	mkdir -p ${dt}
 	cd ${dt}
 }
 
