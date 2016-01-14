@@ -1,32 +1,32 @@
-#!/bin/sh
+#!/bin/bash
 
-: << EEOOFF
-if [ -f cscope.out ];then
-	/bin/rm cscope.out &
+function rm_tag_file()
+{
+	read -p "rm files: $@ y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		local IFS=$'\n'
+		echo "/bin/rm -rf $@"
+		while [ "x$1" != x ];do
+			if [ -f "$1" -o -d "$1" ];then
+				local d=${1%/}
+				/bin/mv $d $d.dir.tmp
+				/bin/rm -rf $d.dir.tmp &
+			fi
+			shift
+		done
+	else
+		echo "Removing $@ cancled !!"
+	fi
+}
+
+if [ $# -ge 1 -a $1 == "clean" ];then
+	rm_tag_file filenametags fullfilenametags cscope.files cscope.po.out cscope.out cscope.in.out tags
+else
+	echo "$(date) lookuptags.sh $1"
+	lookuptags.sh $1
+	echo "$(date) gencscopetags.sh $1"
+	gencscopetags.sh
+	echo "$(date) gentags.sh  $1"
+	gentags.sh $1
+	date
 fi
-if [ -f cscope.po.out ];then
-	/bin/rm cscope.po.out &
-fi
-if [ -f cscope.in.out ];then
-	/bin/rm cscope.in.out &
-fi
-EEOOFF
-
-if [ -f newtags ];then rm newtags;fi
-if [ -f newcscope.out ];then rm newcscope.out;fi
-if [ -f newcscope.out.in ];then rm newcscope.out.in;fi
-if [ -f newcscope.out.po ];then rm newcscope.out.po;fi
-if [ -f modify.files ];then
-	rm modify.files
-fi
-
-date
-lookuptags.sh $1
-
-date
-gencscopetags.sh
-
-date
-gentags.sh $1
-date
-
