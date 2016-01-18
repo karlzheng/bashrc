@@ -2,7 +2,7 @@
 
 function rm_tag_file()
 {
-	read -p "rm files: $@ y|n" c
+	read -p "rm files: $* y|n" c
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
 		local IFS=$'\n'
 		echo "/bin/rm -rf $@"
@@ -18,8 +18,8 @@ function rm_tag_file()
 		echo "Removing $@ cancled !!"
 	fi
 }
-
-if [ $# -ge 1 -a $1 == "clean" ];then
+echo "$#"
+if [ $# -ge 1 -a $1=="clean" ];then
 	rm_tag_file filenametags fullfilenametags cscope.files cscope.po.out cscope.out cscope.in.out tags
 else
 	echo "$(date) lookuptags.sh $1"
