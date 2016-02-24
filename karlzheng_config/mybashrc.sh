@@ -1046,6 +1046,11 @@ function s()
 	ssh "$@"
 }
 
+function sx()
+{
+	ssh -X "$@"
+}
+
 function sai()
 {
 	sudo apt-get install "$@"
