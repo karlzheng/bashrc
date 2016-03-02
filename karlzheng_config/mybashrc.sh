@@ -822,6 +822,11 @@ function lac()
 	 return 0
 }
 
+function lh()
+{
+	/bin/ls -latrh
+}
+
 function lr()
 {
 	ls -R
