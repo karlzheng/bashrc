@@ -410,7 +410,8 @@ function cd_dir_in_file()
 		builtin cd "${enter_dir/\~/${HOME}}"
 		return ;
 	fi
-	trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
+	#trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGINT SIGHUP SIGTERM
+	trap 'stty icanon iexten echo echoe echok;printf "%-100s\r" " ";break;' SIGHUP SIGTERM
 	local  cur_pos=0;
 	while read file; do
 		local the_dirs[$cur_pos]="$file"
@@ -448,7 +449,8 @@ function cd_dir_in_file()
 				;;
 		esac
 	done
-	trap - SIGINT SIGHUP SIGTERM
+	#trap - SIGINT SIGHUP SIGTERM
+	trap - SIGHUP SIGTERM
 }
 
 function c()
