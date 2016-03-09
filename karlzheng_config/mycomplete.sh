@@ -36,6 +36,27 @@ function _bypy_completion()
 	return 0
 }
 
+function _ct_complete()
+{
+	local cur=${COMP_WORDS[COMP_CWORD]};
+	local com=${COMP_WORDS[COMP_CWORD-1]};
+	local j k
+	local k
+	COMPREPLY=()
+	local dir_list=$(compgen -d -- $cur)
+	k="${#COMPREPLY[@]}"
+	for j in $dir_list;do
+		COMPREPLY[k++]=$j
+	done
+	local dir_list=$(compgen -f -- $cur)
+	k="${#COMPREPLY[@]}"
+	for j in $dir_list;
+	do
+		COMPREPLY[k++]=$j
+	done
+	return 0
+}
+
 function _dnw_complete()
 {
 	local cur=${COMP_WORDS[COMP_CWORD]};
