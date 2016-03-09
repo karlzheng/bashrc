@@ -205,13 +205,16 @@ function cds()
 
 function ct()
 {
-	local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-
-	echo "/tmp" >  ${enter_dir_file}
-	echo "~/tmp" >>	 ${enter_dir_file}
-	echo "~/bashrc/script/" >>	${enter_dir_file}
-	cat -n ${enter_dir_file}
-	cd_dir_in_file
+	if [ $# -eq 1 ];then
+		cat "$@"
+	else
+		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		echo "/tmp" >  ${enter_dir_file}
+		echo "~/bashrc/script/" >>	${enter_dir_file}
+		echo "~/tmp" >>	 ${enter_dir_file}
+		cat -n ${enter_dir_file}
+		cd_dir_in_file
+	fi
 }
 
 function cv()
