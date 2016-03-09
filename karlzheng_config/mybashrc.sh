@@ -252,11 +252,6 @@ function cl()
 	fi
 }
 
-function ct()
-{
-	cat "$@"
-}
-
 function ctrash()
 {
 		/bin/rm -rf ~/.trash;
