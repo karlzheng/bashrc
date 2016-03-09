@@ -203,17 +203,6 @@ function cds()
 	fi
 }
 
-function ct()
-{
-	local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-
-	echo "/tmp" >  ${enter_dir_file}
-	echo "~/tmp" >>	 ${enter_dir_file}
-	echo "~/bashrc/script/" >>	${enter_dir_file}
-	cat -n ${enter_dir_file}
-	cd_dir_in_file
-}
-
 function cv()
 {
 	if [ ! -f /dev/shm/${MYUSERNAME}/vim_cur_file_path ];
