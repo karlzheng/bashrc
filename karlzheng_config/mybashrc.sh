@@ -865,7 +865,7 @@ function mcd ()
   mkdir -p "$@" && eval cd "\"\$$#\"";
 }
 
-function mcddt()
+function mct()
 {
 	local dt=$(date +%Y%m%d)
 	mkdir -p ${dt}
