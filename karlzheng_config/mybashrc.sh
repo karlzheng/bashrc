@@ -841,6 +841,11 @@ function lsd()
 	ls -d */
 }
 
+function l4()
+{
+	ls -R|tail -n 48
+}
+
 function m()
 {
 	mount "$@"
