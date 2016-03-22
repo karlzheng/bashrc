@@ -30,7 +30,6 @@ def align_lines(lines):
             mwpl = len(words)
     wordlen = range(0, mwpl)
     i = 0
-    print(mwpl)
     while i < mwpl:
         wordlen[i] = 0
         i += 1
