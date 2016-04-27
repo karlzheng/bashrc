@@ -995,6 +995,11 @@ function rcp()
 	rsync -rvP "$@"
 }
 
+function release_memory()
+{
+	sudo su -c "echo 3 > /proc/sys/vm/drop_caches"
+}
+
 function repo()
 {
 	if [ "x$0" != "x-bash" ];then
