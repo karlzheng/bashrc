@@ -3,8 +3,8 @@
 #GIT_STATUS_LOG_FILE=/dev/shm/gitstatus.log
 #GIT_DIFF_FILES=/dev/shm/difffiles.log
 
-GIT_STATUS_LOG_FILE=gitstatus.log
-GIT_DIFF_FILES=difffiles.log
+GIT_STATUS_LOG_FILE=/tmp/gitstatus.log
+GIT_DIFF_FILES=/tmp/difffiles.log
 
 if [ $# -ge 1 ];then
 	tmp_file_name="$1"
@@ -34,8 +34,6 @@ sed -ne "/\t/p" $GIT_STATUS_LOG_FILE | grep -v "new file:" | grep -v modified: \
 echo -e "save uncommit files:\n"
 cat $GIT_DIFF_FILES
 
-tar rf $tmp_file_name $GIT_STATUS_LOG_FILE
-tar rf $tmp_file_name $GIT_DIFF_FILES
 if [ -f .config ];then
     tar rf $tmp_file_name .config
 fi
@@ -48,5 +46,8 @@ do
 		fi
 	fi
 done < $GIT_DIFF_FILES
+
+#rm $GIT_DIFF_FILES
+#rm $GIT_STATUS_LOG_FILE
 
 echo -e "\nsave the modified files to tar file: "$tmp_file_name"\n"
