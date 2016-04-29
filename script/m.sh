@@ -114,6 +114,8 @@ else
 	find . \
 		! -type d \
 		-a ! -type l \
+		-not -regex '.*.map' \
+		-not -regex '.*.htm' \
 		-not -regex '.*.cmd' \
 		-not -regex '.*.svn-base' \
 		-not -regex  '.*\.svn.*' \
@@ -125,6 +127,7 @@ else
 		| grep -v "./fullfilenametags" \
 		| grep -v ^tags \
 		| grep -v cscope.out \
+		| grep -v '/keil/Objects' \
 		| tee -a $SEACH_RESULT_FILE
 
 	if [ $(whoami) != "karlzheng" ];then
