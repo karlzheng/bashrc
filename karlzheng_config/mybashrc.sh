@@ -169,6 +169,16 @@ function aa()
 	ack-grep -H -a --nogroup "$@"
 }
 
+function a1()
+{
+	awk '{print $1}'
+}
+
+function a2()
+{
+	awk '{print $2}'
+}
+
 function a-s()
 {
 	apt-cache search "$@"
