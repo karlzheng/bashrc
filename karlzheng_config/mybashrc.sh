@@ -427,6 +427,14 @@ function f()
 	find -iname "$@"
 }
 
+function fo()
+{
+	local f
+	for f in $(cat $1);do
+		$2 $f
+	done
+}
+
 function fp()
 {
 	if [ -f /dev/shm/$(whoami)/absfn ];
