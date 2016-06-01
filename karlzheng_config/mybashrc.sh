@@ -179,6 +179,11 @@ function a2()
 	awk '{print $2}'
 }
 
+function a3()
+{
+	awk '{print $3}'
+}
+
 function a-s()
 {
 	apt-cache search "$@"
