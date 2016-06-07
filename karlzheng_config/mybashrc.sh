@@ -1031,11 +1031,16 @@ function repo()
 		echo "in bash config $LINENO"
 	fi
 	echo "$@" > /dev/shm/${MYUSERNAME}/repo_cmd_line
-	grep -qP "alibaba|yunos-inc|kangliang.zkl" /dev/shm/${MYUSERNAME}/repo_cmd_line
+	grep -qP "meizu" /dev/shm/${MYUSERNAME}/repo_cmd_line
 	if [ $? == 0 ];then
-		ali_repo "$@"
+		mz_repo "$@"
 	else
-		google_repo "$@"
+		grep -qP "alibaba|yunos-inc|kangliang.zkl" /dev/shm/${MYUSERNAME}/repo_cmd_line
+		if [ $? == 0 ];then
+			ali_repo "$@"
+		else
+			google_repo "$@"
+		fi
 	fi
 }
 
