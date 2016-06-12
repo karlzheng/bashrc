@@ -169,19 +169,10 @@ function aa()
 	ack-grep -H -a --nogroup "$@"
 }
 
-function a1()
+function ak()
 {
-	awk '{print $1}'
-}
-
-function a2()
-{
-	awk '{print $2}'
-}
-
-function a3()
-{
-	awk '{print $3}'
+	#http://www.techug.com/ten-tips-for-wonderful-bash-productivity
+	awk -v col=$1 '{print $col}'
 }
 
 function a-s()
