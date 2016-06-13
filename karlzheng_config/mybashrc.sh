@@ -727,6 +727,16 @@ function gsu()
 	git status -u "$@"
 }
 
+function h()
+{
+	history "$@"
+}
+
+function h1()
+{
+	head -n 1 "$@"
+}
+
 function ha()
 {
 	local ignore_cmd_list=(c h history ha hd he hi la ls sb)
@@ -762,11 +772,6 @@ function he()
 	history -s "$cmd_line"
 	#exec "$cmd_line"
 	eval "$cmd_line"
-}
-
-function h()
-{
-	history "$@"
 }
 
 function hi()
@@ -1504,6 +1509,8 @@ function wi()
 
 function wl()
 {
+	wc -l $@
+	return
 	mkdir -p ~/tmp/log/
 	local f=""
 	if [ $# -ge 1 ];then
