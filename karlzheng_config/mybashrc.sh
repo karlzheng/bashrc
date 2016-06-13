@@ -928,10 +928,11 @@ function myvimpath()
 function n()
 {
 		if [ $# -eq 0 ];then
-				nautilus .
+				nautilus . &
 		else
-				nautilus $1
+				nautilus $1 &
 		fi
+		sleep 0.2
 		type xdotool
 		if [ $? == 0 ];then
 			xdotool windowactivate $(xdotool search --class nautilus | tail -n 1)
