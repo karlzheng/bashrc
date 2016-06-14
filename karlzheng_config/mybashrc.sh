@@ -1187,6 +1187,12 @@ function sfile ()
 	fi
 }
 
+function sl()
+{
+	#echo "$@" | sed -e 's# #\n#g'
+	tr " " "\n"
+}
+
 function sp.old()
 {
 		if [ ! -f /dev/shm/${MYUSERNAME}/cur_pos ];
