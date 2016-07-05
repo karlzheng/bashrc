@@ -744,6 +744,11 @@ function h1()
 	head -n 1 "$@"
 }
 
+function h2()
+{
+	head -n 2 "$@"
+}
+
 function ha()
 {
 	local ignore_cmd_list=(c h history ha hd he hi la ls sb)
@@ -1268,9 +1273,9 @@ function tp()
 	type "$@"
 }
 
-function uzl()
+function ud()
 {
-	unzip -l "$@"
+	cat $1 $2 | sort | uniq -d
 }
 
 function unap()
@@ -1278,6 +1283,11 @@ function unap()
 	if [ -d /dev/shm/${MYUSERNAME} -a -f /dev/shm/${MYUSERNAME}/apwdpath ];then
 		/bin/rm /dev/shm/${MYUSERNAME}/apwdpath
 	fi
+}
+
+function uzl()
+{
+	unzip -l "$@"
 }
 
 function v()
