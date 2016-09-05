@@ -882,6 +882,18 @@ function l4()
 	ls -R|tail -n 48
 }
 
+function jlinkattach()
+{
+	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
+	VBoxManage controlvm xp usbattach ${jlinkuuid}
+}
+
+function jlinkdetach()
+{
+	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
+	VBoxManage controlvm xp usbdetach ${jlinkuuid}
+}
+
 function m()
 {
 	mount "$@"
