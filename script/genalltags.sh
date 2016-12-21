@@ -18,9 +18,9 @@ function rm_tag_file()
 		echo "Removing $@ cancled !!"
 	fi
 }
-echo "$#"
-if [ $# -ge 1 -a $1=="clean" ];then
-	rm_tag_file filenametags fullfilenametags cscope.files cscope.po.out cscope.out cscope.in.out tags
+
+if [ $# -ge 1 -a $1 == "clean" ];then
+	rm_tag_file filenametags fullfilenametags cscope.files cscope.po.out cscope.out cscope.in.out tags ncscope.out
 else
 	echo "$(date) lookuptags.sh $1"
 	lookuptags.sh $1
