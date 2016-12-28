@@ -540,6 +540,15 @@ function gi()
 	grep -i "$@"
 }
 
+function gk()
+{
+	if [ $# -ge 1 ];then
+		gitk "$@" &
+	else
+		gitk . &
+	fi
+}
+
 function gka()
 {
 	if [ $# -ge 1 ];then
