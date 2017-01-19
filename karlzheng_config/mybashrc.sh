@@ -831,11 +831,22 @@ function ic()
 
 function k()
 {
-	 for i in $(jobs | awk '{print $1}' | sed -e 's#\[\(.*\)\].*#\1#'); do
-		echo "kill -9 %$i"
-		#sudo kill -9 %$i
-		kill -9 %$i
-	 done
+	read -p "Are you sure want to kill all jobs? y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		while true;do
+			local jc=$(jobs|wc -l)
+			echo $jc
+			if [[ ${jc} != 0 ]];then
+				for i in $(jobs | awk '{print $1}' | sed -e 's#\[\(.*\)\].*#\1#'); do
+					echo "kill -9 %$i"
+					kill -9 %$i
+				done
+				sleep 0.5
+			else
+				break
+			fi
+		done
+	fi
 }
 
 function ksvn()
