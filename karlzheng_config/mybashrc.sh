@@ -98,7 +98,7 @@ bind -m emacs '"\C-gh": "--help"'
 bind -m emacs '"\C-gm": "grep mei Makefile"'
 bind -m emacs '"\C-gn": " 2>&1 > /dev/null"'
 bind -m emacs '"\C-gr": "$(lf)"'
-bind -m emacs '"\C-gt": "  > ~/tmp/tee.log 2>&1 3>&1 "'
+bind -m emacs '"\C-gt": " 2>&1 3>&1 |tee ~/tmp/tee.log "'
 bind -m emacs '"\C-gv": "--version"'
 bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
 
