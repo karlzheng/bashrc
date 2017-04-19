@@ -910,13 +910,13 @@ function l4()
 function jlinkattach()
 {
 	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
-	VBoxManage controlvm xp usbattach ${jlinkuuid}
+	VBoxManage controlvm win7 usbattach ${jlinkuuid}
 }
 
 function jlinkdetach()
 {
 	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
-	VBoxManage controlvm xp usbdetach ${jlinkuuid}
+	VBoxManage controlvm win7 usbdetach ${jlinkuuid}
 }
 
 function m()
