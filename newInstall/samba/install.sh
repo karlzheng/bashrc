@@ -15,14 +15,14 @@ sudo mkdir -p ${SMBPREDIR}/share
 sudo chmod 777 ${SMBPREDIR}/share
 sudo chown $(whoami).$(whoami) ${SMBPREDIR}/share
 
-sed -e "s#karlzheng#$(whoami)#g" smb.conf > /tmp/tmp.conf
+sudo bash -c "cp /etc/samba/smb.conf /etc/samba/smb.conf.org"
+
+sed -e "s#karlzheng#$(whoami)#g" smb.conf > /tmp/smb.conf
 
 sed -i -e "s#\${SMBPREDIR}#${SMBPREDIR}#g" /tmp/smb.conf
 
-sudo bash -c "cp /etc/samba/smb.conf /etc/samba/smb.conf.org"
+sudo bash -c "cat /tmp/smb.conf >> /etc/samba/smb.conf"
 
-sudo bash -c "cat /tmp/tmp.conf >> /etc/samba/smb.conf"
-
-rm /tmp/tmp.conf
+rm /tmp/smb.conf
 
 sudo service smbd restart
