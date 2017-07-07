@@ -65,7 +65,7 @@ bleno.on('advertisingStart', function(error) {
     } else {
         console.log("Advertising start success");
         bleno.setServices([
-            
+
             // Define a new service
             new bleno.PrimaryService({
                 uuid : WX_SERVICE_UUID,
@@ -76,17 +76,17 @@ bleno.on('advertisingStart', function(error) {
 						uuid : WERUN_PEDOMETER_UUID,
                         //properties : ['notify', 'read', 'write'],
                         properties : ['indicate', 'read'],
-                        
+
                         onSubscribe : function(maxValueSize, updateValueCallback) {
                             console.log("Device subscribed");
 							this.changeInterval = setInterval(function() {
-								var data = new Buffer('01' + '10270f', 'hex');
+								// 29998 steps
+								var data = new Buffer('01' + '752E00', 'hex');
 								console.log('WeRunPedoMeterChar update value: 0x' + data.toString('hex'));
 								updateValueCallback(data);
-								this.counter++;
 							}, 1000);
                         },
-                        
+
                         // If the client unsubscribes, we stop broadcasting the message
 						onUnsubscribe : function() {
 							if (this.changeInterval) {
@@ -94,14 +94,15 @@ bleno.on('advertisingStart', function(error) {
 								this.changeInterval = null;
 							}
 						},
-                        
+
                         // Send a message back to the client with the characteristic's value
                         onReadRequest : function(offset, callback) {
                             console.log("Read request received");
-                            callback(this.RESULT_SUCCESS, new Buffer("Echo: " + 
-                                    (this.value ? this.value.toString("utf-8") : "")));
+							// 29998 steps
+							var data = new Buffer('01' + '752E00', 'hex');
+                            callback(this.RESULT_SUCCESS, data.toString("utf-8"));
                         },
-                        
+
                         // Accept a new value for the characterstic's value
                         onWriteRequest : function(data, offset, withoutResponse, callback) {
                             this.value = data;
@@ -110,23 +111,24 @@ bleno.on('advertisingStart', function(error) {
                         }
 
                     }),
-                    
+
 					new bleno.Characteristic({
                         value : null,
 						uuid : WERUN_TARGET_UUID,
                         //properties : ['notify', 'read', 'write'],
 						properties : [ 'read', 'indicate', 'write' ],
-                        
+
                         // If the client subscribes, we send out a message every 1 second
                         onSubscribe : function(maxValueSize, updateValueCallback) {
                             console.log("Device subscribed");
                             this.intervalId = setInterval(function() {
-								var data = new Buffer('01' + '102700', 'hex');
+								// 29998 steps
+								var data = new Buffer('01' + '752E00', 'hex');
 								console.log('WeRunTargetChar update value: 0x' + data.toString('hex'));
 								updateValueCallback(data);
                             }, 1000);
                         },
-                        
+
                         // If the client unsubscribes, we stop broadcasting the message
 						onUnsubscribe : function() {
 							console.log('WeRunTargetChar unsubscribe');
@@ -135,19 +137,20 @@ bleno.on('advertisingStart', function(error) {
 								this.changeInterval = null;
 							}
 						},
-                        
+
                         // Send a message back to the client with the characteristic's value
                         onReadRequest : function(offset, callback) {
                             console.log("Read request received");
 /*
- *                            callback(this.RESULT_SUCCESS, new Buffer("Echo: " + 
+ *                            callback(this.RESULT_SUCCESS, new Buffer("Echo: " +
  *                                    (this.value ? this.value.toString("utf-8") : "")));
  *
  */
-							var data = new Buffer('01' + '10270f', 'hex');
+							// 29998 steps
+							var data = new Buffer('01' + '752E00', 'hex');
                             callback(this.RESULT_SUCCESS, data.toString("utf-8"));
                         },
-                        
+
                         // Accept a new value for the characterstic's value
                         onWriteRequest : function(data, offset, withoutResponse, callback) {
                             this.value = data;
@@ -162,7 +165,7 @@ bleno.on('advertisingStart', function(error) {
 						properties : [ 'read' ],
 						value : new Buffer(DEVICE_MAC_ADDR, 'hex')
                     })
-                    
+
                 ]
             })
         ]);
