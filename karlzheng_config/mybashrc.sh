@@ -232,6 +232,12 @@ function append_daily_path()
 		wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/${MYUSERNAME}/total_count
 }
 
+function attachjlink()
+{
+	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
+	VBoxManage controlvm win7 usbattach ${jlinkuuid}
+}
+
 function brm()
 {
 	echo "Are you really want to remove $@ ?"
@@ -322,6 +328,12 @@ function d()
 	else
 		cd ~/桌面/
 	fi
+}
+
+function detachjlink()
+{
+	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
+	VBoxManage controlvm win7 usbdetach ${jlinkuuid}
 }
 
 function dud()
@@ -905,18 +917,6 @@ function lf()
 function l4()
 {
 	ls -R|tail -n 48
-}
-
-function jlinkattach()
-{
-	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
-	VBoxManage controlvm win7 usbattach ${jlinkuuid}
-}
-
-function jlinkdetach()
-{
-	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
-	VBoxManage controlvm win7 usbdetach ${jlinkuuid}
 }
 
 function m()
