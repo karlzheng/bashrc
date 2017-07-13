@@ -772,7 +772,11 @@ function dlb()
 
 function ajavapath()
 {
-	local JAVA_BIN_PATH="$(dirname $(readlink -f $(which java)))"
+	local WHICH_JAVA=$(which java)
+	if [ "x${WHICH_JAVA}" == "x" ];then
+		return
+	fi
+	local JAVA_BIN_PATH="$(dirname $(readlink -f ${WHICH_JAVA}))"
 	#if [ -f java ];then
 		#JAVA_BIN_PATH="$(pwd)"
 	#else
