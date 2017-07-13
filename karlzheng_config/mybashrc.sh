@@ -238,6 +238,11 @@ function attachjlink()
 	VBoxManage controlvm win7 usbattach ${jlinkuuid}
 }
 
+function hex2bin()
+{
+	arm-none-eabi-objcopy -Obinary $1 $2
+}
+
 function brm()
 {
 	echo "Are you really want to remove $@ ?"
