@@ -407,7 +407,7 @@ function cd_dir_in_file()
 	else
 		local enter_dir_file="$1"
 	fi
-	local cnt=$(cat ${enter_dir_file} | wc -l)
+	local cnt=$(wc -l ${enter_dir_file} | awk '{print $1}')
 	if [ $cnt -eq 1 ];then
 		local enter_dir=$(cat "$enter_dir_file")
 		builtin cd "${enter_dir/\~/${HOME}}"
@@ -456,22 +456,21 @@ function cd_dir_in_file()
 	trap - SIGHUP SIGTERM
 }
 
+mkdir -p /dev/shm/"${MYUSERNAME}"
+
 function c()
 {
-		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-		mkdir -p /dev/shm/"${MYUSERNAME}"
-		: > $enter_dir_file
-		if [ $# -eq 0 ];then
-				cat -n ${HOME}/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
-				echo "${HOME}" > "$enter_dir_file"
-				cat	 ${HOME}/pwd.mk >> "$enter_dir_file"
-		else
-				cat -n ${HOME}/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*"
-				cat	 ${HOME}/pwd.mk | sed -e 's#^\#.*##g' | grep -i "$*" \
-					> "$enter_dir_file"
-		fi
-
-		cd_dir_in_file
+	local ef=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+	: > $ef
+	if [ $# -eq 0 ];then
+		#cat -n ${HOME}/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
+		#echo "${HOME}" > "$ef"
+		cat	${HOME}/pwd.mk | grep -E -v "^#" >> "$ef"
+	else
+		cat	${HOME}/pwd.mk | grep -i "$*" | grep -E -v "^#" >> "$ef"
+	fi
+	cat -n "$ef"
+	cd_dir_in_file
 }
 
 function cd()
