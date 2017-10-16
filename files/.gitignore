@@ -9,3 +9,6 @@
 
 *.swp
 *.pyc
+
+**/keil/bin/
+**/atollic_gcc/bin/

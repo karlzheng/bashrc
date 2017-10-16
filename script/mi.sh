@@ -81,7 +81,7 @@ function modify_seach_result_file()
 
 : > $SEACH_RESULT_FILE
 
-if [ -f ./mig.mk ];then
+if [ -f ./mg.mk ];then
 	while read line;do
 		line=$(echo -n "$line" |sed -e 's#^\#.*##g')
 		if [ "x$line" != "x" ];then
@@ -105,7 +105,7 @@ if [ -f ./mig.mk ];then
 				echo "not exist dir: $line"
 			fi
 		fi
-	done < ./mig.mk
+	done < ./mg.mk
 
 	if [ $(whoami) != "karlzheng" ];then
 		cp  $SEACH_RESULT_FILE "${HOME}/quickfix.txt"
