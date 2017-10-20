@@ -1741,8 +1741,9 @@ function my_bash_login_auto_exec_func()
 	#export ANDROID_JAVA_HOME=$JAVA_HOME
 
 	#export JAVA_HOME=${HOME}/bk/sw/jdk1.6.0_45/
-	if [ -d ${HOME}/bk/sw/android-ndk-r9c ];then
-		export NDK_ROOT=${HOME}/bk/sw/android-ndk-r9c/
+	if [ -d ${HOME}/bk/sw/android-ndk ];then
+		export NDK_ROOT=${HOME}/bk/sw/android-ndk/
+		export NDK=${HOME}/bk/sw/android-ndk/
 	fi
 	if [ -d ${HOME}/bk/sw/adt/sdk ];then
 		export ANDROID_SDK_ROOT=${HOME}/bk/sw/adt/sdk/
