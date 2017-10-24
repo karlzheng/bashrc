@@ -19,4 +19,4 @@
 
 set -o nounset                              # Treat unset variables as an error
 
-ssh -fN -R 2222:localhost:22 $(whoami)@${localhostIP}
+ssh -fN -R 2222:localhost:22 $(whoami)@${host}
