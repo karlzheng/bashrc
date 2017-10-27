@@ -276,7 +276,8 @@ function ctrash()
 	#/bin/rm -rf ~/.trash;
 	#mkdir ~/.trash;
 	mkdir -p /tmp/.trash/;
-	rsync --delete-before -avH --progress --stats /tmp/.trash/ /home/karlzheng/.trash
+	#rsync --delete-before -avH --progress --stats /tmp/.trash/ /home/karlzheng/.trash
+	rsync  --delete -rlptD /tmp/.trash/ /home/karlzheng/.trash/
 	sync;
 }
 
