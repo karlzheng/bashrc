@@ -273,9 +273,11 @@ function cl()
 
 function ctrash()
 {
-		/bin/rm -rf ~/.trash;
-		mkdir ~/.trash;
-		sync;
+	#/bin/rm -rf ~/.trash;
+	#mkdir ~/.trash;
+	mkdir -p /tmp/.trash/;
+	rsync --delete-before -avH --progress --stats /tmp/.trash/ /home/karlzheng/.trash
+	sync;
 }
 
 function cx()
