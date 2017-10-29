@@ -1748,8 +1748,9 @@ function my_bash_login_auto_exec_func()
 		export NDK_ROOT=${HOME}/bk/sw/android-ndk/
 		export NDK=${HOME}/bk/sw/android-ndk/
 	fi
-	if [ -d ${HOME}/bk/sw/adt/sdk ];then
-		export ANDROID_SDK_ROOT=${HOME}/bk/sw/adt/sdk/
+	local androidsdkdir=${HOME}/Android/Sdk
+	if [ -d ${androidsdkdir} ];then
+		export ANDROID_SDK_ROOT=${androidsdkdir}/
 	fi
 	ajavapath
 }

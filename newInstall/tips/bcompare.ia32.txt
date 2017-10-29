@@ -1,15 +1,21 @@
-166  cd /etc/apt/sources.list.d
-167  ls -la
-168  echo "deb http://archive.ubuntu.com/ubuntu/ raring main restricted universe multiverse" >ia32-libs-raring.list
-169  apt-get update
-170  apt-get install ia32-libs
-171  pkg -r ia32-libs
+cd /etc/apt/sources.list.d
+ls -la
+echo "deb http://archive.ubuntu.com/ubuntu/ raring main restricted universe multiverse" > ia32-libs-raring.list
+apt-get update
+apt-get install ia32-libs
+
 172  dpkg -r ia32-libs
-173  echo "deb http://old-releases.ubuntu.com/ubuntu/ raring main restricted universe multiverse" >ia32-libs-raring.list
-174  apt-get update
-175  apt-get install ia32-libs
-176  apt-get install ia32-libs ia32-libs-multiarch
-177  apt-get install ia32-libs ia32-libs-multiarch -f
-178  apt-get -f install ia32-libs ia32-libs-multiarch 
-179  apt-get -f install
-180  apt-get -f install ia32-libs ia32-libs-multiarch 
+
+echo "deb http://old-releases.ubuntu.com/ubuntu/ raring main restricted universe multiverse" > ia32-libs-raring.list
+apt-get update
+apt-get install ia32-libs
+apt-get install ia32-libs ia32-libs-multiarch -f
+
+apt-get install ia32-libs ia32-libs-multiarch
+
+apt-get -f install ia32-libs ia32-libs-multiarch
+apt-get -f install
+
+apt-get -f install ia32-libs ia32-libs-multiarch
+
+sudo aptitude install -f ia32-libs ia32-libs-multiarch
