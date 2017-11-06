@@ -1,6 +1,8 @@
 sudo cp udev_rules.d/* /etc/udev/rules.d/
 
 # samba
+sudo apt-get install samba smbclient samba-common samba-common-bin
+
 sudo smbpasswd -a $(whoami)
 
 sudo mkdir -p /home/personal
@@ -28,3 +30,4 @@ if [ -f /etc/dictd/dict.conf ];then
 	sudo cp /etc/dictd/dict.conf /etc/dictd/dict.conf.org
 	sudo cp dictd/dict.conf /etc/dictd/dict.conf
 fi
+
