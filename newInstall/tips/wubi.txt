@@ -1,0 +1,5 @@
+sudo apt-get remove ibus
+sudo apt-get install fcitx
+sudo apt-get install fcitx-table-wbpy
+#im-switch -s fcitx
+im-config
