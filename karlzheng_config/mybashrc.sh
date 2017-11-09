@@ -901,7 +901,7 @@ function lac()
 
 function lh()
 {
-	/bin/ls -latrh
+	ls -latrh
 }
 
 function lr()
