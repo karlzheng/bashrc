@@ -208,11 +208,12 @@ function ct()
 	if [ $# -eq 1 ];then
 		cat "$@"
 	else
-		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-		echo "/tmp" >>  ${enter_dir_file}
-		echo "~/bashrc/script/" >>	${enter_dir_file}
-		echo "~/tmp" >	 ${enter_dir_file}
-		cat -n ${enter_dir_file}
+		local f=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		: > ${f}
+		echo "/tmp" >>  ${f}
+		echo "~/bashrc/script/" >>	${f}
+		echo "~/tmp" >>	 ${f}
+		cat -n ${f}
 		cd_dir_in_file
 	fi
 }
