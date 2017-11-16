@@ -731,6 +731,16 @@ function gp()
 	fi
 }
 
+function gpa()
+{
+	local c
+	read -p "git pull all branches in current dir y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		git pull --all
+	fi
+}
+
+
 function gpc()
 {
 	if [ -n $OLDPWD ];then
