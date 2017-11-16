@@ -11,6 +11,7 @@ sudo sed -i "s/keexjEP3t4Mue23hrnuPtY4TdcsqNiJL-5174TsUdLmJSIXKfG2NGPwBL6vnRPddT
 
 
 wget https://www.scootersoftware.com/bcompare-4.2.2.22384_amd64.deb
+sudo gdebi bcompare-4.2.2.22384_amd64.deb
 
 sudo vim -u NONE BCompare
 
