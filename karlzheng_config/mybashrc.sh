@@ -111,7 +111,7 @@ bind -m emacs '"\C-g\C-[": " $()OD"'
 #bind -m emacs '"\C-]": character-search-backward'
 #bind -m emacs '"\e\C-]": character-search'
 
-unalias ls
+#unalias ls
 #alias adb_="sudo adb kill-server && sudo adb start-server"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias CD='cd'
@@ -133,7 +133,7 @@ alias l='ls -CF '
 alias lm='ls arch/arm/configs/m*'
 #alias lr='ls -latr'
 alias LS='ls'
-alias ls='ls --color=tty -a '
+alias ls='ls -G -a '
 alias lS='ls -laSr '
 alias lsr='ls -lasr '
 alias lsr='ls -lasr '
@@ -146,7 +146,7 @@ alias mv='mv -i '
 alias mz='make zImage -j32 '
 alias MZ='mz'
 alias po='popd'
-alias pp="cat -n /dev/shm/${MYUSERNAME}/daily_path"
+alias pp="cat -n ${HOME}/dev/${MYUSERNAME}/daily_path"
 alias sb='source ~/bashrc/karlzheng_config/mybashrc.sh'
 alias slog='svn log | tac '
 alias smbmount242_home='sudo smbmount //172.16.10.242/home/ /media/242/ -o iocharset=utf8,username=${MYUSERNAME},dir_mode=0777,file_mode=0777'
@@ -220,16 +220,16 @@ function append_daily_path()
 		local path_list=(
 		~/person_tools/
 		);
-		[ -f /dev/shm/${MYUSERNAME}/daily_path ] || touch /dev/shm/${MYUSERNAME}/daily_path
+		[ -f ${HOME}/dev/${MYUSERNAME}/daily_path ] || touch ${HOME}/dev/${MYUSERNAME}/daily_path
 		for p in ${path_list[@]}; do
 			if [ -d ${p} ];then
-				grep -q "^$p$"	/dev/shm/${MYUSERNAME}/daily_path
+				grep -q "^$p$"	${HOME}/dev/${MYUSERNAME}/daily_path
 				if [ $? != 0 ]; then
-					echo "$p" >> /dev/shm/${MYUSERNAME}/daily_path;
+					echo "$p" >> ${HOME}/dev/${MYUSERNAME}/daily_path;
 				fi
 			fi
 		done
-		wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > /dev/shm/${MYUSERNAME}/total_count
+		wc -l ${HOME}/dev/${MYUSERNAME}/daily_path |awk '{print $1}' > ${HOME}/dev/${MYUSERNAME}/total_count
 }
 
 function attachjlink()
@@ -317,7 +317,7 @@ function undel()
 
 function ba()
 {
-	local fn=/dev/shm/bcFn1
+	local fn=${HOME}/dev/bcFn1
 	if [ $# -eq 1 ];then
 		: > ${fn}
 		echo "$(pwd)/$1" > ${fn}
@@ -347,11 +347,11 @@ function detachjlink()
 function dud()
 {
 	local IFS=$'\n'
-	: > /dev/shm/dud.tmp.log
+	: > ${HOME}/dev/dud.tmp.log
 	for i in $(lsd);do
-		du -sh "$i" >> /dev/shm/dud.tmp.log
+		du -sh "$i" >> ${HOME}/dev/dud.tmp.log
 	done
-	cat /dev/shm/dud.tmp.log | sort -h
+	cat ${HOME}/dev/dud.tmp.log | sort -h
 }
 
 function diff()
@@ -432,16 +432,16 @@ function et()
 function ey()
 {
 	local c
-	if [ -f /dev/shm/$(whoami)/yank.txt ];then
-		echo "/dev/shm/$(whoami)/yank.txt :"
-		cat /dev/shm/$(whoami)/yank.txt
+	if [ -f ${HOME}/dev/$(whoami)/yank.txt ];then
+		echo "${HOME}/dev/$(whoami)/yank.txt :"
+		cat ${HOME}/dev/$(whoami)/yank.txt
 		read -p "exec y|n ?" c
 		if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-			source /dev/shm/$(whoami)/yank.txt
-			history -s "$(cat /dev/shm/$(whoami)/yank.txt | head -n 1)"
+			source ${HOME}/dev/$(whoami)/yank.txt
+			history -s "$(cat ${HOME}/dev/$(whoami)/yank.txt | head -n 1)"
 		fi
 	else
-		echo "No /dev/shm/$(whoami)/yank.txt"
+		echo "No ${HOME}/dev/$(whoami)/yank.txt"
 	fi
 }
 
@@ -460,8 +460,8 @@ function fo()
 
 function fp()
 {
-	if [ -f /dev/shm/$(whoami)/absfn ];
-		then cat /dev/shm/$(whoami)/absfn
+	if [ -f ${HOME}/dev/$(whoami)/absfn ];
+		then cat ${HOME}/dev/$(whoami)/absfn
 	fi
 }
 
@@ -797,7 +797,7 @@ function ha()
 {
 	local ignore_cmd_list=(c h history ha hd he hi la ls sb)
 	n=0
-	history 10 |sort -r > /dev/shm/${MYUSERNAME}/hist10.txt
+	history 10 |sort -r > ${HOME}/dev/${MYUSERNAME}/hist10.txt
 	while read line;
 	do
 		local cmd_line=$(echo "$line" |sed -e "s/\s*[0-9]*\s*\(.*\)/\1/")
@@ -809,21 +809,21 @@ function ha()
 			fi
 		done
 		if [ $is_ignore_cmd == 0 ];then
-			echo "$cmd_line" > /dev/shm/${MYUSERNAME}/hist_cmd.txt
+			echo "$cmd_line" > ${HOME}/dev/${MYUSERNAME}/hist_cmd.txt
 			echo "$cmd_line"
 			return 0
 		fi
-	done  < /dev/shm/${MYUSERNAME}/hist10.txt
+	done  < ${HOME}/dev/${MYUSERNAME}/hist10.txt
 }
 
 function hd()
 {
-	cat	 /dev/shm/${MYUSERNAME}/hist_cmd.txt
+	cat	 ${HOME}/dev/${MYUSERNAME}/hist_cmd.txt
 }
 
 function he()
 {
-	local cmd_line=$(tail -1 /dev/shm/${MYUSERNAME}/hist_cmd.txt|tr -d "\r"|tr -d "\n")
+	local cmd_line=$(tail -1 ${HOME}/dev/${MYUSERNAME}/hist_cmd.txt|tr -d "\r"|tr -d "\n")
 	echo "$cmd_line"
 	history -s "$cmd_line"
 	#exec "$cmd_line"
@@ -1000,7 +1000,7 @@ function mypath()
 				eval "p$i=$line"
 				#echo "${m[$i]}"
 				((i++))
-		done < /dev/shm/${MYUSERNAME}/daily_path
+		done < ${HOME}/dev/${MYUSERNAME}/daily_path
 }
 
 function myvimpath()
@@ -1105,12 +1105,12 @@ function repo()
 	else
 		echo "in bash config $LINENO"
 	fi
-	echo "$@" > /dev/shm/${MYUSERNAME}/repo_cmd_line
-	grep -qP "meizu" /dev/shm/${MYUSERNAME}/repo_cmd_line
+	echo "$@" > ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
+	grep -qP "meizu" ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
 	if [ $? == 0 ];then
 		mz_repo "$@"
 	else
-		grep -qP "alibaba|yunos-inc|kangliang.zkl" /dev/shm/${MYUSERNAME}/repo_cmd_line
+		grep -qP "alibaba|yunos-inc|kangliang.zkl" ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
 		if [ $? == 0 ];then
 			ali_repo "$@"
 		else
@@ -1216,28 +1216,28 @@ function sf()
 		if [ -f $1 ];then
 			echo ${1} | grep '^\s*/' 2>&1 > /dev/null
 			if [ $? == 0 ];then
-				echo "$1" > /dev/shm/${MYUSERNAME}/absfn
+				echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfn
 			else
-				echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
+				echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfn
 			fi
 		else
 			if [ -d "$1" ];then
 				if [ -d "$(pwd)/$1" ];then
-					echo "$(pwd)/$1" > /dev/shm/${MYUSERNAME}/absfn
+					echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfn
 				else
-					echo "$1" > /dev/shm/${MYUSERNAME}/absfn
+					echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfn
 				fi
 			fi
 		fi
 	else
 		if [ $# -gt 1 ];then
-			: > /dev/shm/${MYUSERNAME}/absfn
+			: > ${HOME}/dev/${MYUSERNAME}/absfn
 			while [ "x$1" != x ];do
-				echo "$(pwd)/$1" >> /dev/shm/${MYUSERNAME}/absfn
+				echo "$(pwd)/$1" >> ${HOME}/dev/${MYUSERNAME}/absfn
 				shift
 			done
 		else
-			pwd > /dev/shm/${MYUSERNAME}/absfn
+			pwd > ${HOME}/dev/${MYUSERNAME}/absfn
 		fi
 	fi
 }
@@ -1273,18 +1273,18 @@ function sl()
 
 function sp.old()
 {
-		if [ ! -f /dev/shm/${MYUSERNAME}/cur_pos ];
-		then echo "1" > /dev/shm/${MYUSERNAME}/cur_pos;
+		if [ ! -f ${HOME}/dev/${MYUSERNAME}/cur_pos ];
+		then echo "1" > ${HOME}/dev/${MYUSERNAME}/cur_pos;
 				local  cur_pos=1;
-		else local cur_pos=$(cat /dev/shm/${MYUSERNAME}/cur_pos);
-				local total_count=$(cat /dev/shm/${MYUSERNAME}/total_count);
+		else local cur_pos=$(cat ${HOME}/dev/${MYUSERNAME}/cur_pos);
+				local total_count=$(cat ${HOME}/dev/${MYUSERNAME}/total_count);
 				((cur_pos ++));
 				if [ $cur_pos -gt $total_count ];
 				then cur_pos=$(expr $cur_pos - $total_count);
 				fi
-				echo $cur_pos > /dev/shm/${MYUSERNAME}/cur_pos;
+				echo $cur_pos > ${HOME}/dev/${MYUSERNAME}/cur_pos;
 		fi
-		local enter_dir=$(sed -n "$cur_pos{p;q;}"  /dev/shm/${MYUSERNAME}/daily_path)
+		local enter_dir=$(sed -n "$cur_pos{p;q;}"  ${HOME}/dev/${MYUSERNAME}/daily_path)
 		builtin cd "$enter_dir"
 		ap
 }
@@ -1341,8 +1341,8 @@ function ud()
 
 function unap()
 {
-	if [ -d /dev/shm/${MYUSERNAME} -a -f /dev/shm/${MYUSERNAME}/apwdpath ];then
-		/bin/rm /dev/shm/${MYUSERNAME}/apwdpath
+	if [ -d ${HOME}/dev/${MYUSERNAME} -a -f ${HOME}/dev/${MYUSERNAME}/apwdpath ];then
+		/bin/rm ${HOME}/dev/${MYUSERNAME}/apwdpath
 	fi
 }
 
@@ -1433,9 +1433,9 @@ function vd()
 
 function vf()
 {
-	: > /dev/shm/${MYUSERNAME}/absfn
+	: > ${HOME}/dev/${MYUSERNAME}/absfn
 	for f in $(find -iname "$@");do
-		echo "$(pwd)/${f}" >> /dev/shm/${MYUSERNAME}/absfn
+		echo "$(pwd)/${f}" >> ${HOME}/dev/${MYUSERNAME}/absfn
 	done
 	vi -c EditAbsoluteFilePath
 }
@@ -1470,8 +1470,8 @@ function vm()
 	#http://ahei.info/bash.htm
 	#http://blog.morebits.org/?p=103
 	#vim <(man "$@")
-	#local help_file="/dev/shm/$(whoami)/$@.$$.hlp.txt"
-	local help_file="/dev/shm/$(whoami)/$1.$$.hlp.txt"
+	#local help_file="${HOME}/dev/$(whoami)/$@.$$.hlp.txt"
+	local help_file="${HOME}/dev/$(whoami)/$1.$$.hlp.txt"
 	if [ $# -ge 1 ];then
 		#eval echo \${$#}
 		#echo ${!#}
@@ -1581,7 +1581,7 @@ function ncup()
 
 function vs()
 {
-	if [ -f /dev/shm/$(whoami)/edit.vim ];then
+	if [ -f ${HOME}/dev/$(whoami)/edit.vim ];then
 		vi -c S1
 	fi
 }
@@ -1628,10 +1628,10 @@ function wln()
 	vi ${HOME}/tmp/log/${f}
 }
 
-#alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 /dev/shm/${MYUSERNAME}path); cd $${MYUSERNAME}path'
+#alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 ${HOME}/dev/${MYUSERNAME}path); cd $${MYUSERNAME}path'
 function archfunc.sh()
 {
-	local af="/dev/shm/${MYUSERNAME}/arch"
+	local af="${HOME}/dev/${MYUSERNAME}/arch"
 	if [ -f ${af} ];then
 		export ARCH=$(cat ${af})
 	else
@@ -1656,11 +1656,11 @@ function my_bash_login_auto_exec_func()
 	else
 		export dl=~/下载/
 	fi
-	if [ $(locale -a | grep zh_CN) ];then
-		export LANG="zh_CN.UTF-8"
-		export LANGUAGE="zh_CN.UTF-8"
-	fi
-	if [ -f /dev/shm/${MYUSERNAME}/notfirstlogin ];then
+	#if [ $(locale | grep zh_CN) ];then
+		#export LANG="zh_CN.UTF-8"
+		#export LANGUAGE="zh_CN.UTF-8"
+	#fi
+	if [ -f ${HOME}/dev/${MYUSERNAME}/notfirstlogin ];then
 		export isfirstlogin=0
 	else
 		export isfirstlogin=1
@@ -1678,12 +1678,12 @@ function my_bash_login_auto_exec_func()
 			[ -d ~/tmp/tmp ] || mkdir ~/tmp/tmp
 			[ -d ~/tmp/tmp_work_file ] || mkdir ~/tmp/tmp_work_file
 			[ -d /tmp/t ] || mkdir /tmp/t
-			[ -d /dev/shm/${MYUSERNAME}/ ] || mkdir -p /dev/shm/${MYUSERNAME}/
+			[ -d ${HOME}/dev/${MYUSERNAME}/ ] || mkdir -p ${HOME}/dev/${MYUSERNAME}/
 		}
 		ensure_file_dir
 		unset ensure_file_dir
-		touch /dev/shm/${MYUSERNAME}/notfirstlogin
-		echo "magiccube" > /dev/shm/${MYUSERNAME}/androidProjectName
+		touch ${HOME}/dev/${MYUSERNAME}/notfirstlogin
+		echo "magiccube" > ${HOME}/dev/${MYUSERNAME}/androidProjectName
 		sbl
 	fi
 
