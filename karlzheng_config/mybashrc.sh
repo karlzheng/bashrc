@@ -1036,11 +1036,6 @@ function ns()
 	netstat "$@"
 }
 
-function p()
-{
-	pushd +1
-}
-
 function pf()
 {
 	ps -ef "$@"

@@ -655,6 +655,11 @@ function ajavapath()
 	fi
 }
 
+function p()
+{
+	pwd
+}
+
 function pa()
 {
 		touch ${HOME}/pwd.mk
