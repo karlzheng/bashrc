@@ -25,6 +25,11 @@ if [ "${SHELL}" != "/bin/bash" ];then
 		#chsh -s /bin/bash
 fi
 
+export OS=Linux
+if [ $(uname) == Darwin ];then
+	export OS="Mac"
+fi
+
 unset MAILCHECK
 
 # . /etc/bash_completion
@@ -112,6 +117,12 @@ bind -m emacs '"\C-g\C-[": " $()OD"'
 #bind -m emacs '"\e\C-]": character-search'
 
 #unalias ls
+if [ ${OS} == "Mac" ];then
+	alias ls='ls -G -a '
+else
+	alias ls='ls --color=tty -a'
+endif
+alias LS='ls'
 #alias adb_="sudo adb kill-server && sudo adb start-server"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias CD='cd'
@@ -132,8 +143,6 @@ alias ll='ls -l '
 alias l='ls -CF '
 alias lm='ls arch/arm/configs/m*'
 #alias lr='ls -latr'
-alias LS='ls'
-alias ls='ls -G -a '
 alias lS='ls -laSr '
 alias lsr='ls -lasr '
 alias lsr='ls -lasr '
