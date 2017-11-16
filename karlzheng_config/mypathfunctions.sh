@@ -48,8 +48,8 @@ function ...()
 
 function ac()
 {
-	if [ -f /dev/shm/${MYUSERNAME}/apwdpath ];then
-		local tmpDir="$(cat /dev/shm/${MYUSERNAME}/apwdpath)"
+	if [ -f ${HOME}/dev/${MYUSERNAME}/apwdpath ];then
+		local tmpDir="$(cat ${HOME}/dev/${MYUSERNAME}/apwdpath)"
 		if [ -d "${tmpDir/\~/${HOME}}" ];then
 			builtin cd "${tmpDir/\~/${HOME}}" && unset "tmpDir"
 		else
@@ -69,8 +69,8 @@ function ap()
 		fi
 	else
 		pwd | sed -e "s#^${HOME}#~#"
-		[ -d /dev/shm/${MYUSERNAME} ] || mkdir -p /dev/shm/${MYUSERNAME}
-		pwd | sed -e "s#^${HOME}#~#" > /dev/shm/${MYUSERNAME}/apwdpath;
+		[ -d ${HOME}/dev/${MYUSERNAME} ] || mkdir -p ${HOME}/dev/${MYUSERNAME}
+		pwd | sed -e "s#^${HOME}#~#" > ${HOME}/dev/${MYUSERNAME}/apwdpath;
 	fi
 }
 
@@ -78,12 +78,12 @@ function apwd_abc()
 {
 		builtin pwd;
 		local p=$(builtin pwd);
-		grep -q "^$p$"	/dev/shm/${MYUSERNAME}/daily_path
+		grep -q "^$p$"	${HOME}/dev/${MYUSERNAME}/daily_path
 		if [ $? != 0 ]; then
-				builtin pwd >> /dev/shm/${MYUSERNAME}/daily_path;
+				builtin pwd >> ${HOME}/dev/${MYUSERNAME}/daily_path;
 		fi
-		wc -l /dev/shm/${MYUSERNAME}/daily_path |awk '{print $1}' > \
-		/dev/shm/${MYUSERNAME}/total_count
+		wc -l ${HOME}/dev/${MYUSERNAME}/daily_path |awk '{print $1}' > \
+		${HOME}/dev/${MYUSERNAME}/total_count
 }
 
 function ca()
@@ -92,19 +92,19 @@ function ca()
 				echo "no ~/pwd.mk file"
 				return 1;
 		fi
-		if [ ! -f /dev/shm/${MYUSERNAME}/pwd_pos ]; then
-				echo "1" > /dev/shm/${MYUSERNAME}/pwd_pos;
+		if [ ! -f ${HOME}/dev/${MYUSERNAME}/pwd_pos ]; then
+				echo "1" > ${HOME}/dev/${MYUSERNAME}/pwd_pos;
 				local  pwd_pos=1;
-		else local pwd_pos=$(cat /dev/shm/${MYUSERNAME}/pwd_pos);
-				#if [ ! -f /dev/shm/${MYUSERNAME}/pwd_total_count ];then
-						wc -l ~/pwd.mk |awk '{print $1}' > /dev/shm/${MYUSERNAME}/pwd_total_count
+		else local pwd_pos=$(cat ${HOME}/dev/${MYUSERNAME}/pwd_pos);
+				#if [ ! -f ${HOME}/dev/${MYUSERNAME}/pwd_total_count ];then
+						wc -l ~/pwd.mk |awk '{print $1}' > ${HOME}/dev/${MYUSERNAME}/pwd_total_count
 				#fi
-				local total_count=$(cat /dev/shm/${MYUSERNAME}/pwd_total_count);
+				local total_count=$(cat ${HOME}/dev/${MYUSERNAME}/pwd_total_count);
 				((pwd_pos ++));
 				if [ $pwd_pos -gt $total_count ];
 				then pwd_pos=$(expr $pwd_pos - $total_count);
 				fi
-				echo $pwd_pos > /dev/shm/${MYUSERNAME}/pwd_pos;
+				echo $pwd_pos > ${HOME}/dev/${MYUSERNAME}/pwd_pos;
 		fi
 		local enter_dir=$(sed -n "$pwd_pos{p;q;}"  ~/pwd.mk)
 		builtin cd "$enter_dir"
@@ -134,12 +134,12 @@ function cdc()
 	if [ $# -ge 1 ];then
 		prjn=$1
 	else
-		if [ -f /dev/shm/${MYUSERNAME}/androidProjectName ];then
-			prjn=$(cat /dev/shm/${MYUSERNAME}/androidProjectName)
+		if [ -f ${HOME}/dev/${MYUSERNAME}/androidProjectName ];then
+			prjn=$(cat ${HOME}/dev/${MYUSERNAME}/androidProjectName)
 		fi
 	fi
 	if [ -d device/ ];then
-		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		local enter_dir_file=${HOME}/dev/${MYUSERNAME}/cd_enter_dirs
 		: > ${enter_dir_file}
 		local tmpDir
 		if [ "x${prjn}" != "x" ];then
@@ -208,7 +208,7 @@ function ct()
 	if [ $# -eq 1 ];then
 		cat "$@"
 	else
-		local f=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		local f=${HOME}/dev/${MYUSERNAME}/cd_enter_dirs
 		: > ${f}
 		echo "/tmp" >>  ${f}
 		echo "~/bashrc/script/" >>	${f}
@@ -220,10 +220,10 @@ function ct()
 
 function cv()
 {
-	if [ ! -f /dev/shm/${MYUSERNAME}/vim_cur_file_path ];
-		then echo "no /dev/shm/${MYUSERNAME}/vim_cur_file_path file";
+	if [ ! -f ${HOME}/dev/${MYUSERNAME}/vim_cur_file_path ];
+		then echo "no ${HOME}/dev/${MYUSERNAME}/vim_cur_file_path file";
 	else
-		local enter_dir="$(cat /dev/shm/${MYUSERNAME}/vim_cur_file_path)";
+		local enter_dir="$(cat ${HOME}/dev/${MYUSERNAME}/vim_cur_file_path)";
 		builtin cd "$enter_dir"
 	fi
 }
@@ -397,14 +397,14 @@ function bash_get_keycode()
 
 		#HandleKey
 		keycode=$(HandleKey)
-		#echo $keycode > /dev/shm/${MYUSERNAME}/keycode.txt
+		#echo $keycode > ${HOME}/dev/${MYUSERNAME}/keycode.txt
 		echo $keycode
 }
 
 function cd_dir_in_file()
 {
 	if [ $# -eq 0 ];then
-		local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+		local enter_dir_file=${HOME}/dev/${MYUSERNAME}/cd_enter_dirs
 	else
 		local enter_dir_file="$1"
 	fi
@@ -457,11 +457,11 @@ function cd_dir_in_file()
 	trap - SIGHUP SIGTERM
 }
 
-mkdir -p /dev/shm/"${MYUSERNAME}"
+mkdir -p ${HOME}/dev/"${MYUSERNAME}"
 
 function c()
 {
-	local ef=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+	local ef=${HOME}/dev/${MYUSERNAME}/cd_enter_dirs
 	: > $ef
 	if [ $# -eq 0 ];then
 		#cat -n ${HOME}/pwd.mk | sed -e '/^\s*[1-9]*\s*#.*/d'
@@ -495,8 +495,8 @@ function cd()
 					if [ -d "${bn}" -a "x${bn}" != 'x.' ];then
 						builtin cd ${bn}
 					else
-						local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
-						mkdir -p /dev/shm/"${MYUSERNAME}"
+						local enter_dir_file=${HOME}/dev/${MYUSERNAME}/cd_enter_dirs
+						mkdir -p ${HOME}/dev/"${MYUSERNAME}"
 						: > $enter_dir_file
 						for d in $(/bin/ls -la | grep -E "^d|^l" | \
 							awk '{print $NF}' | grep -i "$1" );
@@ -718,7 +718,7 @@ function crr()
 
 function dlb()
 {
-	local enter_dir_file=/dev/shm/${MYUSERNAME}/cd_enter_dirs
+	local enter_dir_file=${HOME}/dev/${MYUSERNAME}/cd_enter_dirs
 	local kfb_samba_dir="/home/karlzheng/kfb"
 	local dir_prefix="$kfb_samba_dir/DailyBuild/DailyBuildM0"
 	local dir3x=(
@@ -776,7 +776,8 @@ function ajavapath()
 	if [ "x${WHICH_JAVA}" == "x" ];then
 		return
 	fi
-	local JAVA_BIN_PATH="$(dirname $(readlink -f ${WHICH_JAVA}))"
+	#local JAVA_BIN_PATH="$(dirname $(readlink -f ${WHICH_JAVA}))"
+	local JAVA_BIN_PATH="$(dirname $(readlink ${WHICH_JAVA}))"
 	#if [ -f java ];then
 		#JAVA_BIN_PATH="$(pwd)"
 	#else
