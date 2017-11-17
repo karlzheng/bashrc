@@ -19,7 +19,7 @@
 
 #set -o nounset                              # Treat unset variables as an error
 
-SEACH_RESULT_FILE="/dev/shm/$(whoami)/quickfix.txt"
+SEACH_RESULT_FILE="${HOME}/shm/$(whoami)/quickfix.txt"
 
 function get_root_dir()
 {
