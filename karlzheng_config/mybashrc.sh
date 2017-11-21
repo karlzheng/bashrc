@@ -456,7 +456,7 @@ function ey()
 
 function f()
 {
-	find -iname "$@"
+	find . -iname "$@"
 }
 
 function fo()
