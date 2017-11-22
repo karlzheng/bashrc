@@ -1,0 +1,62 @@
+https://www.cnblogs.com/rakor/p/5462403.html
+
+一、安装PPTP服务
+1、下载并安装pptpd
+sudo apt-get install pptpd
+
+2、配置vpn地址，编辑配置文件：
+sudo vim /etc/pptpd.conf
+找到localip和remoteip，修改为自己需要的地址，例如：
+localip 192.168.10.1
+remoteip 192.168.10.2-100
+
+3、设置dns：
+sudo vim /etc/ppp/pptpd-options
+将ms-dns修改为：
+ms-dns 8.8.8.8
+ms-dns 223.5.5.5
+
+4、设置连接的帐号：
+
+sudo vim /etc/ppp/chap-secrets
+根据需要设置
+
+# client        server  secret                  IP addresses
+test pptpd 123456 *
+
+5、重新启动pptpd服务：
+
+/etc/init.d/pptpd restart
+至此，使用VPN客户端已经能够连接上来了，但是还不能通过这个VPN服务上网。
+
+二、配置忘了转发
+1、开启服务器内核转发功能，编辑
+sudo vim /etc/sysctl.conf
+找到
+#net.ipv4.ip_forward=1
+改为
+net.ipv4.ip_forward=1
+保存关闭，然后运行下面的命令生效：
+
+sudo sysctl -p
+2、开启防火墙转发功能：
+1). 安装iptables，如果没有安装的话
+	sudo apt-get install iptables
+2). 建立一个NAT
+	sudo iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
+	192.168.10.0是刚刚设置的localip所在的网段，eth0是外网网卡地址
+3). 设置MTU，防止包过大
+	sudo iptables -A FORWARD -s 192.168.10.0/24 -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1200
+4). 保存规则配置，使服务器重启后不丢失
+	sudo iptables-save >/etc/iptables-rules
+5). 编辑网卡文件，加载网卡时自动加载规则
+	sudo vim  /etc/network/interfaces
+	在末尾加入
+	pre-up iptables-restore </etc/iptables-rules
+至此，连接到此VPN服务的客户端就能共享上网了。
+
+
+http://www.lidaren.com/archives/1229
+分析日志后发现是logwtmp版本的与pptpd版本不一致的原因导致的问题，打开/etc/pptpd.conf文件,找到logwtmp
+注释掉logwtmp后，重新启动pptpd，再次连接后一切恢复正常。
+
