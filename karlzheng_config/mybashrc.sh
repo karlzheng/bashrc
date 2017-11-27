@@ -1275,6 +1275,22 @@ function sl()
 	tr " " "\n"
 }
 
+function sson()
+{
+	if [ "x${OS}" == "xMac" ];then
+		echo networksetup -setsocksfirewallproxystate Wi-Fi on
+		networksetup -setsocksfirewallproxystate Wi-Fi on
+	fi
+}
+
+function ssoff()
+{
+	if [ "x${OS}" == "xMac" ];then
+		echo networksetup -setsocksfirewallproxystate Wi-Fi off
+		networksetup -setsocksfirewallproxystate Wi-Fi off
+	fi
+}
+
 function sp.old()
 {
 		if [ ! -f ${HOME}/dev/${MYUSERNAME}/cur_pos ];
@@ -1296,7 +1312,7 @@ function sp.old()
 
 function sproxy()
 {
-	ssh -fNg -D 7001 sztv
+	ssh -fNg -D 1080 west
 }
 
 function sudopath()
