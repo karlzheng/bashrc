@@ -1,0 +1,4 @@
+#https://www.cnblogs.com/cczw/archive/2016/10/21/5984012.html
+
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+cnpm install -g electron
