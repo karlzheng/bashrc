@@ -678,8 +678,13 @@ function pa()
 function ed()
 {
 	export TIME_STYLE=long-iso
-	local recent_dir=$(echo "$(ls -lt | grep "^d" | awk '{print $8}' |\
-		grep -E -v '^\.' | sed -n '1,1p')" | tac )
+	if [ ${OS} == "Mac" ];then
+		local recent_dir=$(echo "$(ls -lt | grep "^d" | awk '{print $9}' |\
+			grep -E -v '^\.' | sed -n '1,1p')" | tac )
+	else
+		local recent_dir=$(echo "$(ls -lt | grep "^d" | awk '{print $8}' |\
+			grep -E -v '^\.' | sed -n '1,1p')" | tac )
+	fi
 	echo cd ${recent_dir}
 	cd ${recent_dir}
 }
