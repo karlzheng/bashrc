@@ -6,25 +6,49 @@ echo "$0 : $(pwd) : parameters:$@"
 #cat << EEOOFF > /dev/null
 #echo -e "!_TAG_FILE_SORTED\t2\t/2=foldcase/" > filenametags
 echo -e '!_TAG_FILE_SORTED\t2\t/2=foldcase/' > filenametags
-if [ -n "$1" ]; then
-	find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
-		-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
-
-		svn-work\)' -type f -printf "%f\t%p\t1\n" | sort -f >> filenametags
+if [ $OS == "Mac" ];then
+	if [ -n "$1" ]; then
+		find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+			svn-work\)' -type f -print | sort -f >> filenametags
+	else
+		find . -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+			svn-work\)' -type f -print | sort -f >> filenametags
+	fi
 else
-	find . -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
-		-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
-		svn-work\)' -type f -printf "%f\t%p\t1\n" | sort -f >> filenametags
+	if [ -n "$1" ]; then
+		find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+
+			svn-work\)' -type f -printf "%f\t%p\t1\n" | sort -f >> filenametags
+	else
+		find . -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+			svn-work\)' -type f -printf "%f\t%p\t1\n" | sort -f >> filenametags
+	fi
 fi
 #EEOOFF
 
 echo -e '!_TAG_FILE_SORTED\t2\t/2=foldcase/' > fullfilenametags
-if [ -n "$1" ]; then
-	find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
-		-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
-		svn-work\)' -type f -printf "%p\t%p\t1\n" | sort -f >> fullfilenametags
+if [ $OS == "Mac" ];then
+	if [ -n "$1" ]; then
+		find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+			svn-work\)' -type f -print | sort -f >> fullfilenametags
+	else
+		find . -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+			svn-work\)' -type f -print | sort -f >> fullfilenametags
+	fi
 else
-	find . -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
-		-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
-		svn-work\)' -type f -printf "%p\t%p\t1\n" | sort -f >> fullfilenametags
+	if [ -n "$1" ]; then
+		find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+			svn-work\)' -type f -printf "%p\t%p\t1\n" | sort -f >> fullfilenametags
+	else
+		find . -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
+			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
+			svn-work\)' -type f -printf "%p\t%p\t1\n" | sort -f >> fullfilenametags
+	fi
 fi
