@@ -592,6 +592,11 @@ function gka()
 	fi
 }
 
+function glag()
+{
+	git log --all --graph "$@"
+}
+
 function gt()
 {
 	if [ -f /tmp/file.tar ];then
