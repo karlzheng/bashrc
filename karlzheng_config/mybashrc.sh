@@ -257,6 +257,7 @@ function addversion()
 		if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
 			git add $VERSIONFILE
 			git commit  -m "bump up version to $(cat $VERSIONFILE)"
+			git push
 		else
 			git checkout $VERSIONFILE
 		fi
