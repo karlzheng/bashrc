@@ -247,6 +247,22 @@ function attachjlink()
 	VBoxManage controlvm win7 usbattach ${jlinkuuid}
 }
 
+function addversion()
+{
+	if [ -e $VERSIONFILE ];then
+		local v=$(verincrease.sh $VERSIONFILE);
+		echo $v > $VERSIONFILE;
+		git diff $VERSIONFILE
+		read -p "commit $1? y|n" c
+		if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+			git add $VERSIONFILE
+			git commit  -m "bump up version to $(cat $VERSIONFILE)"
+		else
+			git checkout $VERSIONFILE
+		fi
+	fi
+}
+
 function hex2bin()
 {
 	arm-none-eabi-objcopy -Obinary $1 $2
