@@ -942,12 +942,12 @@ function lac()
 
 function lh()
 {
-	ls -latrh
+	ls -latrh "$@"
 }
 
 function lr()
 {
-	ls -R
+	ls -R "$@"
 }
 
 function lsd()
