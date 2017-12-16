@@ -1051,6 +1051,9 @@ function myvimpath()
 
 function n()
 {
+	if [ "x${OS}" == "xMac" ];then
+		open .
+	else
 		if [ $# -eq 0 ];then
 				nautilus . &
 		else
@@ -1061,7 +1064,8 @@ function n()
 		if [ $? == 0 ];then
 			xdotool windowactivate $(xdotool search --class nautilus | tail -n 1)
 		fi
-		return 0
+	fi
+	return 0
 }
 
 function nq()
