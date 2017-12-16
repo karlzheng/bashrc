@@ -1748,6 +1748,7 @@ function my_bash_login_auto_exec_func()
 	~/software/android-sdk-linux_86/platform-tools
 	~/software/android-sdk-linux_86/tools
 	~/software/android-ndk-r8c
+	~/software/apache-maven/bin
 	~/bk/sw/adt/sdk/platform-tools
 	~/bk/sw/gradle-1.6/bin
 	~/bk/sw/adt/sdk/tools
