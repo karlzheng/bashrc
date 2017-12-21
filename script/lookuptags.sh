@@ -6,7 +6,7 @@ echo "$0 : $(pwd) : parameters:$@"
 #cat << EEOOFF > /dev/null
 #echo -e "!_TAG_FILE_SORTED\t2\t/2=foldcase/" > filenametags
 echo -e '!_TAG_FILE_SORTED\t2\t/2=foldcase/' > filenametags
-if [ $OS == "Mac" ];then
+if [ "x${OS}" == "xMac" ];then
 	if [ -n "$1" ]; then
 		find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
 			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
@@ -31,7 +31,7 @@ fi
 #EEOOFF
 
 echo -e '!_TAG_FILE_SORTED\t2\t/2=foldcase/' > fullfilenametags
-if [ $OS == "Mac" ];then
+if [ "x${OS}" == "xMac" ];then
 	if [ -n "$1" ]; then
 		find $1 -type d -name '.git' -prune -o -type d -name '.repo' -prune -o ! \
 			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
