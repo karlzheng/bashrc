@@ -966,7 +966,7 @@ function lf()
 
 function l4()
 {
-	ls -R|tail -n 48
+	ls -R|tail -n 46
 }
 
 function m()
