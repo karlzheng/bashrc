@@ -1184,7 +1184,7 @@ function rm()
 				#ensure no / at the end of path
 				#local d=${1%/}
 				if [ -d ${HOME}/.trash/${bn}.old ];then
-					/bin/rm ${HOME}/.trash/${bn}.old -rf
+					/bin/rm -rf ${HOME}/.trash/${bn}.old
 				fi
 				/bin/mv ${HOME}/.trash/${bn} ${HOME}/.trash/${bn}.old
 			fi
