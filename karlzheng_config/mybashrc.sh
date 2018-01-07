@@ -1022,7 +1022,7 @@ function meld()
 	#https://gist.github.com/polbins/42a39cb3234e3acfba79
 	#http://brian.pontarelli.com/2013/10/25/using-idea-for-git-merging-and-diffing/
 	if [ "x${OS}" == "xMac" ];then
-		open -W -a /Applications/Meld.app --args $(pwd)/$1 $(pwd)/$2
+		open -W -a /Applications/Meld.app --args "$@"
 	fi
 }
 
