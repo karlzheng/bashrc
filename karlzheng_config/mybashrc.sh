@@ -1638,7 +1638,7 @@ function ncup()
 
 function vs()
 {
-	if [ -f ${HOME}/dev/$(whoami)/edit.vim ];then
+	if [ -f ${HOME}/shm/$(whoami)/edit.vim ];then
 		vim -c SS
 	fi
 }
