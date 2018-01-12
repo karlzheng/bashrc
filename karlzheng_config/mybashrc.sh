@@ -1639,7 +1639,7 @@ function ncup()
 function vs()
 {
 	if [ -f ${HOME}/dev/$(whoami)/edit.vim ];then
-		vi -c S1
+		vim -c SS
 	fi
 }
 
