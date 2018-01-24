@@ -30,7 +30,7 @@ class Root(resource.Resource):
 
     print request
     return data.getvalue()
-  
+
   def gen_img_request(self, filename_pre):
     data = ""
     try:
@@ -45,12 +45,20 @@ class Root(resource.Resource):
     return data
 
   def render_POST(self, request):
+    """
+          test case:
+          curl --data-urlencode "name=karl" --data-urlencode 'token=abc+def' http://127.0.0.1:8080
+    """
     #return '<html><body>You submitted: %s</body></html>' % (cgi.escape(request.args["the-field"][0]),)
     #return self.render_GET(request)
+    print("")
     pprint(request.requestHeaders)
+    print("")
     pprint(request.__dict__)
+    print("")
     newdata = request.content.getvalue()
     pprint(newdata)
+    print("")
     return (request.requestHeaders)
 
 root = Root()
