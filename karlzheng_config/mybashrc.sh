@@ -1502,6 +1502,15 @@ function vg()
 	vi -c CG
 }
 
+function vi()
+{
+	if [ ${OS} == "Mac" ];then
+		vim "$@"
+	else
+		/usr/bin/vi
+	fi
+}
+
 function vl()
 {
 	if [ -f ~/tmp/bash_history ];then
