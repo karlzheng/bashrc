@@ -1507,7 +1507,7 @@ function vi()
 	if [ ${OS} == "Mac" ];then
 		vim "$@"
 	else
-		/usr/bin/vi
+		/usr/bin/vim "$@"
 	fi
 }
 
