@@ -878,12 +878,17 @@ function hn()
 
 function hp()
 {
-	if [ -f ~/person_tools/headneck.jpg ];then
-		eog -f ~/person_tools/headneck.jpg && disown &
-	fi
-	if [ -f ~/person_tools/programmer.png ];then
-		eog -f ~/person_tools/programmer.png && disown &
-	fi
+	local file_list=(~/person_tools/headneck.jpg ~/person_tools/programmer.png)
+	local f;
+	for f in ${file_list[@]}; do
+		if [ -f "${f}" ];then
+			if [ "x${OS}" == "xMac" ];then
+				open "${f}" &
+			else
+				eog -f "${f}" && disown &
+			fi
+		fi
+	done
 }
 
 function ht()
