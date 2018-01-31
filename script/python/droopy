@@ -110,7 +110,7 @@ must_save_options = False
 publish_files = False
 auth = None
 certfile = None
-file_mode = 777
+file_mode = 0777
 
 # -- HTML templates
 
