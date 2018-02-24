@@ -410,6 +410,11 @@ function dt()
 	date +%Y%m%d
 }
 
+function dt-()
+{
+	date +%Y%m%d
+}
+
 function dtt()
 {
 	date +%Y%m%d%H%M%S
