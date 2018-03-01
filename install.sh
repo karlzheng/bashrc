@@ -44,4 +44,8 @@ function add_vim_config()
 }
 
 add_dot_bashrc_call
+
+#sudo apt-get update
+#sudo apt-get install vim-gnome
+
 #add_vim_config

@@ -969,6 +969,11 @@ function lsd()
 	ls -d */
 }
 
+function lsdu()
+{
+	ls -d */ | xargs du -sh
+}
+
 function lf()
 {
 	/bin/ls -t|head -n 1
