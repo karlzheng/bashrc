@@ -1216,6 +1216,14 @@ function rs()
 	fi
 }
 
+function rswp()
+{
+	read -p "Are you sure want to 'find . -name "*.swp"|xargs -I {} echo {} |xargs rm'" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		find . -name "*.swp"|xargs -I {} echo {} |xargs rm
+	fi
+}
+
 function s()
 {
 	ssh "$@"
