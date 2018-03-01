@@ -127,7 +127,7 @@ alias LS='ls'
 #alias adb_="sudo adb kill-server && sudo adb start-server"
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias CD='cd'
-alias cdance_rsync="rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/"
+alias cdance_rsync="rsync -avurP ${HOME}/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/"
 alias cdg='cd /media/work/kernel/meizu/git/mx/linux-2.6.35-mx-rtm'
 alias ck="cd /media/cdriver/work/kernel/meizu/"
 alias co="cd -"
@@ -303,8 +303,8 @@ function ctrash()
 	#/bin/rm -rf ~/.trash;
 	#mkdir ~/.trash;
 	mkdir -p /tmp/.trash/;
-	#rsync --delete-before -avH --progress --stats /tmp/.trash/ /home/karlzheng/.trash
-	rsync  --delete -rlptD /tmp/.trash/ /home/karlzheng/.trash/
+	#rsync --delete-before -avH --progress --stats /tmp/.trash/ ${HOME}/.trash
+	rsync  --delete -rlptD /tmp/.trash/ ${HOME}/.trash/
 	sync;
 }
 
@@ -1845,7 +1845,7 @@ function my_bash_login_auto_exec_func()
 #bash command:
 #for i in $(grep "CONFIG_EVT1" * --color -rHnI|grep -v ^tags|grep -v ^cscope | awk -F: '{print $1}');do	 sed -ie "s#CONFIG_EVT1#CONFIG_EXYNOS4412_EVT1#g" $i;done
 #1727  git checkout --track origin/mars
-#rsync -avurP /home/karlzheng/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
+#rsync -avurP ${HOME}/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
 
 if [ -f ~/bashrc/karlzheng_config/adb.bash_complete.sh ];then
 		source	~/bashrc/karlzheng_config/adb.bash_complete.sh
