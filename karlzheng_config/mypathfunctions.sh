@@ -156,6 +156,14 @@ function cdc()
 	fi
 }
 
+function cdd()
+{
+	local docdir=${HOME}/Documents/
+	if [ -d ${docdir} ];then
+		cd ${docdir}
+	fi
+}
+
 function cdm()
 {
 	if [ -d arch/arm/mach-exynos4/ ];then
