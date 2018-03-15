@@ -655,7 +655,6 @@ function ajavapath()
 	if [ "x${JAVA_BIN_PATH}" != "x" ];then
 		export PATH=${JAVA_BIN_PATH}:${PATH}:
 	fi
-	echo $PATH
 	if [ ${OS} == "Mac" ];then
 		export JAVA_HOME=$(java_home)
 	else
