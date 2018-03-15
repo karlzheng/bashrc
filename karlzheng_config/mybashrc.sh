@@ -1675,6 +1675,13 @@ function vs()
 	fi
 }
 
+function wblog()
+{
+	echo open -a /Applications/Typora.app/Contents/MacOS/Typora "_posts/$(date +%Y-%m-%d)-$@.md"
+	touch "_posts/$(date +%Y-%m-%d)-$@.md"
+	open -a /Applications/Typora.app/Contents/MacOS/Typora "_posts/$(date +%Y-%m-%d)-$@.md"
+}
+
 function wh()
 {
 	which "$@"
