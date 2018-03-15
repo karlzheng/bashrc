@@ -647,10 +647,15 @@ function ajavapath()
 	if [ "x${WHICH_JAVA}" == "x" ];then
 		return
 	fi
-	local JAVA_BIN_PATH="$(dirname $(readlink ${WHICH_JAVA}))"
+	if [ -h ${WHICH_JAVA} ];then
+		local JAVA_BIN_PATH="$(dirname $(readlink ${WHICH_JAVA}))"
+	else
+		local JAVA_BIN_PATH="$(dirname ${WHICH_JAVA})"
+	fi
 	if [ "x${JAVA_BIN_PATH}" != "x" ];then
 		export PATH=${JAVA_BIN_PATH}:${PATH}:
 	fi
+	echo $PATH
 	if [ ${OS} == "Mac" ];then
 		export JAVA_HOME=$(java_home)
 	else
