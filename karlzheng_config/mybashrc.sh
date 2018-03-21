@@ -140,7 +140,6 @@ alias j='jobs '
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
 alias LA='ls -latr'
 alias la='ls -latr'
-alias ll='ls -latr'
 alias l='ls -CF '
 alias lm='ls arch/arm/configs/m*'
 #alias lr='ls -latr'
@@ -954,6 +953,16 @@ function lac()
 function lh()
 {
 	ls -latrh "$@"
+}
+
+function LL()
+{
+	ls -latr "$@"
+}
+
+function ll()
+{
+	ls -latr "$@"
 }
 
 function lr()
