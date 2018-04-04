@@ -396,7 +396,10 @@ function dl()
 
 function ds()
 {
-	dirs "$@"
+	if [ -f ${HOME}/tmp/scratch ];then
+		local vars=$(cat ${HOME}/tmp/scratch|head -n 1|tr -d "\r"|tr -d "\n")
+		echo $vars
+	fi
 }
 
 function dsh()
