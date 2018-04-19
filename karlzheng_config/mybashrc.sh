@@ -522,7 +522,7 @@ function ga()
 
 function gaa()
 {
-	git add -A
+	git add -A "$@"
 }
 
 function gau()
@@ -1104,6 +1104,11 @@ function nq()
 function ns()
 {
 	netstat "$@"
+}
+
+function openwrtssh()
+{
+	echo 'enablec06ebd87'|nc -u 192.168.232.1 51232
 }
 
 function pf()
