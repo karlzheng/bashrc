@@ -1694,9 +1694,19 @@ function vs()
 
 function wblog()
 {
-	echo open -a /Applications/Typora.app/Contents/MacOS/Typora "_posts/$(date +%Y-%m-%d)-$@.md"
-	touch "_posts/$(date +%Y-%m-%d)-$@.md"
-	open -a /Applications/Typora.app/Contents/MacOS/Typora "_posts/$(date +%Y-%m-%d)-$@.md"
+	local fn="$(date +%Y-%m-%d)-$@.md"
+	echo open -a /Applications/Typora.app/Contents/MacOS/Typora ${fn}
+	local title=$(echo $@ |sed 's/-/ /g')
+	touch "$(date +%Y-%m-%d)-$@.md"
+	cat << EEOOFF > ${fn}
+---
+layout: post
+categories: tech
+title: ${title}
+---
+## ${title}
+EEOOFF
+	open -a /Applications/Typora.app/Contents/MacOS/Typora ${fn}
 }
 
 function wh()
