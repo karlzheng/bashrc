@@ -535,7 +535,7 @@ function gac()
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
 		local fn=/tmp/gitcommit.msg.txt
 		git add -A
-		git status -u | grep modified|sed 's/^\s//' > ${fn}
+		git status -u | grep -E "modified|new file:"|sed 's/^\s//' > ${fn}
 		git commit -s -F ${fn}
 		git push
 	fi
