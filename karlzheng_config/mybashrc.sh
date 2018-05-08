@@ -528,6 +528,19 @@ function gaa()
 	git add -A "$@"
 }
 
+function gac()
+{
+	git add -A "$@"
+	read -p "Are you sure add all git modified y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		local fn=/tmp/gitcommit.msg.txt
+		git add -A
+		git status -u | grep modified|sed 's/^\s//' > ${fn}
+		git commit -s -F ${fn}
+		git push
+	fi
+}
+
 function gau()
 {
 	git add -u
