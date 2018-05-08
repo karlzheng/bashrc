@@ -599,6 +599,16 @@ function gi()
 	grep -i "$@"
 }
 
+function ginit()
+{
+	read -p "init git repo dir y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		git init .
+		git add -A
+		git commit -s -m "init."
+	fi
+}
+
 function gk()
 {
 	if [ $# -ge 1 ];then
