@@ -1,0 +1,50 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>read mqtt data by websocket</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+		<style type="text/css">
+			#empty { color: blue; font-weight: bold; font-size: 80px; line-height: 50px; }
+			#sensor{ color: black; font-weight: bold; font-size: 150px; line-height: 100px;
+			}
+		</style>
+		<script>
+			var mqtt;
+			var host = "git.ioter.top";
+			var port = 8083;
+			var topic = "sensor";
+			function onConnect() {
+				console.log("Connected!");
+				mqtt.subscribe(topic);
+			}
+			function onMessageArrived(msg) {
+				var sensordiv = document.getElementById("sensor");
+				playload = msg.payloadString / 1000 ;
+				playload += "米"
+				sensordiv.innerHTML = playload;
+			}
+
+			function MQTTconnect() {
+				console.log("Connecting to " + host + ":" + port);
+				mqtt = new Paho.MQTT.Client(host,port,"");
+				var options = {
+					timeout: 3,
+					onSuccess: onConnect,
+				};
+				mqtt.onMessageArrived = onMessageArrived;
+				mqtt.connect(options);
+			}
+		</script>
+	</head>
+
+	<body>
+		<center>
+			<div id="empty"> <p> </p> </div>
+			<h1>Sense Data: <p></p></h1>
+			<div id="sensor"> </div>
+		</center>
+		<script>
+			MQTTconnect();
+		</script>
+	</body>
+</html>
