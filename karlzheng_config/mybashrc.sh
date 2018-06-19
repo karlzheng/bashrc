@@ -46,6 +46,7 @@ set match-hidden-files off
 stty -ixon
 
 export GTAGSFORCECPP=
+export LC_ALL="C"
 export LC_MESSAGES="C"
 
 export MINICOM=" -C /tmp/minicom.log "
