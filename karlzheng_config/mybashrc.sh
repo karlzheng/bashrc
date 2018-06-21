@@ -46,7 +46,6 @@ set match-hidden-files off
 stty -ixon
 
 export GTAGSFORCECPP=
-export LC_ALL="C"
 export LC_MESSAGES="C"
 
 export MINICOM=" -C /tmp/minicom.log "
@@ -1803,10 +1802,11 @@ function my_bash_login_auto_exec_func()
 	else
 		export dl=~/下载/
 	fi
-	#if [ $(locale | grep zh_CN) ];then
-		#export LANG="zh_CN.UTF-8"
-		#export LANGUAGE="zh_CN.UTF-8"
-	#fi
+	if [ "x$(locale | grep zh_CN)" != "x" ];then
+		export LANG="zh_CN.UTF-8"
+		export LANGUAGE="zh_CN.UTF-8"
+		export LC_ALL="zh_CN.UTF-8"
+	fi
 	if [ -f ${HOME}/dev/${MYUSERNAME}/notfirstlogin ];then
 		export isfirstlogin=0
 	else
