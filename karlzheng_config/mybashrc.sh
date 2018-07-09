@@ -1805,7 +1805,8 @@ function my_bash_login_auto_exec_func()
 	if [ "x$(locale | grep zh_CN)" != "x" ];then
 		export LANG="zh_CN.UTF-8"
 		export LANGUAGE="zh_CN.UTF-8"
-		export LC_ALL="zh_CN.UTF-8"
+		#export LC_ALL="zh_CN.UTF-8"
+		export LC_ALL=C
 	fi
 	if [ -f ${HOME}/dev/${MYUSERNAME}/notfirstlogin ];then
 		export isfirstlogin=0
