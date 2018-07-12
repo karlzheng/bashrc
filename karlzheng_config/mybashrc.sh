@@ -1266,7 +1266,7 @@ function rswp()
 
 function s()
 {
-	ssh "$@"
+	LC_ALL=C ssh "$@"
 }
 
 function sx()
