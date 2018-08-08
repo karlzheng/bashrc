@@ -20,6 +20,7 @@ class Root(resource.Resource):
     #content_type = "text/html"
     #request.setHeader("Cache-Control", "max-age=1000")
     print type(request)
+    pprint(request.requestHeaders)
     data = StringIO()
     print "file:%s"%(self.filename)
     if self.filename != "":
