@@ -481,7 +481,7 @@ function ey()
 
 function f()
 {
-	find . -iname "$@"
+	find . -iname "$*"
 }
 
 function fo()
@@ -930,6 +930,17 @@ function ic()
 {
 	ifconfig "$@"
 }
+
+function javadebug()
+{
+	 if [ $# -eq 1 ];then
+		 java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=9999 -server -jar $1
+	 else
+		 if [ $# -eq 2 ];then
+			 java -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=$2 -server -jar $1
+		 fi
+	 fi
+ }
 
 function k()
 {

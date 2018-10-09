@@ -5,3 +5,7 @@ insert tablename (key1, key2) values("value1", "value2");
 
 grant select,insert,update,delete on *.* to user1@localhost Identified by "password1";
 localhost => "%" for all hosts.
+
+update mysql.user set authentication_string=PASSWORD('xxx') where user='iot';
+grant all privileges on *.* to "iotuser"@"%";
+flush privileges;
