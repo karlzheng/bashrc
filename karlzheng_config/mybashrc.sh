@@ -1785,6 +1785,12 @@ function wln()
 	vi ${HOME}/tmp/log/${f}
 }
 
+function wwww()
+{
+	#https://opensource.com/article/18/9/handy-bash-aliases
+	python -m SimpleHTTPServer $@
+}
+
 #alias mcd='pu; ${MYUSERNAME}path=$(tail -n 1 ${HOME}/dev/${MYUSERNAME}path); cd $${MYUSERNAME}path'
 function archfunc.sh()
 {
