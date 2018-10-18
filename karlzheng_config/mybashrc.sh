@@ -139,7 +139,7 @@ alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 alias j='jobs '
 alias killgtags="ps |grep global|awk '{print \$1}'|xargs kill -9;ps |grep gtags|awk '{print \$1}'|xargs kill -9"
 alias LA='ls -latr'
-alias la='ls -latr'
+#alias la='ls -latr'
 alias l='ls -CF '
 alias lm='ls arch/arm/configs/m*'
 #alias lr='ls -latr'
@@ -974,6 +974,11 @@ function ksvn()
 		else
 				kdesvn "$@" &
 		fi
+}
+
+function la()
+{
+	ls -latr "$@"
 }
 
 function lac()
