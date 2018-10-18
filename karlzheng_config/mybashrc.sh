@@ -370,6 +370,14 @@ function detachjlink()
 	VBoxManage controlvm win7 usbdetach ${jlinkuuid}
 }
 
+function dockerrma
+{
+	read -p " docker rm $(docker ps -a -q) y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		docker rm $(docker ps -a -q)
+	fi
+}
+
 function dud()
 {
 	local IFS=$'\n'
