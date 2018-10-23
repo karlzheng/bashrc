@@ -1798,7 +1798,7 @@ function wln()
 	vi ${HOME}/tmp/log/${f}
 }
 
-function wwww()
+function www()
 {
 	#https://opensource.com/article/18/9/handy-bash-aliases
 	python -m SimpleHTTPServer $@
