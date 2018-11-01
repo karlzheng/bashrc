@@ -1143,6 +1143,15 @@ function n()
 	return 0
 }
 
+function nl()
+{
+	if [ "x${OS}" == "xMac" ];then
+		sudo lsof -i -P | grep -i "listen"
+	else
+		netstat -ntlp "$@"
+	fi
+}
+
 function nq()
 {
 	read -p "Are you sure quit all nautilus? y|n" c
