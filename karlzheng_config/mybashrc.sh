@@ -43,7 +43,6 @@ set completion-ignore-case on
 set expand-tild on
 set match-hidden-files off
 
-stty -ixon
 
 export GTAGSFORCECPP=
 export LC_MESSAGES="C"
@@ -91,6 +90,7 @@ export SVN_EDITOR=/usr/bin/vim
 
 case $- in
 	*i*)
+		stty -ixon
 		bind -m emacs '"\en": history-search-forward'
 		bind -m emacs '"\ep": history-search-backward'
 		bind -m emacs '"\ew": backward-kill-word'
