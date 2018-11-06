@@ -117,7 +117,7 @@ case $- in
 		#bind -m emacs '"\C-]": character-search-backward'
 		#bind -m emacs '"\e\C-]": character-search'
 		;;
-	*) return;;
+	*) ;;
 esac
 
 #unalias ls
