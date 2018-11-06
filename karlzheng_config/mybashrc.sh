@@ -89,33 +89,36 @@ export SVN_EDITOR=/usr/bin/vim
 #export ANDROID_SWT=/media/cdriver/work/software/android-sdk-linux_86/tools/lib/x86/
 #export TARGET_BUILD_TYPE=debug
 
-bind -m emacs '"\en": history-search-forward'
-bind -m emacs '"\ep": history-search-backward'
-bind -m emacs '"\ew": backward-kill-word'
+case $- in
+	*i*)
+		bind -m emacs '"\en": history-search-forward'
+		bind -m emacs '"\ep": history-search-backward'
+		bind -m emacs '"\ew": backward-kill-word'
+		bind -m emacs '"\C-o": menu-complete'
+		bind -m emacs '"\C-ga": "grep \"\" * --color -rHniI|grep -v ^tags|grep -v ^cscopef"'
+		#bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
+		bind -m emacs '"\C-gc": "$(!!)"'
+		bind -m emacs '"\C-ge": "$()"'
+		bind -m emacs '"\C-gf": "$(fp)"'
+		bind -m emacs '"\C-gh": "--help"'
+		bind -m emacs '"\C-gm": "grep mei Makefile"'
+		bind -m emacs '"\C-gn": " 2>&1 > /dev/null"'
+		bind -m emacs '"\C-gr": "$(lf)"'
+		bind -m emacs '"\C-gt": " 2>&1 3>&1 |tee ~/tmp/tee.log "'
+		bind -m emacs '"\C-gv": "--version"'
+		bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
 
-bind -m emacs '"\C-o": menu-complete'
-
-bind -m emacs '"\C-ga": "grep \"\" * --color -rHniI|grep -v ^tags|grep -v ^cscopef"'
-#bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
-bind -m emacs '"\C-gc": "$(!!)"'
-bind -m emacs '"\C-ge": "$()"'
-bind -m emacs '"\C-gf": "$(fp)"'
-bind -m emacs '"\C-gh": "--help"'
-bind -m emacs '"\C-gm": "grep mei Makefile"'
-bind -m emacs '"\C-gn": " 2>&1 > /dev/null"'
-bind -m emacs '"\C-gr": "$(lf)"'
-bind -m emacs '"\C-gt": " 2>&1 3>&1 |tee ~/tmp/tee.log "'
-bind -m emacs '"\C-gv": "--version"'
-bind -m emacs '"\C-gz": " arch/arm/boot/zImage"'
-
-bind -m emacs '"\C-g\C-a": "mgrep.sh "'
-bind -m emacs '"\C-g\C-b": "grep \"\" * --color -rHnIC2f"'
-bind -m emacs '"\C-g\C-f": "bcompare \"$(fp)\" . &"'
-bind -m emacs '"\C-g\C-h": "--hard"'
-bind -m emacs '"\C-g\C-n": "find -name "'
-bind -m emacs '"\C-g\C-[": " $()OD"'
-#bind -m emacs '"\C-]": character-search-backward'
-#bind -m emacs '"\e\C-]": character-search'
+		bind -m emacs '"\C-g\C-a": "mgrep.sh "'
+		bind -m emacs '"\C-g\C-b": "grep \"\" * --color -rHnIC2f"'
+		bind -m emacs '"\C-g\C-f": "bcompare \"$(fp)\" . &"'
+		bind -m emacs '"\C-g\C-h": "--hard"'
+		bind -m emacs '"\C-g\C-n": "find -name "'
+		bind -m emacs '"\C-g\C-[": " $()OD"'
+		#bind -m emacs '"\C-]": character-search-backward'
+		#bind -m emacs '"\e\C-]": character-search'
+		;;
+	*) return;;
+esac
 
 #unalias ls
 if [ ${OS} == "Mac" ];then
