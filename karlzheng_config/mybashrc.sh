@@ -1316,7 +1316,10 @@ function sx()
 
 function sai()
 {
-	sudo apt-get install "$@"
+	read -p "sudo apt-get install -y "$@" y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		sudo apt-get install -y "$@"
+	fi
 }
 
 function sbl()
