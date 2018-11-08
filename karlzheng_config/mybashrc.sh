@@ -121,7 +121,7 @@ case $- in
 esac
 
 #unalias ls
-alias|grep 'la='
+alias|grep -q 'la='
 if [ $? == 0 ]; then
 	unalias la;
 fi
