@@ -121,6 +121,10 @@ case $- in
 esac
 
 #unalias ls
+alias|grep 'la='
+if [ $? == 0 ]; then
+	unalias la;
+fi
 if [ ${OS} == "Mac" ];then
 	alias ls='ls -G -a '
 else
