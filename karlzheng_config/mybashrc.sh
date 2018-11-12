@@ -1475,6 +1475,11 @@ function swapFileName()
   mv tmp.$$ $2
 }
 
+function sallmybashrc()
+{
+	a=("x1" "tp" "fw" "dp");for i in ${a[@]};do echo $i; rcp ~/bashrc/karlzheng_config/mybashrc.sh ${i}:~/bashrc/karlzheng_config/mybashrc.sh;done
+}
+
 function t()
 {
 	touch "$@"
