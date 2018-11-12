@@ -1,0 +1,1 @@
+am start -a android.intent.action.VIEW -d http://www.vanyun.cn/cdn/apps/app/onetalk.html

@@ -1751,10 +1751,18 @@ function ncup()
 	nmcli con up id "$@"
 }
 
-function vs()
+function ve()
 {
 	if [ -f ${HOME}/shm/$(whoami)/edit.vim ];then
 		vim -c SS
+	fi
+}
+
+function vs()
+{
+	local fn="${HOME}/tmp/scratch"
+	if [ -f ${fn} ];then
+		vim ${fn}
 	fi
 }
 
