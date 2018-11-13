@@ -1266,23 +1266,12 @@ function rm()
 {
 	# set field seperator for bash
 	local IFS=$'\n'
-	if [ ! -d ~/.trash ]; then
-		mkdir ~/.trash;
-	fi;
+	[ -d ${HOME}/.trash ] || mkdir ${HOME}/.trash
 	while [ "x$1" != x ];do
 		if [ -f "$1" -o -d "$1" ];then
 			local bn=$(basename "$1")
-			if [ -f "${HOME}/.trash/${bn}" ];then
-				/bin/mv -f ${HOME}/.trash/${bn} ${HOME}/.trash/${bn}.old
-			fi
-			if [ -d "${HOME}/.trash/${bn}" ];then
-				#ensure no / at the end of path
-				#local d=${1%/}
-				if [ -d ${HOME}/.trash/${bn}.old ];then
-					/bin/rm -rf ${HOME}/.trash/${bn}.old
-				fi
-				/bin/mv ${HOME}/.trash/${bn} ${HOME}/.trash/${bn}.old
-			fi
+			[ -e ${HOME}/.trash/${bn}.old ] && /bin/rm -rf ${HOME}/.trash/${bn}.old
+			[ -e "${HOME}/.trash/${bn}" ] && /bin/mv -f ${HOME}/.trash/${bn} ${HOME}/.trash/${bn}.old
 			/bin/mv $1 ~/.trash/
 		fi
 		shift
