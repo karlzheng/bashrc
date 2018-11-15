@@ -1477,7 +1477,7 @@ function swapFileName()
 
 function sallmybashrc()
 {
-	a=("x1" "tp" "fw" "dp");for i in ${a[@]};do echo $i; rcp ~/bashrc/karlzheng_config/mybashrc.sh ${i}:~/bashrc/karlzheng_config/mybashrc.sh;done
+	a=("x1" "fw" "dp");for i in ${a[@]};do echo $i; rcp ~/bashrc/karlzheng_config/mybashrc.sh ${i}:~/bashrc/karlzheng_config/mybashrc.sh;done
 }
 
 function t()
@@ -1721,6 +1721,13 @@ function vp()
 function vt()
 {
 	local f=${HOME}/tmp/tee.log
+	local tf=${HOME}/tmp/.tee.log.swp
+	if [ -e ${tf} ];then
+		read -p "exist ${tf}, do you want to delete it? y|n " c
+		if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+			rm ${tf}
+		fi
+	fi
 	if [ -e ${f} ];then
 		vim ${f}
 	fi
