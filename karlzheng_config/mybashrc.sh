@@ -94,7 +94,7 @@ case $- in
 		bind -m emacs '"\en": history-search-forward'
 		bind -m emacs '"\ep": history-search-backward'
 		bind -m emacs '"\ew": backward-kill-word'
-		bind -m emacs '"\C-o": menu-complete'
+		bind -m emacs '"\e/": menu-complete'
 		bind -m emacs '"\C-ga": "grep \"\" * --color -rHniI|grep -v ^tags|grep -v ^cscopef"'
 		#bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
 		bind -m emacs '"\C-gc": "$(!!)"'
@@ -116,6 +116,8 @@ case $- in
 		bind -m emacs '"\C-g\C-[": " $()OD"'
 		#bind -m emacs '"\C-]": character-search-backward'
 		#bind -m emacs '"\e\C-]": character-search'
+		#bind -m emacs '"\C-i": menu-complete'
+		bind -m emacs '"\C-o": menu-complete'
 		;;
 	*) ;;
 esac
