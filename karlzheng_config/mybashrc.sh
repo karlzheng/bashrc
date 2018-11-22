@@ -1409,7 +1409,7 @@ function sl()
 	tr " " "\n"
 }
 
-function sson()
+function son()
 {
 	if [ "x${OS}" == "xMac" ];then
 		echo networksetup -setsocksfirewallproxystate Wi-Fi on
@@ -1417,7 +1417,7 @@ function sson()
 	fi
 }
 
-function ssoff()
+function soff()
 {
 	if [ "x${OS}" == "xMac" ];then
 		echo networksetup -setsocksfirewallproxystate Wi-Fi off
