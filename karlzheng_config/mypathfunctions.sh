@@ -218,9 +218,9 @@ function ct()
 	else
 		local f=${HOME}/dev/${MYUSERNAME}/cd_enter_dirs
 		: > ${f}
-		echo "/tmp" >>  ${f}
-		echo "~/bashrc/script/" >>	${f}
 		echo "~/tmp" >>	 ${f}
+		echo "~/bashrc/script/" >>	${f}
+		echo "/tmp" >>  ${f}
 		cat -n ${f}
 		cd_dir_in_file
 	fi
