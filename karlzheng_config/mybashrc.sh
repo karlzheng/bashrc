@@ -1300,6 +1300,11 @@ function s()
 	LC_ALL=C ssh "$@"
 }
 
+function sa()
+{
+	LC_ALL=C ssh x1 "$@"
+}
+
 function sx()
 {
 	ssh -X "$@"
