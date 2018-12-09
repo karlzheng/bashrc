@@ -237,6 +237,7 @@ function append_daily_path()
 {
 		local path_list=(
 		~/person_tools/
+		/Users/karlzheng/Library/Android/sdk/platform-tools
 		);
 		[ -f ${HOME}/dev/${MYUSERNAME}/daily_path ] || touch ${HOME}/dev/${MYUSERNAME}/daily_path
 		for p in ${path_list[@]}; do
