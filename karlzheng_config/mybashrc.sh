@@ -237,7 +237,6 @@ function append_daily_path()
 {
 		local path_list=(
 		~/person_tools/
-		/Users/karlzheng/Library/Android/sdk/platform-tools
 		);
 		[ -f ${HOME}/dev/${MYUSERNAME}/daily_path ] || touch ${HOME}/dev/${MYUSERNAME}/daily_path
 		for p in ${path_list[@]}; do
@@ -1919,10 +1918,13 @@ function my_bash_login_auto_exec_func()
 	~/software/linaro-arm-linux-gnueabi-4.6.3/bin
 	~/software/rbox_Linux_Upgrade_Tool_v1.16
 	${JAVA_HOME}/bin
+	/Users/karlzheng/Library/Android/sdk/platform-tools
 	);
 	local mypath=""
 	for p in ${path_list[@]};do
-		mypath=$mypath:"$p"
+		if [ -d ${p} ];then
+			mypath=$mypath:"$p"
+		fi
 	done
 	export PATH="$mypath":$PATH
 	local path_list=(
@@ -1930,7 +1932,9 @@ function my_bash_login_auto_exec_func()
 	);
 	local mypath=""
 	for p in ${path_list[@]};do
-		mypath=$mypath:"$p"
+		if [ -d ${p} ];then
+			mypath=$mypath:"$p"
+		fi
 	done
 	export PYTHONPATH="$mypath":$PYTHONPATH
 	append_daily_path
