@@ -1136,7 +1136,11 @@ function myvimpath()
 function n()
 {
 	if [ "x${OS}" == "xMac" ];then
-		open .
+		if [ $# -eq 0 ];then
+				open . &
+		else
+				open $@ &
+		fi
 	else
 		if [ $# -eq 0 ];then
 				nautilus . &
