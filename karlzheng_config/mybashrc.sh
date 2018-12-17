@@ -1178,6 +1178,11 @@ function ns()
 	netstat "$@"
 }
 
+function of()
+{
+	open $(fp) "$@"
+}
+
 function openwrtssh()
 {
 	echo 'enablec06ebd87'|nc -u 192.168.232.1 51232
