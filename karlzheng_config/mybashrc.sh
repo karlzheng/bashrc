@@ -575,7 +575,16 @@ function gba()
 
 function gbi()
 {
+	readEnsureKey "gitbook init . $@"
+    [ $? == 0 ] || return
 	gitbook init . "$@"
+}
+
+function gbs()
+{
+	readEnsureKey "gitbook serve $@"
+    [ $? == 0 ] || return
+	gitbook serve "$@"
 }
 
 function gc()
