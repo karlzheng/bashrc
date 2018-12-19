@@ -573,6 +573,11 @@ function gba()
 	git branch -a
 }
 
+function gbi()
+{
+	gitbook init . "$@"
+}
+
 function gc()
 {
 	local isRepo=0
