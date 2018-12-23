@@ -1189,7 +1189,7 @@ function nq()
 
 function ns()
 {
-	netstat "$@"
+	n SUMMARY.md
 }
 
 function of()
@@ -2012,6 +2012,10 @@ function my_bash_login_auto_exec_func()
 #1727  git checkout --track origin/mars
 #rsync -avurP ${HOME}/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/
 
+# TODO: all common vars move to mycommon.sh
+if [ -f ~/bashrc/karlzheng_config/mycommon.sh ];then
+   source ~/bashrc/karlzheng_config/mycommon.sh
+fi
 if [ -f ~/bashrc/karlzheng_config/adb.bash_complete.sh ];then
 		source	~/bashrc/karlzheng_config/adb.bash_complete.sh
 fi
