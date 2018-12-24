@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-''' (c) Sun Junyi, https://gist.github.com/fxsjy/5465353 '''
 import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 import sys
@@ -31,13 +30,9 @@ class AuthHandler(SimpleHTTPRequestHandler):
             self.wfile.write(self.headers.getheader('Authorization'))
             self.wfile.write('not authenticated')
 
-def test(HandlerClass = AuthHandler,
-         ServerClass = BaseHTTPServer.HTTPServer):
-    BaseHTTPServer.test(HandlerClass, ServerClass)
-
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print "usage BasicAuthServer.py [port] [username:password]"
         sys.exit()
     key = base64.b64encode(sys.argv[2])
-    test()
+    BaseHTTPServer.test(AuthHandler, BaseHTTPServer.HTTPServer)
