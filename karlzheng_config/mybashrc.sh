@@ -1808,6 +1808,7 @@ function wblog()
 layout: post
 categories: tech
 title: ${title}
+typora-root-url: ../
 ---
 ## ${title}
 EEOOFF
