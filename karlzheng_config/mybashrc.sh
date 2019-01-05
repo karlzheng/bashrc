@@ -1538,6 +1538,13 @@ function uzl()
 	unzip -l "$@"
 }
 
+function uz()
+{
+	readEnsureKey "unzip -x $@"
+    [ $? == 0 ] || return
+	unzip -x "$@"
+}
+
 function v()
 {
 	if [ $# -eq 1 ];then
