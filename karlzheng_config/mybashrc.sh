@@ -638,6 +638,14 @@ function gdp()
 	git diff -p -U100000 --raw "$@"
 }
 
+function genmarkdownlink()
+{
+	for f in $(/bin/ls);do
+		local fn=${f%%\.*}
+		echo [${fn}]\(${fn}\)
+	done
+}
+
 function gi()
 {
 	grep -i "$@"
