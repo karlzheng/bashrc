@@ -642,7 +642,7 @@ function genmarkdownlink()
 {
 	for f in $(/bin/ls);do
 		local fn=${f%%\.*}
-		echo [${fn}]\(${fn}\)
+		echo [${fn}]\(${f}\)
 	done
 }
 
@@ -1215,6 +1215,11 @@ function pf()
 	ps -ef "$@"
 }
 
+function py()
+{
+	python "$@"
+}
+
 function pu()
 {
 	if [ $# -ge 1 ];then
@@ -1693,11 +1698,12 @@ function vm()
 			echo ${allargs}
 			(${allargs} | fold -s -w 80) > ${help_file}
 		else
+			# https://blog.csdn.net/maijunjin/article/details/29379759
 			type "$@" | grep -q builtin
 			if [ $? == 0 ];then
-				(help "$@" | fold -s -w 80) > ${help_file}
+				(help "$@" | col -b | fold -s -w 80) > ${help_file}
 			else
-				(man "$@" | fold -s -w 80) > ${help_file}
+				(man "$@" | col -b | fold -s -w 80) > ${help_file}
 			fi
 		fi
 	fi
