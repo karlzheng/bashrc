@@ -1138,6 +1138,11 @@ function mj()
     make -j${CPUS} "$@"
 }
 
+function dp2ssf()
+{
+	sshfs -C -o reconnect `whoami`@dp2:/home/karlzheng ${HOME}/dp2 "$@"
+}
+
 function mypath()
 {
 		local i=0
