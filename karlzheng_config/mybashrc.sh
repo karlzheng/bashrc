@@ -879,6 +879,15 @@ function gsu()
 	LC_ALL=C git status -u "$@"
 }
 
+function gw()
+{
+	type gradlew
+	if [ $? == 0 ];then
+		export PATH="/Applications/Android Studio.app/Contents/plugins/android/lib/templates/gradle/wrapper":$PATH:
+	fi
+	gradlew "$@"
+}
+
 function h()
 {
 	history "$@"
