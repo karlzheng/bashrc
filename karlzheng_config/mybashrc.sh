@@ -1932,13 +1932,15 @@ function my_bash_login_auto_exec_func()
 		export LC_ALL="zh_CN.UTF-8"
 		#export LC_ALL=C
 	fi
-	if [ -f ${HOME}/dev/${MYUSERNAME}/notfirstlogin ];then
-		export isfirstlogin=0
+	local fn=/tmp/`whoami`.today
+	[ -f ${fn} ] || echo `date +%Y%m%d` > ${fn}
+	if [ "$(cat ${fn})" == "$(date +%Y%m%d)" ];then
+		export isTodayFirstLogin=0
 	else
-		export isfirstlogin=1
+		echo `date +%Y%m%d` > ${fn}
+		export isTodayFirstLogin=1
 	fi
-
-	if [ "${isfirstlogin}" == 1 ];then
+	if [ "${isTodayFirstLogin}" == 1 ];then
 		function ensure_file_dir()
 		{
 			[ -d ~/.trash ] || mkdir ~/.trash
