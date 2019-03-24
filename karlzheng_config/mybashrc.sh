@@ -1195,7 +1195,7 @@ function n()
 function nl()
 {
 	if [ "x${OS}" == "xMac" ];then
-		sudo lsof -i -P | grep -i "listen"
+		sudo lsof -P -n -iTCP -sTCP:LISTEN "$@"
 	else
 		netstat -ntlp "$@"
 	fi
