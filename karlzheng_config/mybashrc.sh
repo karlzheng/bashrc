@@ -134,7 +134,6 @@ else
 fi
 alias LS='ls'
 #alias adb_="sudo adb kill-server && sudo adb start-server"
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias CD='cd'
 alias cdance_rsync="rsync -avurP ${HOME}/rjb/BSP/BSP_PRIVATE/ /media/sdb9/work/BSP_PRIVATE/"
 alias cdg='cd /media/work/kernel/meizu/git/mx/linux-2.6.35-mx-rtm'
@@ -203,6 +202,22 @@ function a-s()
 function adblistpackages()
 {
 	adb shell pm list packages -f "$@"
+}
+
+function alert()
+{
+	if [ "x${OS}" == "xMac" ];then
+		local message="$@"
+		osascript<<-EOF
+		tell application "Finder"
+			activate
+			display Dialog "$message"
+		end tell
+		EOF
+	else
+		notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)"
+		#"$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"
+	fi
 }
 
 function androidsetrootpath()
