@@ -1774,11 +1774,11 @@ function vmdis()
 function vp()
 {
 	local f=""
-	local f1=${HOME}/bashrc/karlzheng_config/mypathfunctions.sh
-	if [ -e ${f1} ];then
-		f=${f1}
-	fi
 	local f1=${HOME}/pwd.mk
+	if [ -e ${f1} ];then
+		f="${f} ${f1}"
+	fi
+	local f1=${HOME}/bashrc/karlzheng_config/mypathfunctions.sh
 	if [ -e ${f1} ];then
 		f="${f} ${f1}"
 	fi
