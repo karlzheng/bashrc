@@ -9,27 +9,45 @@ import os
 from cStringIO import StringIO
 from pprint import pprint
 
+timestamp = {}
+
 class Root(resource.Resource):
   def __init__(self):
     resource.Resource.__init__(self)
+
   def getChild(self,name,request):
     self.filename = name
     return self
 
   def render_GET(self,request):
     content_type = "text/html"
-    #request.setHeader("Cache-Control", "max-age=1000")
-    print type(request)
     pprint(request.requestHeaders)
-    data = StringIO()
-    print "file:%s"%(self.filename)
-    if self.filename != "":
-      return open(self.filename).read()
-    else:
-      request.setHeader("Content-Type", content_type)
-      data.write("test abc")
+    print(request.getRootURL())
+    ret = "set "
+    try:
+        if (len(request.path) > 1):
+            path = (request.path).split('/')
+            if (path[1] == "get"):
+                ret = timestamp[path[2]]
+            else:
+                if (path[1] == "set"):
+                    p2 = path[2].strip()
+                    timestamp[p2] = path[3]
+                    ret = ret + path[2] + " to " + path[3] + " ok"
+    except Exception, e:
+        import traceback
+        print 'str(Exception):\t', str(Exception)
+        print 'str(e):\t\t', str(e)
+        print 'repr(e):\t', repr(e)
+        print 'e.message:\t', e.message
+        print 'traceback.print_exc():'; traceback.print_exc()
+        print 'traceback.format_exc():\n%s' % traceback.format_exc()
 
-    print request
+    print(ret)
+    request.setHeader("Content-Type", content_type)
+    data = StringIO()
+    data.write(ret)
+
     return data.getvalue()
 
   def gen_img_request(self, filename_pre):
