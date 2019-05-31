@@ -1,5 +1,9 @@
 CREATE DATABASE IF NOT EXISTS xxx DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
+# https://github.com/sequelpro/sequelpro/issues/2699
+mysql 8.0:
+CREATE DATABASE IF NOT EXISTS xxx DEFAULT CHARSET utf8 COLLATE utf8_bin;
+
 update tablename set key="value";
 insert tablename (key1, key2) values("value1", "value2");
 

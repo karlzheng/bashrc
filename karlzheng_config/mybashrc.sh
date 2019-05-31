@@ -1190,7 +1190,10 @@ function n()
 		if [ $# -eq 0 ];then
 				open . &
 		else
-				open $@ &
+			if [ ! -e "$@" ];then
+				touch "$@"
+			fi
+			open $@ &
 		fi
 	else
 		if [ $# -eq 0 ];then
