@@ -7,11 +7,15 @@ import os
 import sys
 import zipfile
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 print "Processing File " + sys.argv[1]
 
 file=zipfile.ZipFile(sys.argv[1],"r");
 for name in file.namelist():
-    utf8name=name.decode('gbk')
+    #utf8name=name.decode('gbk')
+    utf8name=name.decode('utf-8')
     print "Extracting " + utf8name
     pathname = os.path.dirname(utf8name)
     if not os.path.exists(pathname) and pathname!= "":
