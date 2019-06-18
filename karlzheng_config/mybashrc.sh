@@ -394,6 +394,27 @@ function detachjlink()
 	VBoxManage controlvm win7 usbdetach ${jlinkuuid}
 }
 
+function dnw()
+{
+	local dnwpro=$(which dnw)
+	if [ $? != 0 ];then
+		echo "last command is okay! exit!!"
+		return 1
+	fi
+	if [ $# -ge 1 ];then
+		local START_TIME=`date +%s`
+		local filename="$(echo ${1/11111/})"
+		${dnwpro} "$filename"
+		local END_TIME=`date +%s`
+		local ELAPSED_TIME
+		let "ELAPSED_TIME=$END_TIME-$START_TIME"
+		echo
+		echo "Total used time is $ELAPSED_TIME seconds"
+		echo
+	fi
+	return 0
+}
+
 function dockerrma
 {
 	read -p " docker rm $(docker ps -a -q) y|n ?" c
@@ -1247,11 +1268,6 @@ function pf()
 	ps -ef "$@"
 }
 
-function py()
-{
-	python "$@"
-}
-
 function pu()
 {
 	if [ $# -ge 1 ];then
@@ -1261,25 +1277,14 @@ function pu()
 	fi
 }
 
-function dnw()
+function py()
 {
-	local dnwpro=$(which dnw)
-	if [ $? != 0 ];then
-		echo "last command is okay! exit!!"
-		return 1
-	fi
-	if [ $# -ge 1 ];then
-		local START_TIME=`date +%s`
-		local filename="$(echo ${1/11111/})"
-		${dnwpro} "$filename"
-		local END_TIME=`date +%s`
-		local ELAPSED_TIME
-		let "ELAPSED_TIME=$END_TIME-$START_TIME"
-		echo
-		echo "Total used time is $ELAPSED_TIME seconds"
-		echo
-	fi
-	return 0
+	python "$@"
+}
+
+function py3()
+{
+	python3 "$@"
 }
 
 function racp()
