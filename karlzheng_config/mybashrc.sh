@@ -1368,6 +1368,16 @@ function rswp()
 	fi
 }
 
+function runjupyter.sh()
+{
+	local bin_dir="/Users/karlzheng/Library/Python/2.7/bin"
+	if [[ -d ${bin_dir} ]];then
+		export PATH=${PATH}:${bin_dir}
+		LANG=zn LANGUAGE=zn jupyter notebook
+	fi
+}
+
+
 function s()
 {
 	LC_ALL=C ssh "$@"
