@@ -1885,9 +1885,14 @@ EEOOFF
 
 function w2proxy()
 {
+	local retry_cnt=0
 	while true;do
 		ssh -o ServerAliveInterval=30 -D 1080 w2 || true;
 		sleep 0.5
+		((retry_cnt++))
+		if [ ${retry_cnt} -ge 8 ];then
+			return
+		fi
 	done
 }
 
