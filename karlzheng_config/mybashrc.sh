@@ -1883,6 +1883,14 @@ EEOOFF
 	open -a /Applications/Typora.app/Contents/MacOS/Typora ${fn}
 }
 
+function w2proxy()
+{
+	while true;do
+		ssh -o ServerAliveInterval=30 -D 1080 w2 || true;
+		sleep 0.5
+	done
+}
+
 function wh()
 {
 	which "$@"
