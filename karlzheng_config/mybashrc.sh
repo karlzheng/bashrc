@@ -151,7 +151,6 @@ alias LA='ls -latr'
 alias l='ls -CF '
 alias lm='ls arch/arm/configs/m*'
 #alias lr='ls -latr'
-alias lS='ls -laSr '
 alias lsr='ls -lasr '
 alias lsr='ls -lasr '
 alias lt='ls -lat '
@@ -1076,6 +1075,11 @@ function lac()
 	 return 0
 }
 
+function lf()
+{
+	/bin/ls -t|head -n 1
+}
+
 function lh()
 {
 	ls -latrh "$@"
@@ -1109,9 +1113,9 @@ function lsdu()
 	ls -d */ | xargs du -sh
 }
 
-function lf()
+function lz()
 {
-	/bin/ls -t|head -n 1
+	ls -laSrh "$@"
 }
 
 function l4()
