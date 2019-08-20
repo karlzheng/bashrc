@@ -19,10 +19,12 @@
 #	   REVISION:  ---
 #===============================================================================
 
+if [ -f ~/skipmybashrc ];then
+	return
+fi
+
 if [ "${SHELL}" != "/bin/bash" ];then
-		#echo "the SHELL is not bash! exit!!"
 		echo 'use "chsh -s /bin/bash" to change ${SHELL}'
-		#chsh -s /bin/bash
 fi
 
 export OS=Linux
@@ -42,7 +44,6 @@ shopt -s lithist
 set completion-ignore-case on
 set expand-tild on
 set match-hidden-files off
-
 
 export GTAGSFORCECPP=
 export LC_MESSAGES="C"
