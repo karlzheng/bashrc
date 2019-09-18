@@ -655,7 +655,7 @@ function ajavapath()
 	if [ "x${JAVA_BIN_PATH}" != "x" ];then
 		export PATH=${JAVA_BIN_PATH}:${PATH}:
 	fi
-	if [ ${OS} == "Mac" ];then
+	if [ ${OS} == "OSX" ];then
 		export JAVA_HOME=$(java_home 2>/dev/null)
 	else
 		local JAVA_BIN_PATH="$(dirname $(readlink -f ${WHICH_JAVA}))"
@@ -694,7 +694,7 @@ function pa()
 function ed()
 {
 	export TIME_STYLE=long-iso
-	if [ ${OS} == "Mac" ];then
+	if [ ${OS} == "OSX" ];then
 		local recent_dir=$(echo "$(ls -lt | grep "^d" | awk '{print $9}' |\
 			grep -E -v '^\.' | sed -n '1,1p')" | tac )
 	else

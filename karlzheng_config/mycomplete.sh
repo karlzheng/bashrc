@@ -275,7 +275,7 @@ complete -W 'arch/arm/configs' lac
 complete -W 'xconfig clean distclean zImage' mj
 
 if [ $MYUSERNAME == $MYNICKNAME ];then
-	if [ "x${OS}" != "xMac" ];then
+	if [ "x${OS}" != "xOSX" ];then
 		complete -o default -F _longopt vi
 	fi
 fi

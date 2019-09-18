@@ -29,7 +29,7 @@ fi
 
 export OS=Linux
 if [ $(uname) == Darwin ];then
-	export OS="Mac"
+	export OS="OSX"
 fi
 
 unset MAILCHECK
@@ -128,7 +128,7 @@ alias|grep -q 'la='
 if [ $? == 0 ]; then
 	unalias la;
 fi
-if [ ${OS} == "Mac" ];then
+if [ ${OS} == "OSX" ];then
 	alias ls='ls -G -a '
 else
 	alias ls='ls --color=tty -a '
@@ -1275,7 +1275,7 @@ function pf()
 
 function privoxy_proxy()
 {
-	if [ OS=="Mac" ];then
+	if [ OS=="OSX" ];then
 		http_proxy="http://127.0.0.1:8118"
 		export http_proxy
 		https_proxy="http://127.0.0.1:8118"
@@ -1716,7 +1716,7 @@ function vg()
 
 function vi()
 {
-	if [ ${OS} == "Mac" ];then
+	if [ ${OS} == "OSX" ];then
 		vim "$@"
 	else
 		/usr/bin/vim "$@"
