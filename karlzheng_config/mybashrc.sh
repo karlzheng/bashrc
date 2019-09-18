@@ -206,7 +206,7 @@ function adblistpackages()
 
 function alert()
 {
-	if [ "x${OS}" == "xMac" ];then
+	if [ "x${OS}" == "xOSX" ];then
 		local message="$@"
 		osascript<<-EOF
 		tell application "Finder"
@@ -996,7 +996,7 @@ function hp()
 	local f;
 	for f in ${file_list[@]}; do
 		if [ -f "${f}" ];then
-			if [ "x${OS}" == "xMac" ];then
+			if [ "x${OS}" == "xOSX" ];then
 				open "${f}" &
 			else
 				eog -f "${f}" && disown &
@@ -1176,7 +1176,7 @@ function meld()
 	#https://www.alexkras.com/how-to-run-meld-on-mac-os-x-yosemite-without-homebrew-macports-or-think/
 	#https://gist.github.com/polbins/42a39cb3234e3acfba79
 	#http://brian.pontarelli.com/2013/10/25/using-idea-for-git-merging-and-diffing/
-	if [ "x${OS}" == "xMac" ];then
+	if [ "x${OS}" == "xOSX" ];then
 		open -W -a /Applications/Meld.app --args "$@"
 	fi
 }
@@ -1212,7 +1212,7 @@ function myvimpath()
 
 function n()
 {
-	if [ "x${OS}" == "xMac" ];then
+	if [ "x${OS}" == "xOSX" ];then
 		if [ $# -eq 0 ];then
 				open . &
 		else
@@ -1238,7 +1238,7 @@ function n()
 
 function nl()
 {
-	if [ "x${OS}" == "xMac" ];then
+	if [ "x${OS}" == "xOSX" ];then
 		sudo lsof -P -n -iTCP -sTCP:LISTEN "$@"
 	else
 		sudo netstat -ntlp "$@"
@@ -1514,7 +1514,7 @@ function sl()
 
 function son()
 {
-	if [ "x${OS}" == "xMac" ];then
+	if [ "x${OS}" == "xOSX" ];then
 		echo networksetup -setsocksfirewallproxystate Wi-Fi on
 		networksetup -setsocksfirewallproxystate Wi-Fi on
 	fi
@@ -1522,7 +1522,7 @@ function son()
 
 function soff()
 {
-	if [ "x${OS}" == "xMac" ];then
+	if [ "x${OS}" == "xOSX" ];then
 		echo networksetup -setsocksfirewallproxystate Wi-Fi off
 		networksetup -setsocksfirewallproxystate Wi-Fi off
 	fi
