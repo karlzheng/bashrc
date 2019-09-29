@@ -28,7 +28,7 @@ if [ "${SHELL}" != "/bin/bash" ];then
 fi
 
 export OS=Linux
-if [ $(uname) == Darwin ];then
+if [ $(uname -s) == Darwin ];then
 	export OS="OSX"
 fi
 

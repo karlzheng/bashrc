@@ -7,8 +7,19 @@ if [ -n "$1" ]; then
 	find "$1" -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
 else
     echo "find files in current dir"
-    #find "." -iname "Makefile" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.java" -o -iname "*.s" > cscope.files
-	find "." -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
+	if [ $(uname -s) == "Darwin" ];then
+		: > cscope.files
+		file_suffix_list=(c h hh hpp cc cpp java s)
+		for fs in ${file_suffix_list[@]};do
+			find "." -type f -a -regex ".*\.${fs}$"  >> cscope.files
+		done
+		file_list=(Makefile Kconfig)
+		for fs in ${file_list[@]};do
+			find "." -iname ${fs} >> cscope.files
+		done
+	else
+		find "." -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
+	fi
 fi
 echo "end find"
 awk '{print "\""$0"\""}' cscope.files > cscope.files.tmp
