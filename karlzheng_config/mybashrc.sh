@@ -1316,7 +1316,7 @@ function rbrances()
 
 function rcp()
 {
-	rsync -rvP "$@"
+	rsync -rvlP "$@"
 }
 
 function release_memory()
