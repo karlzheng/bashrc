@@ -2,7 +2,7 @@
 #"\e[1;5D": backward-word
 #https://github.com/rileyjshaw/.supermac/blob/a0e902096e7762703422b6c83184ebd729ac1a04/.inputrc
 
-TAB: menu-complete
+#TAB: menu-complete
 "\e[Z": "\e-1\C-i" # reverse-menu-complete on shift + tab
 
 # Do not autocomplete hidden files unless the pattern explicitly begins with a dot
