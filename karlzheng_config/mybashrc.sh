@@ -2042,6 +2042,8 @@ function my_bash_login_auto_exec_func()
 	~/software/rbox_Linux_Upgrade_Tool_v1.16
 	${JAVA_HOME}/bin
 	/Users/karlzheng/Library/Android/sdk/platform-tools
+	/usr/local/opt/coreutils/libexec/gnubin
+	/usr/local/opt/findutils/libexec/gnubin
 	);
 	local mypath=""
 	for p in ${path_list[@]};do
