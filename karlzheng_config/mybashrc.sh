@@ -293,6 +293,13 @@ function hex2bin()
 	arm-none-eabi-objcopy -Obinary $1 $2
 }
 
+function bc()
+{
+	if [ "x${OS}" == "xOSX" ];then
+		open -W -a /Applications/Beyond\ Compare.app/ "$@"
+	fi
+}
+
 function brm()
 {
 	echo "Are you really want to remove $@ ?"
