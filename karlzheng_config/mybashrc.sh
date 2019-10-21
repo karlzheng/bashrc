@@ -603,17 +603,17 @@ function gac()
 
 function gau()
 {
-	git add -u
+	git add -u "$@"
 }
 
 function gb()
 {
-	git branch
+	git branch "$@"
 }
 
 function gba()
 {
-	git branch -a
+	git branch -a "$@"
 }
 
 function gbi()
