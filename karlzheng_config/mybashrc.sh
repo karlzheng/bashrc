@@ -288,16 +288,25 @@ function addversion()
 	fi
 }
 
-function hex2bin()
+function ba()
 {
-	arm-none-eabi-objcopy -Obinary $1 $2
+	local fn=${HOME}/dev/bcFn1
+	if [ $# -eq 1 ];then
+		: > ${fn}
+		echo "$(pwd)/$1" > ${fn}
+	fi
 }
 
-function bc()
+function bcompare()
 {
 	if [ "x${OS}" == "xOSX" ];then
 		open -W -a /Applications/Beyond\ Compare.app/ "$@"
 	fi
+}
+
+function bcp()
+{
+	/bin/cp "$@"
 }
 
 function brm()
@@ -370,20 +379,6 @@ function lstrash()
 function undel()
 {
 		mv ~/.trash/"$*" . ;
-}
-
-function ba()
-{
-	local fn=${HOME}/dev/bcFn1
-	if [ $# -eq 1 ];then
-		: > ${fn}
-		echo "$(pwd)/$1" > ${fn}
-	fi
-}
-
-function bcp()
-{
-	/bin/cp "$@"
 }
 
 function d()
@@ -981,6 +976,11 @@ function he()
 	history -s "$cmd_line"
 	#exec "$cmd_line"
 	eval "$cmd_line"
+}
+
+function hex2bin()
+{
+	arm-none-eabi-objcopy -Obinary $1 $2
 }
 
 function hi()
