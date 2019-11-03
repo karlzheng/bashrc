@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "$0 : $(pwd) : parameters:$@"
 if [ -n "$1" ]; then
@@ -7,7 +7,7 @@ if [ -n "$1" ]; then
 	find "$1" -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
 else
     echo "find files in current dir"
-	if [ $(uname -s) == "Darwin" ];then
+	if [ "$(uname -s)" == "Darwin" ];then
 		: > cscope.files
 		file_suffix_list=(c h hh hpp cc cpp java s)
 		for fs in ${file_suffix_list[@]};do
