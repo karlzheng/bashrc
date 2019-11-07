@@ -879,7 +879,6 @@ function gpa()
 	fi
 }
 
-
 function gpc()
 {
 	if [ -n $OLDPWD ];then
@@ -898,6 +897,18 @@ function gpc()
 	fi
 	if [ -n $SAVE_OLDPWD ];then
 		OLDPWD=$(echo $SAVE_OLDPWD)
+	fi
+}
+
+function gpra()
+{
+	local c
+	read -p "git pull all remote branches in current dir y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		git pull --all
+		git branch -r | grep -v '\->' | while read remote; do git branch --track "${remote#origin/}" "$remote"; done
+		git fetch --all
+		git pull --all
 	fi
 }
 
