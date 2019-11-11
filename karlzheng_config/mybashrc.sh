@@ -2148,6 +2148,9 @@ fi
 if [ -f ~/bashrc/karlzheng_config/mycomplete.sh ];then
 		source ~/bashrc/karlzheng_config/mycomplete.sh
 fi
+if [ -f ~/bashrc/bashcomplete/git-completion.bash ];then
+		source ~/bashrc/bashcomplete/git-completion.bash
+fi
 
 my_bash_login_auto_exec_func
 
