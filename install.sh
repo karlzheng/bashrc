@@ -24,12 +24,18 @@ function cp_shell_script()
 
 function add_dot_bashrc_call()
 {
-    echo "$CONF_SUB_DIR" "${HOME}/.bashrc"
-    grep "$CONF_SUB_DIR" "${HOME}/.bashrc" | grep "mybashrc"
-    if [ $? != 0 ];then
-	cat karlzheng_config/bashrc_prefix.txt >> ${HOME}/.bashrc
-	#cp_shell_script
-    fi
+	local f="${HOME}/.bashrc"
+	if [ -e ${f} ];then
+		grep "$CONF_SUB_DIR" "${HOME}/.bashrc" | grep "mybashrc"
+		if [ $? != 0 ];then
+			cat karlzheng_config/bashrc_prefix.txt >> ${HOME}/.bashrc
+			#cp_shell_script
+		fi
+	else
+		echo "There is no file ${f}"
+		echo "cat karlzheng_config/bashrc_prefix.txt >> ${HOME}/.bashrc"
+		cat karlzheng_config/bashrc_prefix.txt >> ${HOME}/.bashrc
+	fi
 }
 
 function add_vim_config()

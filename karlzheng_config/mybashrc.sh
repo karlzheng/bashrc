@@ -23,7 +23,7 @@ if [ -f ~/skipmybashrc ];then
 	return
 fi
 
-if [ "${SHELL}" != "/bin/bash" ];then
+if [ "${SHELL}" != "/bin/bash" -a "${SHELL}" != "/usr/bin/bash" ];then
 		echo 'use "chsh -s /bin/bash" to change ${SHELL}'
 fi
 
@@ -588,7 +588,7 @@ function gac()
 	git add -A "$@"
 	read -p "Are you sure add all git modified y|n ?" c
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-		local fn=/tmp/gitcommit.msg.txt
+		local fn=~/tmp/gitcommit.msg.txt
 		git add -A
 		LC_ALL=C git status -u | grep -E "modified|new file:"|sed 's/^\s//' > ${fn}
 		git commit -s -F ${fn}
