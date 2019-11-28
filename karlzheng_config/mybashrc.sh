@@ -875,7 +875,12 @@ function gpa()
 	local c
 	read -p "git pull all branches in current dir y|n ?" c
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-		git pull --all
+		#git pull --all
+		for br in `git branch -r|grep -v HEAD | sed "s/.*origin\///g"`;do
+			echo ${br};
+			git checkout ${br};
+			git pull;
+		done
 	fi
 }
 
