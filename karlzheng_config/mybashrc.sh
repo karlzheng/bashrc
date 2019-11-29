@@ -872,7 +872,7 @@ function gp()
 
 function gpa()
 {
-	local cbr=$(git branch --show-current)
+	local cbr=$(git rev-parse --abbrev-ref HEAD)
 	local c
 
 	read -p "git pull all branches in current dir y|n ?" c
