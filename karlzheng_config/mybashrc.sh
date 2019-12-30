@@ -141,7 +141,7 @@ alias cdg='cd /media/work/kernel/meizu/git/mx/linux-2.6.35-mx-rtm'
 alias ck="cd /media/cdriver/work/kernel/meizu/"
 alias co="cd -"
 alias copy_to_m8="rsync -av /media/x/english/voa/ /media/Meizu\ M8/Music/voa/"
-alias cp='cp -i '
+#alias cp='cp -i '
 alias cw="cd /media/work/"
 alias git_vim_diff="git diff --no-ext-diff -w |vim -R -"
 #alias grep='grep --exclude-dir=.svn --exclude="*.o" --exclude="*.o.cmd" '
@@ -300,7 +300,8 @@ function ba()
 function bcompare()
 {
 	if [ "x${OS}" == "xOSX" ];then
-		open -W -a /Applications/Beyond\ Compare.app/ "$@"
+		#open -W -a /Applications/Beyond\ Compare.app/ "$@"
+		bcomp "$@"
 	fi
 }
 
@@ -345,6 +346,18 @@ function ctrash()
 	#rsync --delete-before -avH --progress --stats /tmp/.trash/ ${HOME}/.trash
 	rsync  --delete -rlptD /tmp/.trash/ ${HOME}/.trash/
 	sync;
+}
+
+function cp()
+{
+	echo "Are you really want to cp -a $@ ?"
+	read -p "y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		echo "cp -a $@"
+		/bin/cp -a $@
+	else
+		echo "Cancle cp -a $@"
+	fi
 }
 
 function cx()
