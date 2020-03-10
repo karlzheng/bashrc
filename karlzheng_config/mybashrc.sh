@@ -1363,26 +1363,26 @@ function release_memory()
 	sudo su -c "echo 3 > /proc/sys/vm/drop_caches"
 }
 
-function repo()
-{
-	if [ "x$0" != "x-bash" ];then
-		echo $(basename "$0") $LINENO
-	else
-		echo "in bash config $LINENO"
-	fi
-	echo "$@" > ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
-	grep -qP "meizu" ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
-	if [ $? == 0 ];then
-		mz_repo "$@"
-	else
-		grep -qP "alibaba|yunos-inc|kangliang.zkl" ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
-		if [ $? == 0 ];then
-			ali_repo "$@"
-		else
-			google_repo "$@"
-		fi
-	fi
-}
+#function repo()
+#{
+	#if [ "x$0" != "x-bash" ];then
+		#echo $(basename "$0") $LINENO
+	#else
+		#echo "in bash config $LINENO"
+	#fi
+	#echo "$@" > ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
+	#grep -qP "meizu" ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
+	#if [ $? == 0 ];then
+		#mz_repo "$@"
+	#else
+		#grep -qP "alibaba|yunos-inc|kangliang.zkl" ${HOME}/dev/${MYUSERNAME}/repo_cmd_line
+		#if [ $? == 0 ];then
+			#ali_repo "$@"
+		#else
+			#google_repo "$@"
+		#fi
+	#fi
+#}
 
 function rurl()
 {
@@ -2064,6 +2064,8 @@ function my_bash_login_auto_exec_func()
 
 	local path_list=(
 	~/person_tools/
+	~/bin
+	~/bin/bin
 	~/bashrc/script/
 	~/software/bin
 	~/software/arm-2009q3/bin/
@@ -2075,8 +2077,6 @@ function my_bash_login_auto_exec_func()
 	~/bk/sw/adt/sdk/platform-tools
 	~/bk/sw/gradle-1.6/bin
 	~/bk/sw/adt/sdk/tools
-	~/bin
-	~/bin/bin
 	~/software/linaro-arm-linux-gnueabi-4.6.3/bin
 	~/software/rbox_Linux_Upgrade_Tool_v1.16
 	${JAVA_HOME}/bin
