@@ -6,8 +6,6 @@ function rootfiles_process()
 	if [ $# -ge 1 ];then
 		projectname=$1
 	fi
-	echo $projectname
-	return
 	local tmp_dir="/tmp/tmp_dir"
 	local cur_dir=$(pwd)
 
