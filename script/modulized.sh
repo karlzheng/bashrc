@@ -1,4 +1,4 @@
-#!/bin/bash - 
+#!/bin/bash -
 
 function rootfiles_process()
 {
@@ -17,7 +17,7 @@ function rootfiles_process()
 	mkdir -p rootfiles
 	local rfs=$(find . -maxdepth 1 -type f)
 	for f in ${rfs}; do
-		echo ${f};
+		f=$(echo ${f##*/})
 		/bin/cp ${f} rootfiles
 	done
 
@@ -33,7 +33,7 @@ function rootfiles_process()
 	#4. get dirs => git subtree and push
 	local d
 	local dirs=$(ls -G -a -d */ |grep -v git)
-	for d in ${dirs}; do 
+	for d in ${dirs}; do
 		d=${d%%/}
 		git subtree split -P $d -b ${d}_${cbr};
 
@@ -63,7 +63,7 @@ cat>default.xml<<EOF
 	<project name="services" path="services" > </project>
 	<project name="tests" path="tests" > </project>
 	<project name="utils" path="utils" > </project>
-	<project name="rootfiles" path="rootfiles" > 
+	<project name="rootfiles" path="rootfiles" >
 EOF
 
 	for f in ${rfs}; do
