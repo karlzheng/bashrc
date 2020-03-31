@@ -2068,6 +2068,7 @@ function my_bash_login_auto_exec_func()
 
 	local path_list=(
 	~/person_tools/
+	~/person/scripts/
 	~/bin
 	~/bin/bin
 	~/bashrc/script/
