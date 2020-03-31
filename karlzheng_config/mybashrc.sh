@@ -621,7 +621,11 @@ function gb()
 
 function gba()
 {
-	git branch -a "$@"
+	if [ -d .repo/manifests/.git ];then
+		git --git-dir=.repo/manifests/.git branch -a "$@"
+	else
+		git branch -a "$@"
+	fi
 }
 
 function gbi()
