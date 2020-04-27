@@ -1411,6 +1411,11 @@ function rm()
 	done
 }
 
+function rm.tail.space()
+{
+	sed -i 's/[ \t]*$//g' "$@"
+}
+
 function rs()
 {
 	if [ -d .repo ];then
