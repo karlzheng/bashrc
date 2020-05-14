@@ -4,6 +4,7 @@
 echo "$0 : $(pwd) : parameters:$@"
 
 #cat << EEOOFF > /dev/null
+LC_ALL='C'
 echo -e '!_TAG_FILE_SORTED\t2\t/2=foldcase/' > filenametags
 if [ "x${OS}" = "xOSX" ];then
 	if [ -n "$1" ]; then
