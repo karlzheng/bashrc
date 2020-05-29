@@ -1411,6 +1411,13 @@ function rm()
 	done
 }
 
+function rm.modifiedfiles.space()
+{
+	for f in $(git diff --stat|grep '|' | awk '{print $1}');do
+		[ -f ${f} ] && sed -i 's/[ \t]*$//g' ${f}
+	done
+}
+
 function rm.tail.space()
 {
 	sed -i 's/[ \t]*$//g' "$@"
