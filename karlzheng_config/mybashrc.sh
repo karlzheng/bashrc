@@ -567,6 +567,11 @@ function fp()
 	fi
 }
 
+function fm80()
+{
+	astyle --style=kr --max-code-length=80 "$@"
+}
+
 function g()
 {
 	grep "$@"
