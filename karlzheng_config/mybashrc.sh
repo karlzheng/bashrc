@@ -100,7 +100,8 @@ case $- in
 		#bind -m emacs '"\C-gc": "grep \"\" * --color -rHnIf"'
 		bind -m emacs '"\C-gc": "$(!!)"'
 		bind -m emacs '"\C-ge": "$()"'
-		bind -m emacs '"\C-gf": "$(fp)"'
+		bind -m emacs '"\C-gf": "$(fa)"'
+		bind -m emacs '"\C-gg": "$(fb)"'
 		bind -m emacs '"\C-gh": "--help"'
 		bind -m emacs '"\C-gm": "grep mei Makefile"'
 		bind -m emacs '"\C-gn": " 2>&1 > /dev/null"'
@@ -111,7 +112,7 @@ case $- in
 
 		bind -m emacs '"\C-g\C-a": "mgrep.sh "'
 		bind -m emacs '"\C-g\C-b": "grep \"\" * --color -rHnIC2f"'
-		bind -m emacs '"\C-g\C-f": "bcompare \"$(fp)\" . &"'
+		bind -m emacs '"\C-g\C-f": "bcompare \"$(fa)\" \"$(fb)\" &"'
 		bind -m emacs '"\C-g\C-h": "--hard"'
 		bind -m emacs '"\C-g\C-n": "find -name "'
 		bind -m emacs '"\C-g\C-[": " $()OD"'
@@ -552,19 +553,26 @@ function f()
 	find . -iname "$*"
 }
 
+function fa()
+{
+	if [ -f ${HOME}/dev/$(whoami)/absfa ];
+		then cat ${HOME}/dev/$(whoami)/absfa
+	fi
+}
+
+function fb()
+{
+	if [ -f ${HOME}/dev/$(whoami)/absfb ];
+		then cat ${HOME}/dev/$(whoami)/absfb
+	fi
+}
+
 function fo()
 {
 	local f
 	for f in $(cat $1);do
 		$2 $f
 	done
-}
-
-function fp()
-{
-	if [ -f ${HOME}/dev/$(whoami)/absfn ];
-		then cat ${HOME}/dev/$(whoami)/absfn
-	fi
 }
 
 function fm80()
@@ -1308,7 +1316,7 @@ function ns()
 
 function of()
 {
-	open $(fp) "$@"
+	open $(fa) "$@"
 }
 
 function openwrtssh()
@@ -1517,28 +1525,28 @@ function sf()
 		if [ -f $1 ];then
 			echo ${1} | grep '^\s*/' 2>&1 > /dev/null
 			if [ $? == 0 ];then
-				echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfn
+				echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfa
 			else
-				echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfn
+				echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfa
 			fi
 		else
 			if [ -d "$1" ];then
 				if [ -d "$(pwd)/$1" ];then
-					echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfn
+					echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfa
 				else
-					echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfn
+					echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfa
 				fi
 			fi
 		fi
 	else
 		if [ $# -gt 1 ];then
-			: > ${HOME}/dev/${MYUSERNAME}/absfn
+			: > ${HOME}/dev/${MYUSERNAME}/absfa
 			while [ "x$1" != x ];do
-				echo "$(pwd)/$1" >> ${HOME}/dev/${MYUSERNAME}/absfn
+				echo "$(pwd)/$1" >> ${HOME}/dev/${MYUSERNAME}/absfa
 				shift
 			done
 		else
-			pwd > ${HOME}/dev/${MYUSERNAME}/absfn
+			pwd > ${HOME}/dev/${MYUSERNAME}/absfa
 		fi
 	fi
 }
@@ -1762,9 +1770,9 @@ function vd()
 
 function vf()
 {
-	: > ${HOME}/dev/${MYUSERNAME}/absfn
+	: > ${HOME}/dev/${MYUSERNAME}/absfa
 	for f in $(find -iname "$@");do
-		echo "$(pwd)/${f}" >> ${HOME}/dev/${MYUSERNAME}/absfn
+		echo "$(pwd)/${f}" >> ${HOME}/dev/${MYUSERNAME}/absfa
 	done
 	vi -c EditAbsoluteFilePath
 }
