@@ -226,6 +226,12 @@ function ct()
 	fi
 }
 
+function ctt()
+{
+	mkdir -p ~/tmp/t
+	cd ~/tmp/t
+}
+
 function cv()
 {
 	if [ ! -f ${HOME}/dev/${MYUSERNAME}/vim_cur_file_path ];
