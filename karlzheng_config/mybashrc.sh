@@ -1519,34 +1519,48 @@ function sdu ()
 		}'
 }
 
-function sf()
+function sfa()
 {
+	export FILE_NAME_SAVE_FINE=${HOME}/dev/${MYUSERNAME}/absfa
+	sf_implement "$@"
+}
+
+function sfb()
+{
+	export FILE_NAME_SAVE_FINE=${HOME}/dev/${MYUSERNAME}/absfb
+	sf_implement "$@"
+}
+
+function sf_implement()
+{
+	local save_file=${FILE_NAME_SAVE_FINE}
+
 	if [ $# -eq 1 ];then
 		if [ -f $1 ];then
 			echo ${1} | grep '^\s*/' 2>&1 > /dev/null
 			if [ $? == 0 ];then
-				echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfa
+				echo "$1" > ${save_file}
 			else
-				echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfa
+				echo "$(pwd)/$1" > ${save_file}
 			fi
 		else
 			if [ -d "$1" ];then
 				if [ -d "$(pwd)/$1" ];then
-					echo "$(pwd)/$1" > ${HOME}/dev/${MYUSERNAME}/absfa
+					echo "$(pwd)/$1" > ${save_file}
 				else
-					echo "$1" > ${HOME}/dev/${MYUSERNAME}/absfa
+					echo "$1" > ${save_file}
 				fi
 			fi
 		fi
 	else
 		if [ $# -gt 1 ];then
-			: > ${HOME}/dev/${MYUSERNAME}/absfa
+			: > ${save_file}
 			while [ "x$1" != x ];do
-				echo "$(pwd)/$1" >> ${HOME}/dev/${MYUSERNAME}/absfa
+				echo "$(pwd)/$1" >> ${save_file}
 				shift
 			done
 		else
-			pwd > ${HOME}/dev/${MYUSERNAME}/absfa
+			pwd > ${save_file}
 		fi
 	fi
 }
