@@ -569,7 +569,7 @@ function fb()
 
 function fchetchpatch()
 {
-	checkpatch.pl --no-tree -f --fix-inplace "$@"
+	checkpatch.pl --no-tree -f "$@"
 }
 
 function fo()
