@@ -1,0 +1,65 @@
+[user]
+	;name = kangliang.zkl
+	;name = KarlZheng
+	name = Karl.Zheng
+	;email = kangliang.zkl@alibaba-inc.com
+	;email = KarlZheng@linkcm.com
+	email = Karl.Zheng@anker.com
+	;email = zhengkarl@gmail.com
+	editor = vim
+[core]
+    pager = less -FRSX
+    ;http://zengrong.net/post/1249.htm
+    quotepath = false
+	autocrlf = false
+	safecrlf = false
+	excludesfile = /Users/karlzheng/.gitignore
+[color]
+	ui = auto
+	diff = auto
+;[diff]
+	#external = echo
+	;external = git_diff_wrap.sh
+[merge]
+	tool = vimdiff
+[sendemail]
+	#confirm = auto
+	suppresscc = all
+	;smtpserver = mail.yuzhou.com
+	#smtpencryption = tls
+	;from = zhengkl@yuzhou.com
+	;smtpuser = zhengkl@yuzhou.com 
+	#smtppass = <PASSWORD>
+	;smtpserverport = 587
+	;smtpencryption = ntlm 
+[alias]
+	br = branch
+	ci = commit
+	cl = clone
+	co = checkout
+	st = status
+[status]
+	;showUntrackedFiles = no
+[push]
+	default = simple
+
+[diff]     
+	tool = bc3  
+[difftool "bc3"]     
+	cmd = /usr/bin/bcompare \"$LOCAL\" \"$REMOTE\"     
+[difftool]     
+	prompt = false     
+[merge]  
+	tool = bc3     
+[mergetool "bc3"]     
+	cmd = /usr/bin/bcompare \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"     
+	trustExitCode = true  
+[http]
+	;proxy = socks4://localhost:1080
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[http "https://chipmaster2.qti.qualcomm.com"]
+	followRedirects = true
