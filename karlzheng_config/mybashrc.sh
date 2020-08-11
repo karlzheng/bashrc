@@ -567,12 +567,22 @@ function fb()
 	fi
 }
 
+function fchetchpatch()
+{
+	checkpatch.pl --no-tree -f --fix-inplace "$@"
+}
+
 function fo()
 {
 	local f
 	for f in $(cat $1);do
 		$2 $f
 	done
+}
+
+function clformat()
+{
+	find . -regex '.*\.\(cpp\|hpp\|cu\|c\|h\)' -exec clang-format -i {} \;
 }
 
 function fm80()
