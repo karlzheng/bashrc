@@ -908,7 +908,7 @@ sub is_SPDX_License_valid {
 	return 1;
 }
 
-my $camelcase_seeded = 0;
+my $camelcase_seeded = 1;
 sub seed_camelcase_includes {
 	return if ($camelcase_seeded);
 
