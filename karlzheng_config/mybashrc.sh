@@ -628,6 +628,18 @@ function gac()
 		git add -A
 		LC_ALL=C git status -u | grep -E "modified|new file:"|sed 's/^\s//' > ${fn}
 		git commit -s -F ${fn}
+	fi
+}
+
+function gacp()
+{
+	git add -A "$@"
+	read -p "Are you sure add all modified and PUSH y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		local fn=~/tmp/gitcommit.msg.txt
+		git add -A
+		LC_ALL=C git status -u | grep -E "modified|new file:"|sed 's/^\s//' > ${fn}
+		git commit -s -F ${fn}
 		git push
 	fi
 }
@@ -1527,6 +1539,12 @@ function sdu ()
 				sub(/\.0/, "", $1);
 				print $0;
 		}'
+}
+
+function sf()
+{
+	export FILE_NAME_SAVE_FINE=${HOME}/dev/${MYUSERNAME}/absfa
+	sf_implement "$@"
 }
 
 function sfa()
