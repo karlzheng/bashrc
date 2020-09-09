@@ -567,7 +567,7 @@ function fb()
 	fi
 }
 
-function fchetchpatch()
+function fcheckpatch()
 {
 	checkpatch.pl --no-tree -f "$@"
 }
