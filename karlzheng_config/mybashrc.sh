@@ -769,6 +769,24 @@ function gka()
 	fi
 }
 
+function gkd()
+{
+	if [ $# -ge 1 ];then
+		gitk "$@" &
+	else
+		gitk $(ds) &
+	fi
+}
+
+function gkf()
+{
+	if [ $# -ge 1 ];then
+		gitk "$@" &
+	else
+		gitk $(fa) &
+	fi
+}
+
 function glag()
 {
 	git log --all --graph "$@"
