@@ -1476,6 +1476,34 @@ function rm.tail.space()
 	sed -i 's/[ \t]*$//g' "$@"
 }
 
+function rplstr()
+{
+	local a
+	local b
+	local len
+	local f="${HOME}/tmp/tee.log"
+
+	read -p "Are you sure want to replace strings designated in file ${f} y|n ?" c
+	if [ "x${c}" != "xy" -a "x${c}" != "x" ];then
+		echo "Cancel rplstr"
+		return
+	fi
+
+	while read -ra sz; do
+		a=${sz[0]}
+		len=${#sz[@]}
+		if [ ${len} == 2 ];then
+			b=${sz[1]}
+		else
+			if [ ${len} == 1 ];then
+				b=$(echo ${a} | tr 'A-Z' 'a-z')
+			fi
+		fi
+		echo find . -regex '.*\.\(c\|h\|cpp\)' '|' xargs sed -i "s/${a}/${b}/g"
+		find . -regex '.*\.\(c\|h\|cpp\)' | xargs sed -i "s/${a}/${b}/g"
+	done < ${f}
+}
+
 function rs()
 {
 	if [ -d .repo ];then
