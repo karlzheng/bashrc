@@ -1496,11 +1496,15 @@ function rplstr()
 			b=${sz[1]}
 		else
 			if [ ${len} == 1 ];then
-				b=$(echo ${a} | tr 'A-Z' 'a-z')
+				if [ "x${TO_CAPS}" == "x1" ];then
+					b=$(echo ${a} | tr 'a-z' 'A-Z')
+				else
+					b=$(echo ${a} | tr 'A-Z' 'a-z')
+				fi
 			fi
 		fi
-		echo find . -regex '.*\.\(c\|h\|cpp\)' '|' xargs sed -i "s/${a}/${b}/g"
-		find . -regex '.*\.\(c\|h\|cpp\)' | xargs sed -i "s/${a}/${b}/g"
+		echo find . -regex '.*\.\(c\|h\|cpp\|cxx\)' '|' xargs sed -i "s/${a}/${b}/g"
+		find . -regex '.*\.\(c\|h\|cpp\|cxx\)' | xargs sed -i "s/${a}/${b}/g"
 	done < ${f}
 }
 
