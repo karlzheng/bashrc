@@ -4,7 +4,7 @@ echo "$0 : $(pwd) : parameters:$@"
 if [ -n "$1" ]; then
     echo "find files in dir:$1"
     #find $1 -iname "Makefile" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.c" -o -iname "*.cc" -o -iname "*.cpp" -o -iname "*.java" -o -iname "*.s" > cscope.files
-	find "$1" -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
+	find "$1" -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(cxx$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
 else
     echo "find files in current dir"
 	if [ "$(uname -s)" == "Darwin" ];then
@@ -18,7 +18,7 @@ else
 			find "." -iname ${fs} >> cscope.files
 		done
 	else
-		find "." -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
+		find "." -type f -a -regextype posix-extended -regex ".*(\.((c$)|(h$)|(cc$)|(hh$)|(cpp$)|(cxx$)|(hpp$)|(java$)|(s$))|Makefile|MAKEFILE|Kconfig)" > cscope.files
 	fi
 fi
 echo "end find"
