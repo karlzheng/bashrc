@@ -582,7 +582,7 @@ function fo()
 
 function clformat()
 {
-	find . -regex '.*\.\(cpp\|hpp\|cu\|c\|h\)' -exec clang-format -i {} \;
+	find . -regex '.*\.\(c\|h\|cu\|cpp\|cxx\|hpp\)' -exec clang-format -i {} \;
 }
 
 function fm80()
