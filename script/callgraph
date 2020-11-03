@@ -32,7 +32,8 @@ PIC_TYPE=svg
 
 # Get browser
 if [ "x$OS" == "xDarwin" ]; then
-    BROWSER=/Applications/Safari.app/Contents/MacOS/Safari
+    #BROWSER=/Applications/Safari.app/Contents/MacOS/Safari
+    BROWSER=open
 else
     BROWSER=chromium-browser
 fi
