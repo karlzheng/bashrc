@@ -1,6 +1,7 @@
 #!/bin/bash -l
 
 level=2
+only_dir=""
 
 while [ $# -gt 0 ];
 do
@@ -8,6 +9,9 @@ do
 		-l | -level)
 			shift
 			project="$1"
+			;;
+		-d | -dir)
+			only_dir="-d"
 			;;
 		*)
 			;;
@@ -17,7 +21,7 @@ done
 
 prefix="/tmp/dir.level"
 
-tree -d -L ${level} | tree2dotx > ${prefix}.txt
+tree ${only_dir} -L ${level} | tree2dotx > ${prefix}.txt
 dot -Tsvg -o ${prefix}.svg ${prefix}.txt
 
 n ${prefix}.svg
