@@ -1379,13 +1379,17 @@ function privoxy_proxy()
 	fi
 }
 
-function pu()
+function pt()
 {
-	if [ $# -ge 1 ];then
-		pushd "$@"
-	else
-		pushd .
+	local f="${HOME}/tmp/tee.log"
+
+	read -p "Are you sure want to run ${f} y|n ?" c
+	if [ "x${c}" != "xy" -a "x${c}" != "x" ];then
+		echo "Cancel run ${f}"
+		return
 	fi
+
+	python ${f} "$@"
 }
 
 function py()
@@ -1396,6 +1400,15 @@ function py()
 function py3()
 {
 	python3 "$@"
+}
+
+function pu()
+{
+	if [ $# -ge 1 ];then
+		pushd "$@"
+	else
+		pushd .
+	fi
 }
 
 function racp()
