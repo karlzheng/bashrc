@@ -30,7 +30,7 @@ function seplog()
 			cat ${log_dir}/${kfn} >> ${filter_file}
 		fi
 	done < ~/log.keyword.txt
-	sort ${filter_file} -o ${filter_file}
+	sort -n -k 2 -t : ${filter_file} -o ${filter_file}
 	/bin/cp ${fn} ${log_dir}/${fn}
 	#vi ${filter_file} ${log_dir}/${fn}
 	vim -c "BESHighlight" ${filter_file} ${log_dir}/${fn}
