@@ -471,6 +471,14 @@ function ds()
 	fi
 }
 
+function dsc()
+{
+	if [ -f ${HOME}/tmp/scratch ];then
+		local vars=$(cat ${HOME}/tmp/scratch|head -n 1|tr -d "\r"|tr -d "\n")
+		echo $vars | sed -e 's/commit //'
+	fi
+}
+
 function dsh()
 {
 	du -sh
@@ -723,6 +731,11 @@ function gda()
 	fi
 }
 
+function gdsab()
+{
+	git diff $(dsc)^ $(dsc) "$@"
+}
+
 function gdp()
 {
 	git diff -p -U100000 --raw "$@"
@@ -774,7 +787,7 @@ function gkd()
 	if [ $# -ge 1 ];then
 		gitk "$@" &
 	else
-		gitk $(ds) &
+		gitk $(dsc) &
 	fi
 }
 
