@@ -1,4 +1,6 @@
 #!/bin/bash
+#https://github.com/mkl0301/callgraphviz/blob/master/calltree.sh
+#http://www.toolchainguru.com/2011/03/c-calltrees-in-bash-revisited.html
 
 touch ~/calltree.deny
 
@@ -14,64 +16,61 @@ callers() { cscope ${GRAPHDB:+-f $GRAPHDB} -d -L3 $1; }
 
 # given a set of function names, find out how they're related
 filter_edges() { local sym cscope_line
-    while read -a sym; do
-        fdefine $sym | while read -a cscope_line; do
-            grep -wq ${cscope_line[1]} ${1:-<(echo)} &&
-            printf "${cscope_line[1]}\t[href=\"${cscope_line[0]}:${cscope_line[2]}\"]\t/*fdefine*/\n"
-        done
-        callees $sym | while read -a cscope_line; do
-            grep -wq ${cscope_line[1]} ${1:-<(echo)} &&
-            printf "$sym->${cscope_line[1]}\t[label=\"${cscope_line[0]}:${cscope_line[2]}\"]\t/*callee*/\n"
-        done
-        callers $sym | while read -a cscope_line; do
-            grep -wq ${cscope_line[1]} ${1:-<(echo)} &&
-            printf "${cscope_line[1]}->$sym\t[label=\"${cscope_line[0]}:${cscope_line[2]}\"]\t/*caller*/\n"
-        done
-    done
+	while read -a sym; do
+		fdefine $sym | while read -a cscope_line; do
+		grep -wq ${cscope_line[1]} ${1:-<(echo)} && printf "${cscope_line[1]}\t[href=\"${cscope_line[0]}:${cscope_line[2]}\"]\t/*fdefine*/\n"
+	done
+	callees $sym | while read -a cscope_line; do
+	grep -wq ${cscope_line[1]} ${1:-<(echo)} && printf "$sym->${cscope_line[1]}\t[label=\"${cscope_line[0]}:${cscope_line[2]}\"]\t/*callee*/\n"
+done
+callers $sym | while read -a cscope_line; do
+grep -wq ${cscope_line[1]} ${1:-<(echo)} && printf "${cscope_line[1]}->$sym\t[label=\"${cscope_line[0]}:${cscope_line[2]}\"]\t/*caller*/\n"
+done
+done
 }
 
 # present list of function names to filter_edges properly
 edges() { local tfile=/tmp/edges.$RANDOM
-    cat > $tfile
-    filter_edges $tfile <$tfile
-    rm $tfile
+	cat > $tfile
+	filter_edges $tfile <$tfile
+	rm $tfile
 }
 
 # append unknown symbol names out of lines of cscope output
 filter_cscope_lines() { local cscope_line
-    while read -a cscope_line; do
-        grep -wq ${cscope_line[1]} ${1:-/dev/null} || echo ${cscope_line[1]}
-    done 
+	while read -a cscope_line; do
+		grep -wq ${cscope_line[1]} ${1:-/dev/null} || echo ${cscope_line[1]}
+	done
 }
 
 # given a set of function names piped in, help spit out all their callers or callees that aren't already in the set
 descend() { local symbol cnt=0 max=${3:-0}
-    while read -a symbol; do
+while read -a symbol; do
 	if [ $max -ne 0 -a $cnt -eq $max ]; then return 0 ; fi
 	cnt=$(($cnt+1))
-        $1 $symbol | filter_cscope_lines $2
-    done
+	$1 $symbol | filter_cscope_lines $2
+done
 }
 
 # discover functions upstream of initial set
 all_callers() { local tfile=/tmp/all_callers.$RANDOM
-    cat ${1:+<(echo $1)} > $tfile
-    descend callers $tfile ${2:-0} <$tfile >>$tfile
-    cat $tfile; rm $tfile
+	cat ${1:+<(echo $1)} > $tfile
+	descend callers $tfile ${2:-0} <$tfile >>$tfile
+	cat $tfile; rm $tfile
 }
 
 # discover functions downstream of initial set
 all_callees() { local tfile=/tmp/all_callees.$RANDOM
-    cat ${1:+<(echo $1)} > $tfile
-    descend callees $tfile ${2:-0}<$tfile >>$tfile
-    cat $tfile; rm $tfile
+	cat ${1:+<(echo $1)} > $tfile
+	descend callees $tfile ${2:-0}<$tfile >>$tfile
+	cat $tfile; rm $tfile
 }
 
 # intersection of all_callees(a) and all_callers(b)
 call_tree() { local tfile=/tmp/graph_filter.$RANDOM
-    all_callees $1 | sort -u > $tfile
-    comm -12 $tfile <(all_callers $2 | sort -u);
-    rm $tfile
+	all_callees $1 | sort -u > $tfile
+	comm -12 $tfile <(all_callers $2 | sort -u);
+	rm $tfile
 }
 
 # all functions downstream of callers of argument
@@ -79,9 +78,9 @@ all_callerees() { callers $1 | filter_cscope_lines | all_callees; }
 
 # odd experimental set of calls that might help spot potential memory leaks
 call_leaks() { local tfile=/tmp/graph_filter.$RANDOM
-    all_callerees $1 | sort -u > $tfile
-    comm -2 $tfile <(all_callers $2 | sort -u)
-    rm $tfile
+	all_callerees $1 | sort -u > $tfile
+	comm -2 $tfile <(all_callers $2 | sort -u)
+	rm $tfile
 }
 
 # all the ways to get from (a,b,...z) to (a,b,...z)
@@ -92,10 +91,10 @@ graph() { printf "digraph iftree {\ngraph [rankdir=LR, concentrate=true];\nnode 
 
 # filter out unwanted (as specified in “~/calltree.deny”) and/or unnecessary edges
 graph_filter() { local tfile=/tmp/graph_filter.$RANDOM
-    cat > $tfile
-    grep fdefine $tfile
-    grep $1 $tfile | grep -vf ~/calltree.deny | cut -f1,3
-    rm $tfile
+	cat > $tfile
+	grep fdefine $tfile
+	grep $1 $tfile | grep -vf ~/calltree.deny | cut -f1,3
+	rm $tfile
 }
 
 # how to invoke zgrviewer as a viewer
@@ -128,4 +127,4 @@ dot2png() { dot -Tpng -o $1; }
 dot2jpg() { dot -Tjpg -o $1; }
 dot2html() { dot -Tpng -o $1.png -Tcmapx -o $1.map; (echo "<IMG SRC="$1.png" USEMAP="#iftree" />"; cat $1.map)  > $1.html; }
 
-$1 "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
+#$1 "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9"
