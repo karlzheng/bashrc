@@ -72,11 +72,10 @@ edges()
 filter_cscope_lines()
 {
 	local cscope_line
-	while read -a cscope_line; do
-		grep -wq ${cscope_line[1]} ${1:-/dev/null} || echo ${cscope_line[1]
-	}
 
-done
+	while read -a cscope_line; do
+		grep -wq ${cscope_line[1]} ${1:-/dev/null} || echo ${cscope_line[1]}
+	done
 }
 
 # given a set of function names piped in, help spit out all their callers or callees that aren't already in the set
