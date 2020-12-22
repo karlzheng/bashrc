@@ -741,6 +741,19 @@ function gdp()
 	git diff -p -U100000 --raw "$@"
 }
 
+function csvg()
+{
+	local fn=/tmp/csvg.svg
+
+	if [ $# -gt 1 ];then
+		cflow -b -m $2 $1 | tree2dotx | dot -Tsvg -o ${fn}
+	else
+		cflow -b $1 | tree2dotx | dot -Tsvg -o ${fn}
+	fi
+
+	n ${fn}
+}
+
 function genmarkdownlink()
 {
 	for f in $(/bin/ls);do
