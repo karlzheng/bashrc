@@ -226,6 +226,12 @@ function ct()
 	fi
 }
 
+function t.sh()
+{
+	local fn=${HOME}/tmp/tee.log
+	cat ${fn}
+}
+
 function ctt()
 {
 	mkdir -p ~/tmp/t
