@@ -1763,9 +1763,9 @@ function sudopath()
 
 function swapFileName()
 {
-  mv $1 tmp.$$
-  mv $2 $1
-  mv tmp.$$ $2
+	mv $1 tmp.$$
+	mv $2 $1
+	mv tmp.$$ $2
 }
 
 function sallmybashrc()
@@ -1776,6 +1776,35 @@ function sallmybashrc()
 function t()
 {
 	touch "$@"
+}
+
+function tt.sh()
+{
+	local fn=${HOME}/tmp/tee.log
+	local tn=/tmp/t.tar
+
+	if [ $# == 0 ];then
+		echo "Sure to list ${fn} and to tar rf ${tn} ?"
+		read -p "y|n" c
+
+		if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+			if [ -f ${tn} ];then
+				/bin/mv ${tn} ${tn}.old
+			fi
+			while read ln; do
+				tar rf ${tn} ${ln}
+			done < ${fn}
+		fi
+	else
+		echo 'Sure to list ${fn} and exec cmd:"' "$@" '" on it ?'
+		read -p "y|n" c
+
+		if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+			while read ln; do
+				$@ ${ln}
+			done < ${fn}
+		fi
+	fi
 }
 
 function tfind()
