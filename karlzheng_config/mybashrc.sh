@@ -674,14 +674,14 @@ function gba()
 function gbi()
 {
 	readEnsureKey "gitbook init . $@"
-    [ $? == 0 ] || return
+	[ $? == 0 ] || return
 	gitbook init . "$@"
 }
 
 function gbs()
 {
 	readEnsureKey "gitbook serve $@"
-    [ $? == 0 ] || return
+	[ $? == 0 ] || return
 	gitbook serve "$@"
 }
 
@@ -816,6 +816,16 @@ function gkf()
 function glag()
 {
 	git log --all --graph "$@"
+}
+
+function gm.sh()
+{
+	local fn=${HOME}/tmp/m.tar
+
+	read -p "Sure tar to  ${fn}? y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		gall.sh ${fn}
+	fi
 }
 
 function gt()
@@ -1778,6 +1788,16 @@ function t()
 	touch "$@"
 }
 
+function tm.sh()
+{
+	local fn=${HOME}/tmp/m.tar
+
+	read -p "Sure tar xmf ${fn}? y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		tar xmf ${fn}
+	fi
+}
+
 function tt.sh()
 {
 	local fn=${HOME}/tmp/tee.log
@@ -1844,7 +1864,7 @@ function uzl()
 function uz()
 {
 	readEnsureKey "unzip -x $@"
-    [ $? == 0 ] || return
+	[ $? == 0 ] || return
 	unzip -x "$@"
 }
 

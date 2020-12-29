@@ -229,6 +229,7 @@ function ct()
 function t.sh()
 {
 	local fn=${HOME}/tmp/tee.log
+
 	cat ${fn}
 }
 
