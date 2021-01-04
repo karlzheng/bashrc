@@ -720,6 +720,11 @@ function gd()
 
 function gda()
 {
+	git diff $(dsc)^ $(dsc) "$@"
+}
+
+function gdh()
+{
 	if [ $# -eq 0 ];then
 		git diff HEAD^ HEAD
 	else
@@ -729,11 +734,6 @@ function gda()
 			git diff "$@"
 		fi
 	fi
-}
-
-function gdsab()
-{
-	git diff $(dsc)^ $(dsc) "$@"
 }
 
 function gdp()
