@@ -824,6 +824,9 @@ function gm.sh()
 
 	read -p "Sure tar to  ${fn}? y|n" c
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		if [ -f ${fn} ];then
+			/bin/mv -f ${fn} ${fn}.old
+		fi
 		gall.sh ${fn}
 	fi
 }
