@@ -339,6 +339,34 @@ function cl()
 	fi
 }
 
+function clf()
+{
+	echo "$(fa)"
+
+	read -p "Are you sure to clang-format -i it y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		clang-format -i $(fa)
+	fi
+}
+
+function clformat()
+{
+	find . -regex '.*\.\(c\|h\|cu\|cpp\|cxx\|hpp\)' -exec clang-format -i {} \;
+}
+
+function csvg()
+{
+	local fn=/tmp/csvg.svg
+
+	if [ $# -gt 1 ];then
+		cflow -b -m $2 $1 | tree2dotx | dot -Tsvg -o ${fn}
+	else
+		cflow -b $1 | tree2dotx | dot -Tsvg -o ${fn}
+	fi
+
+	n ${fn}
+}
+
 function ctrash()
 {
 	#/bin/rm -rf ~/.trash;
@@ -588,11 +616,6 @@ function fo()
 	done
 }
 
-function clformat()
-{
-	find . -regex '.*\.\(c\|h\|cu\|cpp\|cxx\|hpp\)' -exec clang-format -i {} \;
-}
-
 function fm80()
 {
 	astyle --style=kr --max-code-length=80 "$@"
@@ -741,17 +764,10 @@ function gdp()
 	git diff -p -U100000 --raw "$@"
 }
 
-function csvg()
+function ggc()
 {
-	local fn=/tmp/csvg.svg
-
-	if [ $# -gt 1 ];then
-		cflow -b -m $2 $1 | tree2dotx | dot -Tsvg -o ${fn}
-	else
-		cflow -b $1 | tree2dotx | dot -Tsvg -o ${fn}
-	fi
-
-	n ${fn}
+	git reflog expire --expire=now --all "$@"
+	git gc --prune=now --aggressive "$@"
 }
 
 function genmarkdownlink()
