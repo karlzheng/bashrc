@@ -1807,7 +1807,7 @@ function t()
 	touch "$@"
 }
 
-function tm.sh()
+function txm.sh()
 {
 	local fn=${HOME}/tmp/m.tar
 
@@ -1817,10 +1817,10 @@ function tm.sh()
 	fi
 }
 
-function tt.sh()
+function trm.sh()
 {
 	local fn=${HOME}/tmp/tee.log
-	local tn=/tmp/t.tar
+	local tn=${HOME}/tmp/m.tar
 
 	if [ $# == 0 ];then
 		echo "Sure to list ${fn} and to tar rf ${tn} ?"
