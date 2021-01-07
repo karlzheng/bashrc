@@ -19,6 +19,11 @@ function seplog()
 	local log_dir=$(echo ${fn%\.*})
 	local filter_file="${log_dir}/${fn}.filter.txt"
 
+	if [ -d "${log_dir}" ];then
+		[ -d "${log_dir}.old" ] && /bin/rm -rf ${log_dir}.old
+		mv ${log_dir} ${log_dir}.old
+	fi
+
 	mkdir -p ${log_dir}
 	while read l; do
 		echo ${l}
