@@ -2,22 +2,19 @@
 
 function seplog()
 {
-	local fn=$(lf)
-	read -p "seplog ${fn} y|n ?" c
-
-	if [ "x${c}" != "x" ];then
-		#fn=$(find . -regex '.*\.\(log\|txt\)')
-		fn=$(find . -maxdepth 1 -regex '.*\.\(log\|txt\)' | xargs ls -lt | head -n 1 | awk '{print $NF}')
-		read -p "seplog ${fn} y|n ?" c
-		if [ "x${c}" != "x" ];then
-			return;
-		fi
-	fi
+	#local fn=$(lf)
+	local fn=$(find . -maxdepth 1 -regex '.*\.\(log\|txt\)' | xargs ls -lt | head -n 1 | awk '{print $NF}')
 
 	if [ "x${fn}" == "x" ];then
 		echo "Not Found *.log | *.txt"
 		return;
 	fi
+
+	read -p "seplog ${fn} y|n ?" c
+	if [ "x${c}" != "x" ];then
+		return;
+	fi
+
 
 	local log_dir=$(echo ${fn%\.*})
 	local filter_file="${log_dir}/${fn}.filter.txt"
@@ -40,6 +37,9 @@ function seplog()
 	done < ~/log.keyword.txt
 
 	sort -n -k 2 -t : ${filter_file} -o ${filter_file}
+
+	uniq ${filter_file} ${filter_file}.uniq
+	mv ${filter_file}.uniq ${filter_file}
 
 	/bin/cp ${fn} ${log_dir}/${fn}
 	#vi ${filter_file} ${log_dir}/${fn}
