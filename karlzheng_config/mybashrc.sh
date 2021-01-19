@@ -749,7 +749,7 @@ function gda()
 function gdh()
 {
 	if [ $# -eq 0 ];then
-		git diff HEAD^ HEAD
+		git diff HEAD^ HEAD "$@"
 	else
 		if [ $# -eq 1 ];then
 			git diff $1^ $1
