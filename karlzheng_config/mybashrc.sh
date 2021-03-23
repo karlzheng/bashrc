@@ -1197,6 +1197,25 @@ function k()
 	fi
 }
 
+function ksformat.sh()
+{
+	local fn
+
+	if [ $# -ge 1 ];then
+		fn=$1
+	else
+		fn=$(fa)
+	fi
+
+	read -p "Sure to format ${fn} using kernel code style ? y|n" c
+
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		astyle ${fn}
+		uncrustify --no-backup ${fn}
+		clang-format -i ${fn}
+	fi
+}
+
 function ksvn()
 {
 		if [ $# -lt 1 ];then
