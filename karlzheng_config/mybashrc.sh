@@ -266,10 +266,20 @@ function append_daily_path()
 		wc -l ${HOME}/dev/${MYUSERNAME}/daily_path |awk '{print $1}' > ${HOME}/dev/${MYUSERNAME}/total_count
 }
 
-function attachjlink()
+#function attachjlink()
+#{
+	#local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
+	#VBoxManage controlvm win7 usbattach ${jlinkuuid}
+#}
+
+function attach.usb.serial()
 {
-	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
-	VBoxManage controlvm win7 usbattach ${jlinkuuid}
+	#usb_serial=$(/bin/ls /dev/tty.u*)
+	local us=$(VBoxManage list usbhost | grep "FT232R USB UART" -B 7 | grep UUID | awk '{print $2}')
+
+	for u in ${us[@]}; do
+		VBoxManage controlvm default usbattach ${u};
+	done
 }
 
 function addversion()
@@ -432,10 +442,19 @@ function d()
 	fi
 }
 
-function detachjlink()
+#function detachjlink()
+#{
+	#local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
+	#VBoxManage controlvm win7 usbdetach ${jlinkuuid}
+#}
+
+function detach.usb.serial()
 {
-	local jlinkuuid=$(VBoxManage list usbhost -l|grep J-Link -B 8|grep UUID|awk '{print $2}')
-	VBoxManage controlvm win7 usbdetach ${jlinkuuid}
+	local us=$(VBoxManage list usbhost | grep "FT232R USB UART" -B 7 | grep UUID | awk '{print $2}')
+
+	for u in ${us[@]}; do
+		VBoxManage controlvm default usbdetach ${u};
+	done
 }
 
 function dnw()
@@ -2325,6 +2344,8 @@ function my_bash_login_auto_exec_func()
 	/Users/karlzheng/Library/Android/sdk/platform-tools
 	/usr/local/opt/coreutils/libexec/gnubin
 	/usr/local/opt/findutils/libexec/gnubin
+	/Users/karlzheng/Library/xPacks/@xpack-dev-tools/qemu-arm/2.8.0-12.1/.content/bin/
+	/usr/local/Cellar/qemu/5.1.0/bin/
 	);
 	local mypath=""
 	for p in ${path_list[@]};do
