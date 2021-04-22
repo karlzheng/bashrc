@@ -342,6 +342,13 @@ function brm()
 	fi
 }
 
+function cfiles.sh()
+{
+	local fn=${HOME}/tmp/tee.log
+
+	find . -type d -name '.git' -prune -o -type d -name 'out' -prune -o -regex '.*\.\(h\|c\|cpp\|cxx\)' -type f | tee ${fn}
+}
+
 function cl()
 {
 	if [ -e ~/tmp/bash_history ];then
@@ -457,6 +464,33 @@ function detach.usb.serial()
 	done
 }
 
+function dh()
+{
+	df -h "$@"
+}
+
+function diff()
+{
+	/usr/bin/diff -x '.svn' "$@"
+}
+
+function dkrma()
+{
+	read -p " docker rm $(docker ps -a -q) y|n ?" c
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		docker rm $(docker ps -a -q)
+	fi
+}
+
+function dl()
+{
+	if [ -d ~/Downloads/ ];then
+		cd ~/Downloads/
+	else
+		cd ~/下载/
+	fi
+}
+
 function dnw()
 {
 	local dnwpro=$(which dnw)
@@ -476,38 +510,6 @@ function dnw()
 		echo
 	fi
 	return 0
-}
-
-function dockerrma
-{
-	read -p " docker rm $(docker ps -a -q) y|n ?" c
-	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-		docker rm $(docker ps -a -q)
-	fi
-}
-
-function dud()
-{
-	local IFS=$'\n'
-	: > ${HOME}/dev/dud.tmp.log
-	for i in $(lsd);do
-		du -sh "$i" >> ${HOME}/dev/dud.tmp.log
-	done
-	cat ${HOME}/dev/dud.tmp.log | sort -h
-}
-
-function diff()
-{
-	/usr/bin/diff -x '.svn' "$@"
-}
-
-function dl()
-{
-	if [ -d ~/Downloads/ ];then
-		cd ~/Downloads/
-	else
-		cd ~/下载/
-	fi
 }
 
 function ds()
@@ -544,6 +546,16 @@ function dt-()
 function dtt()
 {
 	date +%Y%m%d%H%M%S
+}
+
+function dud()
+{
+	local IFS=$'\n'
+	: > ${HOME}/dev/dud.tmp.log
+	for i in $(lsd);do
+		du -sh "$i" >> ${HOME}/dev/dud.tmp.log
+	done
+	cat ${HOME}/dev/dud.tmp.log | sort -h
 }
 
 function e()
