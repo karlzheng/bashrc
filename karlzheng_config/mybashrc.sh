@@ -707,7 +707,7 @@ function gau()
 
 function gb()
 {
-	git branch "$@"
+	git branch --show-current "$@"
 }
 
 function gba()
