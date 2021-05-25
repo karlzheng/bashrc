@@ -3,6 +3,7 @@
 import commands
 import os
 
+project = ""
 output_dir = "out/A3930/"
 output_file = "/Users/karlzheng/tmp/tmp_work_file/1.c"
 c_file = ""
@@ -51,8 +52,9 @@ def get_gcc_command(d_file):
 	cmd += "| sed 's/cmd_.*arm-none-eabi-g/arm-none-eabi-g/'| sed 's/-c -o .*//'"
 	print(cmd)
 	status, rs = commands.getstatusoutput(cmd)
-	rs += ' -c '
 	rs += ' -E -fdirectives-only '
+	#rs += ' -fdump-rtl-expand '
+	rs += ' -c '
 	rs += ' -o ' + output_file
 	rs += " ../../" + c_file
 	print(rs)
@@ -82,7 +84,20 @@ def delete_pound_key_line():
 	print(cmd)
 	os.system(cmd)
 
+def set_global_vars():
+	global project
+	global output_dir
+	cmd = r'/bin/ls -t out/ | head -n 1'
+	status, rs = commands.getstatusoutput(cmd)
+	project = rs
+	output_dir = "out/" + project + "/"
+	d = os.getenv("HOME") + "/tmp/tmp_work_file/"
+	cmd = 'mkdir -p ' + d
+	os.system(cmd)
+	output_file = d + "/1.c"
+
 if __name__ == "__main__":
+	set_global_vars()
 	d_file = get_dot_d_file()
 	gcc_command = get_gcc_command(d_file)
 	backup_d_file(d_file)
