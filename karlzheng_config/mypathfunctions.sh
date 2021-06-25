@@ -233,6 +233,12 @@ function t.sh()
 	cat ${fn}
 }
 
+function ctlog()
+{
+	mkdir -p ~/tmp/t/log/
+	cd ~/tmp/t/log
+}
+
 function ctt()
 {
 	mkdir -p ~/tmp/t
