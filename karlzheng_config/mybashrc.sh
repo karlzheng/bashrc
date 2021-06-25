@@ -1155,7 +1155,8 @@ function hex2bin()
 function hex.sort.sh()
 {
 	#https://blog.csdn.net/cuma2369/article/details/107668815
-	perl -lpe '$_=hex' $(fa) | paste -d" " - $(fa) | sort -n | cut -d" " -f 2-
+	#perl -lpe '$_=hex' $(fa) | paste -d" " - $(fa) | sort -n | cut -d" " -f 2-
+	perl -lpe '$_=hex' $(fa) | paste -d" " - $(fa) | sort -n
 }
 
 function hi()
