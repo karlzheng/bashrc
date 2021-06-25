@@ -30,9 +30,9 @@ function seplog()
 		echo ${l}
 		local kfn=$(echo "${l}" | sed s/[[:space:]]//g)
 		echo grep "${l}" "${fn}"
-		grep -q -Hn "${l}" "${fn}"
+		grep -q -aHn "${l}" "${fn}"
 		if [ $? == 0 ];then
-			grep -Hn "${l}" "${fn}" >> ${filter_file}
+			grep -aHn "${l}" "${fn}" >> ${filter_file}
 		fi
 	done < ~/log.keyword.txt
 

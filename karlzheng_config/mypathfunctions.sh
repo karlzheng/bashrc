@@ -233,6 +233,14 @@ function t.sh()
 	cat ${fn}
 }
 
+function ctlog()
+{
+	local lfp=${HOME}/tmp/log/
+
+	mkdir -p ${lfp}
+	cd ${lfp}
+}
+
 function ctt()
 {
 	mkdir -p ~/tmp/t
