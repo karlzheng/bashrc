@@ -103,5 +103,5 @@ if __name__ == "__main__":
 	backup_d_file(d_file)
 	run_gcc_command(gcc_command)
 	restore_d_file(d_file)
-	delete_pound_key_line()
+	#delete_pound_key_line()
 	run_ksformat()
