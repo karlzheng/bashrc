@@ -1152,6 +1152,12 @@ function hex2bin()
 	arm-none-eabi-objcopy -Obinary $1 $2
 }
 
+function hex.sort.sh()
+{
+	#https://blog.csdn.net/cuma2369/article/details/107668815
+	perl -lpe '$_=hex' $(fa) | paste -d" " - $(fa) | sort -n | cut -d" " -f 2-
+}
+
 function hi()
 {
 	if [ $# -eq 0 ];then
