@@ -3,7 +3,7 @@
 function seplog()
 {
 	#local fn=$(lf)
-	local fn=$(find . -maxdepth 1 -regex '.*\.\(log\|txt\)' | xargs ls -lt | head -n 1 | awk '{print $NF}')
+	local fn=$(find . -maxdepth 1 -regex '.*\.\(log\|txt\|c\)' | xargs ls -lt | head -n 1 | awk '{print $NF}')
 
 	if [ "x${fn}" == "x" ];then
 		echo "Not Found *.log | *.txt"
@@ -14,7 +14,6 @@ function seplog()
 	if [ "x${c}" != "x" ];then
 		return;
 	fi
-
 
 	local log_dir=$(echo ${fn%\.*})
 	local filter_file="${log_dir}/${fn}.filter.txt"
@@ -28,13 +27,17 @@ function seplog()
 
 	while read l; do
 		echo ${l}
+		echo ${l} | grep -q '^#'
+		if [ $? == 0 ];then
+			continue;
+		fi
 		local kfn=$(echo "${l}" | sed s/[[:space:]]//g)
 		echo grep "${l}" "${fn}"
 		grep -q -aHn "${l}" "${fn}"
 		if [ $? == 0 ];then
 			grep -aHn "${l}" "${fn}" >> ${filter_file}
 		fi
-	done < ~/log.keyword.txt
+	done < ~/log.keyword.mk
 
 	sort -n -k 2 -t : ${filter_file} -o ${filter_file}
 

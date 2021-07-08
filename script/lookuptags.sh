@@ -37,12 +37,12 @@ if [ "x${OS}" = "xOSX" ];then
 			-regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\|crf\|d\|\
 			svn-work\)' -type f -printf "%p\t%p\t1\n" | sort -f >> fullfilenametags
 	else
-        find . -type d -name '.git' -prune -o -type d -name '.repo' -prune \
-            -type d -name 'out' -prune -o ! \
-            -regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\
-            \|.DS_Store\
-            \|crf\|d\|svn-work\)' -type f -printf "%p\n" | sort -f >> \
-            fullfilenametags
+		find . -type d -name '.git' -prune -o -type d -name '.repo' -prune \
+		    -type d -name 'out' -prune -o ! \
+		    -regex '.*\.\(class\|zip\|tar\|cmd\|png\|gif\|swp\|o\|tmp\|svn-base\
+		    \|.DS_Store\
+		    \|crf\|d\|svn-work\)' -type f -printf "%p\n" | sort -f >> \
+		    fullfilenametags
 	fi
 else
 	if [ -n "$1" ]; then
