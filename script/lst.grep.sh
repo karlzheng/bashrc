@@ -11,12 +11,13 @@ function lst.grep()
 		return
 	fi
 
-	grep ASSERT $(fa) -A 45 | sed -e 's/\[.*]//' | \
-		grep 'Possible Backtrace:' -A 20 | \
-		grep 'Thread List' -B 20 | \
+	#grep ASSERT $(fa) -A 45 |
+	grep 'Possible Backtrace:' -A 20 $(fa) | \
+		sed -e 's/\[.*]//' | \
+		grep 'Thread' -B 20 | \
 		grep -v  'Possible Backtrace:' | \
-		grep -v 'Thread List' | \
-		sed -e 's/[[:space:]]//g' |  
+		grep -v 'Thread' | \
+		sed -e 's/[[:space:]]//g' |
 		tr A-Z a-z > ${key_file}
 
 	#sort -n -k 2 -t : ${filter_file} -o ${filter_file}
@@ -36,6 +37,8 @@ function lst.grep()
 		grep -aiHn -B 25 -A 25 "${l}" "${sf}" >> ${of}
 		echo "" >> ${of}
 	done < ${key_file}
+
+	sed -i"" -e 's#-/#- /#' ${of}
 }
 
 lst.grep "$@"
