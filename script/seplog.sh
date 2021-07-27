@@ -3,7 +3,7 @@
 function seplog()
 {
 	#local fn=$(lf)
-	local fn=$(find . -maxdepth 1 -regex '.*\.\(log\|txt\|c\)' | xargs ls -lt | head -n 1 | awk '{print $NF}')
+	local fn=$(find . -maxdepth 1 -regex '.*\.\(log\|txt\|c\)' | xargs -I{} ls -lt "{}" | head -n 1 | awk '{print $NF}')
 
 	if [ "x${fn}" == "x" ];then
 		echo "Not Found *.log | *.txt"

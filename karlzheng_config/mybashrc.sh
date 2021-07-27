@@ -820,7 +820,7 @@ function ginit()
 
 function git.sync.sh()
 {
-	git stash 
+	git stash
 	git pull --rebase
 	git push
 	git stash pop
@@ -1164,7 +1164,7 @@ function hex.sort.sh()
 {
 	#https://blog.csdn.net/cuma2369/article/details/107668815
 	#perl -lpe '$_=hex' $(fa) | paste -d" " - $(fa) | sort -n | cut -d" " -f 2-
-	perl -lpe '$_=hex' $(fa) | paste -d" " - $(fa) | sort -n
+	perl -lpe '$_=hex' $(fa) | paste -d" " - $(fa) | sort -n -r
 }
 
 function hi()
@@ -1833,10 +1833,23 @@ function sp.old()
 		ap
 }
 
-
 function sproxy()
 {
 	ssh -fNg -D 1080 west
+}
+
+# strip space of file name
+function ss.name.sh()
+{
+	local new_name
+
+	find .  -name "*.log" -type f -print | while read name; do
+		new_name=$(echo $name | tr ' ' '_' | tr ':' '.' | tr '：' '_')
+		if [ "x${name}" != "x${new_name}" ];then
+			echo "mv ${name} ${new_name}"
+			mv "${name}" "${new_name}"
+		fi
+	done
 }
 
 function sudopath()

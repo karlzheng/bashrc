@@ -235,7 +235,7 @@ function t.sh()
 
 function ctlog()
 {
-	local lfp=${HOME}/tmp/log/
+	local lfp=${HOME}/tmp/log/t
 
 	mkdir -p ${lfp}
 	cd ${lfp}
