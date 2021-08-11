@@ -44,7 +44,7 @@ def get_dot_d_file():
 	fn, ext = os.path.splitext(fn)
 	#print(fn)
 	d_file = output_dir + fp + "/" + '.' + fn + ".o.d"
-	print(d_file)
+
 	return d_file
 
 def get_gcc_command(d_file):
@@ -96,12 +96,22 @@ def set_global_vars():
 	os.system(cmd)
 	output_file = d + "/1.c"
 
-if __name__ == "__main__":
+def main():
 	set_global_vars()
 	d_file = get_dot_d_file()
+
+	if not os.path.exists(d_file):
+		print("Not exist file:\r\n%s"%(d_file))
+		return
+	else:
+		print("Exist file:\r\n%s"%(d_file))
+
 	gcc_command = get_gcc_command(d_file)
 	backup_d_file(d_file)
 	run_gcc_command(gcc_command)
 	restore_d_file(d_file)
 	#delete_pound_key_line()
 	run_ksformat()
+
+if __name__ == "__main__":
+	main()
