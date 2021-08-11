@@ -822,7 +822,6 @@ function git.sync.sh()
 {
 	git stash
 	git pull --rebase
-	git push
 	git stash pop
 }
 
