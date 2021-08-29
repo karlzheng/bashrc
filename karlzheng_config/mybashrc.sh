@@ -1798,7 +1798,7 @@ function sl()
 	tr " " "\n"
 }
 
-function son()
+function sock.proxy.on.sh()
 {
 	if [ "x${OS}" == "xOSX" ];then
 		echo networksetup -setsocksfirewallproxystate Wi-Fi on
@@ -1806,7 +1806,7 @@ function son()
 	fi
 }
 
-function soff()
+function sock.proxy.off.sh()
 {
 	if [ "x${OS}" == "xOSX" ];then
 		echo networksetup -setsocksfirewallproxystate Wi-Fi off
