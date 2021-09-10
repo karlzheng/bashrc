@@ -523,7 +523,7 @@ function ds()
 function dsc()
 {
 	if [ -f ${HOME}/tmp/scratch ];then
-		local vars=$(cat ${HOME}/tmp/scratch|head -n 1|tr -d "\r"|tr -d "\n")
+		local vars=$(cat ${HOME}/tmp/scratch | head -n 1 | tr -d "\r" | tr -d "\n")
 		echo $vars | sed -e 's/commit //'
 	fi
 }
@@ -1470,6 +1470,14 @@ function nq()
 function ns()
 {
 	n SUMMARY.md
+}
+
+function nt()
+{
+	if [ -f ${HOME}/tmp/scratch ];then
+		local vars=$(cat ${HOME}/tmp/scratch | tail -n 1 | tr -d "\r" | tr -d "\n")
+		n "${vars}"
+	fi
 }
 
 function of()
