@@ -575,6 +575,11 @@ function ea()
 	fi
 }
 
+function ef()
+{
+	echo $(fa)
+}
+
 function ep()
 {
 	if [ $# -ge 1 ];then
