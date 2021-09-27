@@ -1891,6 +1891,22 @@ function t()
 	touch "$@"
 }
 
+function co.tmp.branch.sh()
+{
+	local id=`dsc`
+	local br=tmp.branch
+
+	read -p "Are you sure to create ${br} for git commit id: ${id} ? y|n" c
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		local cb=$(gb)
+		if [ "x${cb}" == "x${br}" ];then
+			git checkout master
+			git branch -D ${br}
+		fi
+		git checkout ${id} -b ${br}
+	fi
+}
+
 function txm.sh()
 {
 	local fn=${HOME}/tmp/m.tar
@@ -2381,7 +2397,7 @@ function my_bash_login_auto_exec_func()
 	~/bin/bin
 	~/bashrc/script/
 	~/software/bin
-	~/software/arm-2009q3/bin/
+	~/software/gcc-arm-none-eabi/bin/
 	~/software/arm-eabi-4.6/bin
 	~/software/android-sdk-linux_86/platform-tools
 	~/software/android-sdk-linux_86/tools
