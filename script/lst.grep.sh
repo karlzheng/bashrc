@@ -12,7 +12,7 @@ function lst.grep()
 	fi
 
 	#grep ASSERT $(fa) -A 45 |
-	grep 'Possible Backtrace:' -A 20 $(fa) | \
+	grep 'Possible Backtrace:' -aA 20 $(fa) | \
 		sed -e 's/\[.*]//' | \
 		grep 'Thread' -B 20 | \
 		grep -v  'Possible Backtrace:' | \
