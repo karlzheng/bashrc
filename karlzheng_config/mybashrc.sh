@@ -2150,25 +2150,26 @@ function vm.sh()
 
 function vmdis()
 {
-		local tmpfile="/tmp/vmdis.c"
+	local tmpfile="~/tmp/tmp_work_file/2.c"
 
-		if [ -f $tmpfile ];then
-				mv $tmpfile $tmpfile.old -f
+	if [ -f $tmpfile ];then
+		mv $tmpfile $tmpfile.old -f
+	fi
+
+	if [ $# -ge 1 ];then
+		local startaddress="0x"${1##0x}
+		if [ $# -eq 2 ];then
+			local stopaddress=$2
+		else
+			local stopaddress=$(printf "0x%x" $(($startaddress+0x200)))
 		fi
-		if [ $# -ge 1 ];then
-				local startaddress="0x"${1##0x}
-				if [ $# -eq 2 ];then
-						local stopaddress=$2
-				else
-						local stopaddress=$(printf "0x%x" $(($startaddress+0x500)))
-				fi
-				echo "arm-none-linux-gnueabi-objdump -S vmlinux --start-address=$startaddress --stop-address=$stopaddress > $tmpfile"
-				echo "the destinated disassemble file is:$tmpfile"
-				history -s "vmdis $@"
-				history -s "$tmpfile"
-				arm-none-linux-gnueabi-objdump -S vmlinux --start-address=$startaddress --stop-address=$stopaddress > $tmpfile
-				#vi $tmpfile
-		fi
+		echo "arm-none-eabi-objdump -S vmlinux --start-address=$startaddress --stop-address=$stopaddress | tee $tmpfile"
+		echo "the destinated disassemble file is:$tmpfile"
+		history -s "vmdis $@"
+		history -s "$tmpfile"
+		arm-none-eabi-objdump -S vmlinux --start-address=$startaddress --stop-address=$stopaddress | tee $tmpfile
+		#vi $tmpfile
+	fi
 }
 
 function vp()
