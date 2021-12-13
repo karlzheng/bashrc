@@ -40,10 +40,15 @@ def get_dot_d_file():
 	#print(cwd)
 	c_file = Neg_STR(get_fa_file()) - Neg_STR(cwd + '/')
 	fp, fn = os.path.split(c_file)
-	#print(fn)
+	print(fp)
+	print(fn)
 	fn, ext = os.path.splitext(fn)
-	#print(fn)
+	print(fn)
 	d_file = output_dir + fp + "/" + '.' + fn + ".o.d"
+	if not os.path.exists(d_file):
+		print("Not exist file:\r\n%s"%(d_file))
+		fp = "platform/main"
+		d_file = output_dir + fp + "/" + '.' + fn + ".o.d"
 
 	return d_file
 
@@ -56,6 +61,10 @@ def get_gcc_command(d_file):
 	#rs += ' -fdump-rtl-expand '
 	rs += ' -c '
 	rs += ' -o ' + output_file
+	#if os.path.exists(c_file):
+		#rs += " " + c_file
+	#else:
+		#rs += " ../../" + c_file
 	rs += " ../../" + c_file
 	print(rs)
 	return rs
@@ -64,6 +73,7 @@ def backup_d_file(d_file):
 	os.system("cp " + d_file + ' ' + d_file + '.bak')
 
 def run_gcc_command(cmd):
+	#print("cd " + output_dir + ';' + cmd)
 	os.system("cd " + output_dir + ';' + cmd)
 
 def restore_d_file(d_file):
@@ -95,6 +105,7 @@ def set_global_vars():
 	cmd = 'mkdir -p ' + d
 	os.system(cmd)
 	output_file = d + "/1.c"
+	print(output_file)
 
 def main():
 	set_global_vars()
