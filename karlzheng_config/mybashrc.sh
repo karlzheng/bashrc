@@ -580,6 +580,22 @@ function ef()
 	echo $(fa)
 }
 
+function em.sh()
+{
+	local fn="${HOME}/tmp/tmp_work_file/1.c"
+	local src="$(fa)"
+	local c
+
+	read -p "Are you sure expand macro for ${src} to ${fn} y|n ?" c
+
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		cd build
+		arm-none-eabi-gcc -DBUILD_VERSION=v2.5.0-rc3-43-gcc8686498a91 -DKERNEL -D_FORTIFY_SOURCE=2 -D__PROGRAM_START -D__ZEPHYR_SUPERVISOR__ -D__ZEPHYR__=1 -I../kernel/include -I../arch/arm/include -I../include -Izephyr/include/generated -I../soc/arm/bes_m4f/2500z -I/Users/karlzheng/zephyrproject/modules/hal/cmsis/CMSIS/Core/Include -isystem ../lib/libc/minimal/include -isystem /usr/local/Caskroom/gcc-arm-embedded/9-2020-q2-update/gcc-arm-none-eabi-9-2020-q2-update/bin/../lib/gcc/arm-none-eabi/9.3.1/include -isystem /usr/local/Caskroom/gcc-arm-embedded/9-2020-q2-update/gcc-arm-none-eabi-9-2020-q2-update/bin/../lib/gcc/arm-none-eabi/9.3.1/include-fixed -Os -imacros /Users/karlzheng/zephyrproject/zephyr/build/zephyr/include/generated/autoconf.h -ffreestanding -fno-common -g -mcpu=cortex-m4 -mthumb -mabi=aapcs -imacros /Users/karlzheng/zephyrproject/zephyr/include/toolchain/zephyr_stdint.h -Wall -Wformat -Wformat-security -Wno-format-zero-length -Wno-main -Wno-pointer-sign -Wpointer-arith -Wno-address-of-packed-member -Wno-unused-but-set-variable -Werror=implicit-int -fno-asynchronous-unwind-tables -fno-pie -fno-pic -fno-strict-overflow -fno-reorder-functions -fno-defer-pop -fmacro-prefix-map=/Users/karlzheng/zephyrproject/zephyr/samples/basic/blinky=CMAKE_SOURCE_DIR -fmacro-prefix-map=/Users/karlzheng/zephyrproject/zephyr=ZEPHYR_BASE -fmacro-prefix-map=/Users/karlzheng/zephyrproject=WEST_TOPDIR -ffunction-sections -fdata-sections -std=c99 -nostdinc -MD -MT ${fn} -MF ${fn}.d -E -fdirectives-only -c ${src} -o ${fn}
+		yes|ksformat.sh ${fn}
+		cd -
+	fi
+}
+
 function ep()
 {
 	if [ $# -ge 1 ];then
