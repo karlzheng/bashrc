@@ -27,6 +27,7 @@ def transfer(input):
 
 def wav2sbcHex(wavFilename):
 	sbcFilename = os.path.splitext(wavFilename)[0] + ".sbc"
+	#cmd = "sox %s -r 16000 -c 1 -b 16 wavefiles/%s.wav" % (wavFilename, sbcFilename)
 	cmd = "ffmpeg -i %s -ar 16000 -ac 1 %s" % (wavFilename, sbcFilename)
 	os.popen(cmd)
 	if os.path.isfile(sbcFilename):
