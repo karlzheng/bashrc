@@ -130,7 +130,7 @@ if [ $? == 0 ]; then
 	unalias la;
 fi
 if [ ${OS} == "OSX" ];then
-	alias ls='ls -G -a '
+	alias ls='/bin/ls -G -a '
 else
 	alias ls='ls --color=tty -a '
 fi
@@ -1622,13 +1622,17 @@ function rm()
 function rm.modifiedfiles.space()
 {
 	for f in $(git diff --stat|grep '|' | awk '{print $1}');do
-		[ -f ${f} ] && sed -i 's/[ \t]*$//g' ${f}
+		echo ${f}
+		if [ -e ${f} ];then
+			sed -i -r -e 's/[[:blank:]]*$//g' ${f}
+		fi
 	done
 }
 
 function rm.tail.space()
 {
-	sed -i 's/[ \t]*$//g' "$@"
+	#sed -i 's/[ \t]*$//g' "$@"
+	sed -i -r -e 's/[[:blank:]]*$//g' ${f}
 }
 
 function rplstr()
@@ -2407,7 +2411,12 @@ function my_bash_login_auto_exec_func()
 		sbl
 	fi
 
+	ajavapath
+
 	local path_list=(
+	/usr/local/opt/findutils/libexec/gnubin
+	/usr/local/opt/coreutils/libexec/gnubin/
+	/usr/local/Cellar/vim/8.2.4450/bin/
 	~/person_tools/
 	~/person/scripts/
 	~/bin
@@ -2427,8 +2436,6 @@ function my_bash_login_auto_exec_func()
 	~/software/rbox_Linux_Upgrade_Tool_v1.16
 	${JAVA_HOME}/bin
 	/Users/karlzheng/Library/Android/sdk/platform-tools
-	/usr/local/opt/coreutils/libexec/gnubin
-	/usr/local/opt/findutils/libexec/gnubin
 	/Users/karlzheng/Library/xPacks/@xpack-dev-tools/qemu-arm/2.8.0-12.1/.content/bin/
 	/usr/local/Cellar/qemu/5.1.0/bin/
 	);
@@ -2493,7 +2500,8 @@ function my_bash_login_auto_exec_func()
 	if [ -d ${androidsdkdir} ];then
 		export ANDROID_SDK_ROOT=${androidsdkdir}/
 	fi
-	ajavapath
+
+	export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 }
 
 #bash command:
