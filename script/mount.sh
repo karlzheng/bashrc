@@ -4,14 +4,14 @@
 
 function is_loopi_mounted()
 {
-    mounted_dev=$(sudo losetup -a |awk -F: '{print $1}')
     local dev_name="/dev/loop"$1
+
+    mounted_dev=$(sudo losetup -a |awk -F: '{print $1}')
     for i in $mounted_dev;do
         if [ $dev_name = $i ];then
             is_mounted=1
         fi
     done
-    #return $is_mounted
 }
 
 function mountAllImage()
@@ -20,7 +20,7 @@ function mountAllImage()
 		imgdir=${img%%.*}
 		cnt=0
 
-		while [ $cnt -lt 8 ];do
+		while [ $cnt -lt 20 ];do
 			is_mounted=0
 			is_loopi_mounted $cnt
 			if [ $is_mounted == 0 ];then
@@ -29,7 +29,7 @@ function mountAllImage()
 			((cnt++))
 		done
 
-		if [ $cnt -lt 8 ];then
+		if [ $cnt -lt 20 ];then
 			mount_dev="/dev/loop$cnt"
 			sudo losetup $mount_dev $img
 			echo "cryptsetup loop point for:$img, in:$mount_dev"
