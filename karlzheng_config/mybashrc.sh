@@ -420,7 +420,7 @@ function cx()
 
 function del_carried_return()
 {
-		find -name "*.h" -o -name "*.c" |xargs sed -i -e "s#\r\n#\n#gc"
+		find -name "*.h" -o -name "*.c" |xargs sed -I '' -e "s#\r\n#\n#gc"
 }
 
 function emulator_env()
@@ -1624,7 +1624,7 @@ function rm.modifiedfiles.space()
 	for f in $(git diff --stat|grep '|' | awk '{print $1}');do
 		echo ${f}
 		if [ -e ${f} ];then
-			sed -i -r -e 's/[[:blank:]]*$//g' ${f}
+			sed -I '' -r -e 's/[[:blank:]]*$//g' ${f}
 		fi
 	done
 }
@@ -1632,7 +1632,7 @@ function rm.modifiedfiles.space()
 function rm.tail.space()
 {
 	#sed -i 's/[ \t]*$//g' "$@"
-	sed -i -r -e 's/[[:blank:]]*$//g' ${f}
+	sed -I '' -r -e 's/[[:blank:]]*$//g' ${f}
 }
 
 function rplstr()
@@ -1748,6 +1748,18 @@ function sdu ()
 				sub(/\.0/, "", $1);
 				print $0;
 		}'
+}
+
+function set_pi_zero_time()
+{
+	local D=$(date "+%Y%m%d")
+	local T=$(date "+%H:%M:%S")
+
+	echo ssh p0 -C "sudo timedatectl set-timezone Asia/Chongqing"
+	ssh p0 -C "sudo timedatectl set-timezone Asia/Chongqing"
+
+	echo ssh p0 -C "sudo date -s ${D} && sudo date -s ${T} && date"
+	ssh p0 -C "sudo date -s ${D} && sudo date -s ${T} && date"
 }
 
 function sf()
@@ -2438,6 +2450,7 @@ function my_bash_login_auto_exec_func()
 	/Users/karlzheng/Library/Android/sdk/platform-tools
 	/Users/karlzheng/Library/xPacks/@xpack-dev-tools/qemu-arm/2.8.0-12.1/.content/bin/
 	/usr/local/Cellar/qemu/5.1.0/bin/
+	/usr/local/bin/
 	);
 	local mypath=""
 	for p in ${path_list[@]};do
