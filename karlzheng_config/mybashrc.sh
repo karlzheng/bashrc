@@ -205,6 +205,12 @@ function adblistpackages()
 	adb shell pm list packages -f "$@"
 }
 
+#https://unix.stackexchange.com/questions/26728/prepending-a-timestamp-to-each-line-of-output-from-a-command
+function addtimestamp()
+{
+	while IFS= read -r line; do printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$line"; done
+}
+
 function alert()
 {
 	if [ "x${OS}" == "xOSX" ];then
@@ -396,8 +402,11 @@ function ctrash()
 
 function cp()
 {
+	local c
+
 	echo "Are you really want to cp -a $@ ?"
 	read -p "y|n" c
+
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
 		echo "cp -a $@"
 		/bin/cp -a $@
