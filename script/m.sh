@@ -19,7 +19,9 @@
 
 #set -o nounset                              # Treat unset variables as an error
 
-SEACH_RESULT_FILE="${HOME}/shm/$(whoami)/quickfix.txt"
+PATH_OF_SEACH_RESULT_FILE="${HOME}/shm/$(whoami)"
+mkdir -p ${PATH_OF_SEACH_RESULT_FILE}
+SEACH_RESULT_FILE="${PATH_OF_SEACH_RESULT_FILE}/quickfix.txt"
 
 function get_root_dir()
 {
