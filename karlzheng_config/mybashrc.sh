@@ -1060,14 +1060,15 @@ function gp()
 function gpa()
 {
 	local cbr=$(git rev-parse --abbrev-ref HEAD)
+	local rb
 	local c
 
 	read -p "git pull all branches in current dir y|n ?" c
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-		#git pull --all
-		for br in `git branch -r|grep -v HEAD | sed "s/.*\///g"`;do
+		for br in `git branch -r|grep -v HEAD`;do
 			echo ${br};
-			git checkout ${br};
+			rb=$(echo ${br#*/})
+			git checkout ${rb};
 			git pull;
 		done
 		git checkout ${cbr}
@@ -1671,8 +1672,8 @@ function rplstr()
 				fi
 			fi
 		fi
-		echo find . -regex '.*\.\(c\|h\|cpp\|cxx\)' '|' xargs sed -i "s/${a}/${b}/g"
-		find . -regex '.*\.\(c\|h\|cpp\|cxx\)' | xargs sed -i "s/${a}/${b}/g"
+		echo find . -regex '.*\.\(c\|h\|cpp\|cxx\)' '|' xargs sed -i "" -e "s/${a}/${b}/g"
+		find . -regex '.*\.\(c\|h\|cpp\|cxx\)' | xargs sed -i '' -e "s/${a}/${b}/g"
 	done < ${f}
 }
 
@@ -2460,6 +2461,8 @@ function my_bash_login_auto_exec_func()
 	/Users/karlzheng/Library/xPacks/@xpack-dev-tools/qemu-arm/2.8.0-12.1/.content/bin/
 	/usr/local/Cellar/qemu/5.1.0/bin/
 	/usr/local/bin/
+	/opt/homebrew/bin/
+	/usr/local/opt/python/libexec/bin
 	);
 	local mypath=""
 	for p in ${path_list[@]};do
@@ -2559,3 +2562,12 @@ if [ -d ~/person_tools/ ];then
 		buildServerConnectAndMount
 	fi
 fi
+
+if [ ${OS} == "OSX" ];then
+	if [ "$(sysctl -n sysctl.proc_translated)" = "1" ]; then
+		eval $(/usr/local/Homebrew/bin/brew shellenv)
+	else
+		eval $(/opt/homebrew/bin/brew shellenv)
+	fi
+fi
+export HOMEBREW_NO_AUTO_UPDATE=1
