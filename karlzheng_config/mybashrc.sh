@@ -1760,6 +1760,12 @@ function sdu ()
 		}'
 }
 
+function set_github_sock5_proxy()
+{
+	git config http.proxy 'socks5://127.0.0.1:1080'
+	git config https.proxy 'socks5://127.0.0.1:1080'
+}
+
 function set_pi_zero_time()
 {
 	local D=$(date "+%Y%m%d")
