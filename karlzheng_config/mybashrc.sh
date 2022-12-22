@@ -1476,6 +1476,15 @@ function n()
 	return 0
 }
 
+function nano-dm.sh()
+{
+	nano-dm
+	while [ $? != 0 ]; do
+		sleep 0.3;
+		nano-dm
+	done
+}
+
 function nl()
 {
 	if [ "x${OS}" == "xOSX" ];then
