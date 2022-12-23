@@ -305,6 +305,11 @@ function addversion()
 	fi
 }
 
+function sock5.sh()
+{
+	autossh -M 5998 -N -D 1080 hk "$@"
+}
+
 function ba()
 {
 	local fn=${HOME}/dev/bcFn1
