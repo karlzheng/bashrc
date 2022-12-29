@@ -1272,6 +1272,11 @@ function k()
 	fi
 }
 
+function ksf.all.sh()
+{
+	find . -type d -name '.git' -prune -o -type d -name 'out' -prune -o -regex '.*\.\(h\|c\|cpp\)' -type f 2>&1 3>&1 | xargs -I{} bash -l -c "ksformat.sh {}"
+}
+
 function ksformat.sh()
 {
 	local fn
@@ -1293,16 +1298,16 @@ function ksformat.sh()
 
 function ksvn()
 {
-		if [ $# -lt 1 ];then
-				if [ -d .svn ];then
-						#local svnurl=$(svn info | grep URL | awk '{print $2}')
-						local svnurl=$(svn info | grep URL)
-						svnurl=$(echo ${svnurl##URL: })
-						kdesvn "$svnurl" &
-				fi
-		else
-				kdesvn "$@" &
+	if [ $# -lt 1 ];then
+		if [ -d .svn ];then
+			#local svnurl=$(svn info | grep URL | awk '{print $2}')
+			local svnurl=$(svn info | grep URL)
+			svnurl=$(echo ${svnurl##URL: })
+			kdesvn "$svnurl" &
 		fi
+	else
+		kdesvn "$@" &
+	fi
 }
 
 function la()
@@ -1312,13 +1317,13 @@ function la()
 
 function lac()
 {
-	 if [ $# -eq 0 ];then
-				 echo "arch/arm/configs"
-				 ls arch/arm/configs
-	 else
-	   ls $1
-	 fi
-	 return 0
+	if [ $# -eq 0 ];then
+		echo "arch/arm/configs"
+		ls arch/arm/configs
+	else
+		ls $1
+	fi
+	return 0
 }
 
 function lf()
@@ -1440,14 +1445,14 @@ function dp2ssf()
 
 function mypath()
 {
-		local i=0
-		while read line
-		do
-				echo $line
-				eval "p$i=$line"
-				#echo "${m[$i]}"
-				((i++))
-		done < ${HOME}/dev/${MYUSERNAME}/daily_path
+	local i=0
+
+	while read line; do
+		echo $line
+		eval "p$i=$line"
+		#echo "${m[$i]}"
+		((i++))
+	done < ${HOME}/dev/${MYUSERNAME}/daily_path
 }
 
 function myvimpath()
