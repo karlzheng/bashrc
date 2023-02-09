@@ -2505,7 +2505,7 @@ function my_bash_login_auto_exec_func()
 			mypath=$mypath:"$p"
 		fi
 	done
-	export PYTHONPATH="$mypath":$PYTHONPATH
+	#export PYTHONPATH="$mypath":$PYTHONPATH
 	append_daily_path
 	unset append_daily_path
 
