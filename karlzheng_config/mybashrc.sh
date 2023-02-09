@@ -60,7 +60,7 @@ export BROWSER="$PAGER"
 #export CROSS_COMPILE=arm-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
-export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
+#export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
 #命令文件最大行数
 export HISTSIZE=5000000
 #最大命令历史记录数
@@ -2476,9 +2476,9 @@ function my_bash_login_auto_exec_func()
 	~/software/android-sdk-linux_86/tools
 	~/software/android-ndk-r8c
 	~/software/apache-maven/bin
-	~/bk/sw/adt/sdk/platform-tools
-	~/bk/sw/gradle-1.6/bin
-	~/bk/sw/adt/sdk/tools
+	#~/bk/sw/adt/sdk/platform-tools
+	#~/bk/sw/gradle-1.6/bin
+	#~/bk/sw/adt/sdk/tools
 	~/software/linaro-arm-linux-gnueabi-4.6.3/bin
 	~/software/rbox_Linux_Upgrade_Tool_v1.16
 	${JAVA_HOME}/bin
@@ -2589,10 +2589,17 @@ if [ -d ~/person_tools/ ];then
 fi
 
 if [ ${OS} == "OSX" ];then
-	if [ "$(sysctl -n sysctl.proc_translated)" = "1" ]; then
-		eval $(/usr/local/Homebrew/bin/brew shellenv)
+	if [ "x$(sysctl -n sysctl.proc_translated)" == "x1" ]; then
+		if [ -e /usr/local/Homebrew/bin/brew ];then
+			eval $(/usr/local/Homebrew/bin/brew shellenv)
+		fi
 	else
 		eval $(/opt/homebrew/bin/brew shellenv)
 	fi
 fi
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+export ANDROID_HOME=/Users/karlzheng/Library/Android/sdk/
+export ANDROID_NDK_HOME=/Users/karlzheng/Library/Android/sdk/ndk/
+export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/Contents/Home
+export NDK=/Users/karlzheng/Library/Android/sdk/ndk/25.1.8937393/
