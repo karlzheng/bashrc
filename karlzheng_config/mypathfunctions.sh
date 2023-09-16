@@ -28,6 +28,15 @@ function .()
 		fi
 }
 
+function 。()
+{
+	read -p "call function '.()' y|n ?" c
+
+	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		. "$@"
+	fi
+}
+
 function ..()
 {
 		if [ $# -eq 0 ];then

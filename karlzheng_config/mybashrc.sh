@@ -205,6 +205,11 @@ function adblistpackages()
 	adb shell pm list packages -f "$@"
 }
 
+function adb.send.power.key()
+{
+	adb shell input keyevent 26
+}
+
 #https://unix.stackexchange.com/questions/26728/prepending-a-timestamp-to-each-line-of-output-from-a-command
 function addtimestamp()
 {
@@ -524,6 +529,22 @@ function dnw()
 		echo
 	fi
 	return 0
+}
+
+function docker.commit.sh()
+{
+	local id
+	local name=$1
+
+	docker ps | grep ${name}
+
+	id=`docker ps | grep ${name} | awk -v col=1 '{print $col}'`
+
+	read -p "Sure commit ${id} to  ${name}? y|n" c
+
+	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
+		docker commit ${id} ${name}
+	fi
 }
 
 function ds()
@@ -1929,6 +1950,13 @@ function ss.name.sh()
 			mv "${name}" "${new_name}"
 		fi
 	done
+}
+
+function ssr.restart()
+{
+	adb root
+	adb shell "echo related > /sys/bus/msm_subsys/devices/subsys7/restart_level"
+	adb shell "echo 1 >/sys/kernel/boot_slpi/ssr"
 }
 
 function sudopath()
