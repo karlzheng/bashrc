@@ -1096,6 +1096,10 @@ function gpa()
 			rb=$(echo ${br#*/})
 			git checkout ${rb};
 			git pull;
+			local GIT_DIR=$(git rev-parse --git-dir)
+			if [ -f "${GIT_DIR}/.gitmodules" ]; then
+				git submodule update --init --recursive
+			fi
 		done
 		git checkout ${cbr}
 	fi
