@@ -547,6 +547,12 @@ function docker.commit.sh()
 	fi
 }
 
+function dos2unix.all.sh()
+{
+	find . -type d -name '.git' -prune -o -type d -name 'out' -prune -o -regex '.*\.\(h\|c\|cpp\)' -type f 2>&1 3>&1 | xargs -I{} bash -l -c "dos2unix {}"
+}
+
+
 function ds()
 {
 	if [ -f ${HOME}/tmp/scratch ];then
@@ -1091,6 +1097,7 @@ function gpa()
 
 	read -p "git pull all branches in current dir y|n ?" c
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
+		git fetch --tags
 		for br in `git branch -r|grep -v HEAD`;do
 			echo ${br};
 			rb=$(echo ${br#*/})
@@ -2634,4 +2641,6 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export ANDROID_HOME=/Users/karlzheng/Library/Android/sdk/
 export ANDROID_NDK_HOME=/Users/karlzheng/Library/Android/sdk/ndk/
 export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/Contents/Home
-export NDK=/Users/karlzheng/Library/Android/sdk/ndk/25.1.8937393/
+#export NDK=/Users/karlzheng/Library/Android/sdk/ndk/25.1.8937393/
+export NDK=/Users/karlzheng/Library/Android/sdk/ndk/27.0.11718014/
+export NDK_BIN=${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/
