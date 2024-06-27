@@ -17,7 +17,7 @@ function gencscopetags.sh.func()
 	fi
 
 	: > cscope.files
-	local file_suffix_list=(c h hh hpp cc cpp cxx hpp java s)
+	local file_suffix_list=(c h hh hpp cc cpp cxx hpp java s py yaml)
 	for ext in ${file_suffix_list[@]};do
 		find ${file_dir} -type f -a ${regex_posix} -regex ".*\.${ext}$"  >> cscope.files
 	done

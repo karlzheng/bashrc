@@ -21,7 +21,7 @@ function rm_tag_file()
 
 if [ $# -ge 1 ];then
 	if [ $1 == "clean" ];then
-		rm_tag_file filenametags fullfilenametags cscope.files cscope.po.out cscope.out cscope.in.out tags ncscope.out
+		rm_tag_file filenametags fullfilenametags cscope.files cscope.po.out cscope.out cscope.in.out tags ncscope.out pytags
 	fi
 else
 	echo "$(date) lookuptags.sh $1"

@@ -1085,7 +1085,7 @@ function gp()
 	local c
 	read -p "git pull current dir y|n ?" c
 	if [ "x${c}" == "xy" -o "x${c}" == "x" ];then
-		git pull
+		git pull "$@"
 	fi
 }
 
@@ -1682,7 +1682,7 @@ function rm()
 
 function rm.modifiedfiles.space()
 {
-	for f in $(git diff --stat|grep '|' | awk '{print $1}');do
+	for f in $(git diff --stat=300 | grep '|' | awk '{print $1}');do
 		echo ${f}
 		if [ -e ${f} ];then
 			sed -I '' -r -e 's/[[:blank:]]*$//g' ${f}
