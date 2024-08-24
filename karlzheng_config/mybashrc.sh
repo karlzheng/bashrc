@@ -23,12 +23,12 @@ if [ -f ~/skipmybashrc ];then
 	return
 fi
 
-if [ "${SHELL}" != "/bin/bash" -a "${SHELL}" != "/usr/bin/bash" ];then
-		echo 'use "chsh -s /bin/bash" to change ${SHELL}'
+if [ "${SHELL}" != "/bin/bash" ] && [ "${SHELL}" != "/usr/bin/bash" ];then
+	echo "use 'chsh -s /bin/bash' to change bash as default shell"
 fi
 
 export OS=Linux
-if [ $(uname -s) == Darwin ];then
+if [ "$(uname -s)" = "Darwin" ]; then
 	export OS="OSX"
 fi
 
@@ -50,14 +50,16 @@ export LC_MESSAGES="C"
 
 export MINICOM=" -C /tmp/minicom.log "
 
-export MYNICKNAME="karlzheng"
-export MYUSERNAME=$(whoami)
+export MYNICKNAME
+export MYUSERNAME
+MYNICKNAME="karlzheng"
+MYUSERNAME=$(whoami)
 
 #export ANDROID_LOG_TAGS='Sensors:V *:S'
 #export ARCH=arm
+#export CROSS_COMPILE=arm-linux-gnueabi-
 #http://huangyun.wikispaces.com/%E7%BB%99man+pages%E5%8A%A0%E4%B8%8A%E5%BD%A9%E8%89%B2%E6%98%BE%E7%A4%BA
 export BROWSER="$PAGER"
-#export CROSS_COMPILE=arm-linux-gnueabi-
 export D=~/桌面/
 export EDITOR=vim
 #export GRADLE_HOME=${HOME}/bk/sw/gradle-1.6
@@ -545,6 +547,13 @@ function docker.commit.sh()
 	if [ "x${c}" == "xy" -o "x${c}" == "xY" -o "x${c}" == "x" ];then
 		docker commit ${id} ${name}
 	fi
+}
+
+function docker.bash.sh()
+{
+	local mydockerid=$(docker ps | grep Up | awk -v col=1 '{print $col}')
+
+	docker exec -it ${mydockerid} /bin/bash
 }
 
 function dos2unix.all.sh()
@@ -1465,9 +1474,15 @@ function meld()
 
 function mj()
 {
-	local CPUS=$(/bin/grep processor /proc/cpuinfo \
-		| /usr/bin/awk '{field=$NF};END{print(field+1)*2}')
-    make -j${CPUS} "$@"
+	local CPUS
+
+	if [ "x${OS}" == "xOSX" ];then
+		CPUS=$(sysctl -n machdep.cpu.core_count)
+	else
+		CPUS=$(grep processor /proc/cpuinfo | /usr/bin/awk '{field=$NF};END{print(field+1)*2}')
+	fi
+
+	make -j${CPUS} "$@"
 }
 
 function dp2ssf()
