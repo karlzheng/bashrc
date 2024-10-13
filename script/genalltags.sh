@@ -31,4 +31,6 @@ else
 	echo "$(date) gentags.sh  $1"
 	gentags.sh $1
 	date
+	pytags.py
+	date
 fi
