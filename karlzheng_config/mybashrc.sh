@@ -558,7 +558,7 @@ function docker.bash.sh()
 
 function dos2unix.all.sh()
 {
-	find . -type d -name '.git' -prune -o -type d -name 'out' -prune -o -regex '.*\.\(h\|c\|cpp\)' -type f 2>&1 3>&1 | xargs -I{} bash -l -c "dos2unix {}"
+	find . -type d -name '.git' -prune -o -type d -name 'out' -prune -o -regex '.*\.\(h\|c\|cpp\|py\)' -type f 2>&1 3>&1 | xargs -I{} bash -l -c "dos2unix {}"
 }
 
 
