@@ -121,8 +121,9 @@ if __name__ == "__main__":
         print("Cannot get Git hash, using timestamp instead")
         last_git_hash = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+    current_date = datetime.now().strftime("%m%d")
     target_directory = f"{source_directory}_{last_git_hash}"
-    zip_file_path = f"{target_directory}.zip"
+    zip_file_path = f"{source_directory}_{current_date}_{last_git_hash}.zip"
 
     if copy_directory(source_directory, target_directory):
         remove_git_directory(target_directory)
