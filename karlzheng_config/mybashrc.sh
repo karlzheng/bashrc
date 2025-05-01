@@ -860,6 +860,11 @@ function gdp()
 	git diff -p -U100000 --raw "$@"
 }
 
+function gds()
+{
+	git diff --staged "$@"
+}
+
 function ggc()
 {
 	git reflog expire --expire=now --all "$@"
