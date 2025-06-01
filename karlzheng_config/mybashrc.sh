@@ -2664,3 +2664,7 @@ export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/Contents/Home
 #export NDK=/Users/karlzheng/Library/Android/sdk/ndk/25.1.8937393/
 export NDK=/Users/karlzheng/Library/Android/sdk/ndk/27.0.11718014/
 export NDK_BIN=${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/
+
+if [ -f ~/person_tools/bash.personal.rc ];then
+	source ~/person_tools/bash.personal.rc
+fi
