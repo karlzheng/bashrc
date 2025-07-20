@@ -1,32 +1,29 @@
-# EditorConfig is awesome: http://EditorConfig.org
-#https://devhints.io/editorconfig
+# SPDX-License-Identifier: GPL-2.0-only
 
-# top-most EditorConfig file
 root = true
 
-# Unix-style newlines with a newline ending every file
-[*]
+[{*.{awk,c,dts,dtsi,dtso,h,mk,s,S},Kconfig,Makefile,Makefile.*}]
 charset = utf-8
 end_of_line = lf
-;indent_style = space
-trim_trailing_whitespace = false
+insert_final_newline = true
 indent_style = tab
 indent_size = 8
-insert_final_newline = false
 
-[*.c]
-;max_line_length = 80
-;max_line_length = 150
-max_line_length = 100
-
-[*.cpp]
-;max_line_length = 80
-;max_line_length = 150
-max_line_length = 100
-
-[*.py]
+[*.{json,py,rs}]
+charset = utf-8
 end_of_line = lf
+insert_final_newline = true
 indent_style = space
 indent_size = 4
+
+# this must be below the general *.py to overwrite it
+[tools/{perf,power,rcu,testing/kunit}/**.py,]
+indent_style = tab
+indent_size = 8
+
+[*.yaml]
 charset = utf-8
-insert_final_newline = false
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
