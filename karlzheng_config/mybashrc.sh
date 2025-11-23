@@ -855,6 +855,38 @@ function gdh()
 	fi
 }
 
+gdndays()
+{
+	if ! [[ "$1" =~ ^[1-9][0-9]*$ ]]; then
+		echo "Error: Please provide a positive integer for days! Example: git-diff-recent-days 7 (view changes from last 7 days)"
+		return 1
+	fi
+	local n_days="$1"
+
+	local n_days_ago
+	n_days_ago=$(date -v -"${n_days}"d +%Y-%m-%d)
+	echo "=== Querying: Code changes from the last ${n_days} days (since ${n_days_ago}) ==="
+
+	local earliest_commit
+	earliest_commit=$(git log --since="${n_days_ago}" --format=%H --reverse 2>/dev/null | head -1)
+
+	if [ -z "${earliest_commit}" ]; then
+		echo "Notice: No commit records in the last ${n_days} days"
+		return 0
+	fi
+
+	local latest_commit
+	latest_commit=$(git log --format=%H -1 2>/dev/null)
+
+	echo "Earliest commit hash: ${earliest_commit}"
+	echo "Latest commit hash: ${latest_commit}"
+	echo "----------------------------------------"
+
+	git diff "${earliest_commit}^" "${latest_commit}"
+	echo "----------------------------------------"
+	echo "To view shortchanges, run: git diff ${earliest_commit}^ ${latest_commit} --stat"
+}
+
 function gdp()
 {
 	git diff -p -U100000 --raw "$@"
@@ -863,6 +895,19 @@ function gdp()
 function gds()
 {
 	git diff --staged "$@"
+}
+
+get_latest_usbmodem()
+{
+    local latest_device
+    latest_device=$(find /dev -maxdepth 1 -name 'tty.usb*' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-)
+
+    if [ -n "$latest_device" ]; then
+        echo "$latest_device"
+    else
+        echo "未找到tty.usbmodem*设备节点" >&2
+        return 1
+    fi
 }
 
 function ggc()
@@ -906,7 +951,7 @@ function gk()
 	if [ $# -ge 1 ];then
 		gitk "$@" &
 	else
-		gitk . &
+		gitk  &
 	fi
 }
 
@@ -915,7 +960,7 @@ function gka()
 	if [ $# -ge 1 ];then
 		gitk --all "$@" &
 	else
-		gitk --all . &
+		gitk --all &
 	fi
 }
 
@@ -937,7 +982,7 @@ function gkf()
 	fi
 }
 
-function glag()
+function gla()
 {
 	git log --all --graph "$@"
 }
@@ -1089,9 +1134,17 @@ function gl()
 	git log "$@"
 }
 
+function gla()
+{
+	git log --all --graph --decorate "$@"
+}
+
 function glg()
 {
-	git log "$@" > git.log
+	local logfile="${HOME}/tmp/tee.log"
+
+	echo "git log $@ > ${logfile}"
+	git log "$@" > ${logfile}
 }
 
 function gp()
@@ -2546,7 +2599,7 @@ function my_bash_login_auto_exec_func()
 	/usr/local/Cellar/qemu/5.1.0/bin/
 	/usr/local/bin/
 	/opt/homebrew/bin/
-	/usr/local/opt/python/libexec/bin
+	#/usr/local/opt/python/libexec/bin
 	);
 	local mypath=""
 	for p in ${path_list[@]};do
