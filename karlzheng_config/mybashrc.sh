@@ -897,6 +897,11 @@ function gds()
 	git diff --staged "$@"
 }
 
+get.latest.adblog()
+{
+	adb pull /data/debuglogger/mobilelog/$(adb shell "ls -latr /data/debuglogger/mobilelog | tail -1 | awk '{print \$NF}'") .
+}
+
 get_latest_usbmodem()
 {
     local latest_device
@@ -1369,6 +1374,20 @@ function k()
 			fi
 		done
 	fi
+}
+
+klogg()
+{
+    local KLOGG_PATH="/Applications/klogg.app/Contents/MacOS/klogg"
+
+    if [ ! -x "$KLOGG_PATH" ]; then
+        echo "klogg executable not found!"
+        echo "Please check your installation path, or manually update KLOGG_PATH in the function to:"
+        echo "Example: ~/Applications/klogg.app/Contents/MacOS/klogg"
+        return 1
+    fi
+
+    "$KLOGG_PATH" "$@"
 }
 
 function ksf.all.sh()
