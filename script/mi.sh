@@ -19,7 +19,9 @@
 
 #set -o nounset                              # Treat unset variables as an error
 
-SEACH_RESULT_FILE="${HOME}/shm/$(whoami)/quickfix.txt"
+PATH_OF_SEACH_RESULT_FILE="${HOME}/shm/$(whoami)"
+mkdir -p ${PATH_OF_SEACH_RESULT_FILE}
+SEACH_RESULT_FILE="${PATH_OF_SEACH_RESULT_FILE}/quickfix.txt"
 
 function get_root_dir()
 {
@@ -86,7 +88,7 @@ if [ -f ./mg.mk ];then
 		line=$(echo -n "$line" |sed -e 's#^\#.*##g')
 		if [ "x$line" != "x" ];then
 			if [ -d "$line" ];then
-				find "$line" \
+				gfind . -xdev "$line" \
 					! -type d \
 					-a ! -type l \
 					-not -regex '.*.cmd' \
@@ -111,7 +113,8 @@ if [ -f ./mg.mk ];then
 		cp  $SEACH_RESULT_FILE "${HOME}/quickfix.txt"
 	fi
 else
-	find . \
+	#/usr/bin/find . \
+	gfind . -xdev \
 		! -type d \
 		-a ! -type l \
 		-not -regex '.*.map' \

@@ -88,7 +88,7 @@ if [ -f ./mg.mk ];then
 		line=$(echo -n "$line" |sed -e 's#^\#.*##g')
 		if [ "x$line" != "x" ];then
 			if [ -d "$line" ];then
-				find "$line" \
+				gfind . -xdev "$line" \
 					! -type d \
 					-a ! -type l \
 					-not -regex '.*.cmd' \
@@ -113,7 +113,8 @@ if [ -f ./mg.mk ];then
 		cp  $SEACH_RESULT_FILE "${HOME}/quickfix.txt"
 	fi
 else
-	find . \
+	#/usr/bin/find . \
+	gfind . -xdev \
 		! -type d \
 		-a ! -type l \
 		-not -regex '.*.map' \
