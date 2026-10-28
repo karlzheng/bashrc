@@ -558,7 +558,7 @@ function docker.bash.sh()
 
 function dos2unix.all.sh()
 {
-	find . -type d -name '.git' -prune -o -type d -name 'out' -prune -o -regex '.*\.\(h\|c\|cpp\|py\)' -type f 2>&1 3>&1 | xargs -I{} bash -l -c "dos2unix {}"
+	gfind . -xdev -type d -name '.git' -prune -o -type d -name 'out' -prune -o -regex '.*\.\(h\|c\|cpp\|py\)' -type f 2>&1 3>&1 | xargs -I{} bash -l -c "dos2unix {}"
 }
 
 
@@ -842,6 +842,11 @@ function gda()
 	git diff $(dsc)^ $(dsc) "$@"
 }
 
+function gdc()
+{
+	git diff --cached "$@"
+}
+
 function gdh()
 {
 	if [ $# -eq 0 ];then
@@ -899,7 +904,17 @@ function gds()
 
 get.latest.adblog()
 {
-	adb pull /data/debuglogger/mobilelog/$(adb shell "ls -latr /data/debuglogger/mobilelog | tail -1 | awk '{print \$NF}'") .
+	#adb pull /data/debuglogger/mobilelog/$(adb shell "ls -latr /data/debuglogger/mobilelog | tail -1 | awk '{print \$NF}'") .
+    latest_dir=$(adb shell "cd /data/debuglogger/mobilelog && ls -1t | head -n1")
+    mkdir -p "$latest_dir"
+    echo adb shell "ls /data/debuglogger/mobilelog/$latest_dir/scp*"
+
+    adb shell "ls /data/debuglogger/mobilelog/$latest_dir/scp*" | while read -r file
+    do
+        adb pull "$file" "$latest_dir/"
+    done
+
+    echo "All scp log files pulled successfully"
 }
 
 get_latest_usbmodem()
@@ -1148,8 +1163,9 @@ function glg()
 {
 	local logfile="${HOME}/tmp/tee.log"
 
-	echo "git log $@ > ${logfile}"
-	git log "$@" > ${logfile}
+	#echo "git log $@ > ${logfile}"
+	#git log "$@" > ${logfile}
+	git log --all --graph --oneline --decorate "$@"
 }
 
 function gp()
@@ -1657,6 +1673,31 @@ function of()
 function openwrtssh()
 {
 	echo 'enablec06ebd87'|nc -u 192.168.232.1 51232
+}
+
+function partly_rename.sh()
+{
+    local old_part="$1"
+    local new_part="$2"
+
+    if [ -z "$old_part" ] || [ -z "$new_part" ]; then
+        echo "用法: partly_rename <旧名称部分> <新名称部分>"
+        return 1
+    fi
+
+    local found=0
+    for file in *"$old_part"*; do
+        [ -e "$file" ] || continue
+        found=1
+        local newname="${file//$old_part/$new_part}"
+        if [ "$file" != "$newname" ]; then
+            mv -v -- "$file" "$newname"
+        fi
+    done
+
+    if [ "$found" -eq 0 ]; then
+        echo "当前目录下没有文件名包含 \"$old_part\" 的文件。"
+    fi
 }
 
 function pf()
@@ -2592,7 +2633,9 @@ function my_bash_login_auto_exec_func()
 	ajavapath
 
 	local path_list=(
-	/usr/local/opt/findutils/libexec/gnubin
+	#/opt/homebrew/opt/python@3.13/bin
+	# GNU find 在 Parallels SMB 挂载上跨挂载会漏读，默认用系统 BSD 版(/usr/bin/find)；如需 GNU 版用 gfind
+	#/usr/local/opt/findutils/libexec/gnubin
 	/usr/local/opt/coreutils/libexec/gnubin/
 	/usr/local/Cellar/vim/8.2.4450/bin/
 	~/person_tools/
@@ -2736,6 +2779,12 @@ export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/Contents/Home
 #export NDK=/Users/karlzheng/Library/Android/sdk/ndk/25.1.8937393/
 export NDK=/Users/karlzheng/Library/Android/sdk/ndk/27.0.11718014/
 export NDK_BIN=${NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/
+
+#export PNPM_HOME="/Users/karlzheng/Library/pnpm"
+#case ":$PATH:" in
+  #*":$PNPM_HOME/bin:"*) ;;
+  #*) export PATH="$PNPM_HOME/bin:$PATH" ;;
+#esac
 
 if [ -f ~/person_tools/bash.personal.rc ];then
 	source ~/person_tools/bash.personal.rc
